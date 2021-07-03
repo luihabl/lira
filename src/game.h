@@ -25,14 +25,21 @@ namespace MicroNinja {
             int window_width;
             int window_height;
 
+            BatchRenderer renderer;
+
             virtual void update() {}
             virtual void render() {}
+            virtual void handle_events(SDL_Event & event);
 
         private: 
             
+            bool quit_game = false;
+
             float target_fps = 60.0f;
 
-
+            Shader default_shader;
+            Mat4x4 virtual_projection;
+            Mat4x4 window_projection;
 
             // BatchRenderer renderer;
             
@@ -47,6 +54,7 @@ namespace MicroNinja {
         using Game::Game;
         
         void update();
+        void render();
 
 
 
