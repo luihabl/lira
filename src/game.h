@@ -51,9 +51,6 @@ namespace MicroNinja {
             Shader default_shader;
             Mat4x4 virtual_projection;
             Mat4x4 window_projection;
-            
-
-        // Scene current_scene;
         
     };
 
@@ -61,8 +58,6 @@ namespace MicroNinja {
     class MicroNinjaGame : public Game{
     
         using Game::Game;
-
-        float r;
         
         void begin();
         void render();

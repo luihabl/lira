@@ -87,9 +87,8 @@ void Game::handle_events(SDL_Event & event) {
 
 
 void MicroNinjaGame::begin() {
-    r = 12;
-    Log::debug("%.3f", r);
 
+    
     Game::begin();
 
 }
@@ -103,6 +102,8 @@ void MicroNinjaGame::render() {
     renderer.draw_rect_fill({40, 40, 50, 50}, Color::blue);
 
     renderer.render();
+
+    Game::render();
 
 }
 
