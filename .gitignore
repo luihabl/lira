@@ -26,7 +26,13 @@
 *.a
 *.lib
 
-# Executables
+# Build/Executables
 *.exe
 *.out
 *.app
+build
+out 
+
+# IDEs
+.vscode
+.vs
