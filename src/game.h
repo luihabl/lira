@@ -3,6 +3,8 @@
 #include <string>
 #include <tinysdl.h>
 
+#include "scene.h"
+
 using namespace TinySDL;
 
 namespace MicroNinja {
@@ -12,7 +14,6 @@ namespace MicroNinja {
         public:
             Game() = default;
             Game(int res_width, int res_height, int win_width, int win_height, const char * title);
-            // ~Game();
 
             void run();
 
@@ -25,10 +26,20 @@ namespace MicroNinja {
             int window_width;
             int window_height;
 
+            Scene current_scene;
+
             BatchRenderer renderer;
 
-            virtual void update() {}
-            virtual void render() {}
+            //Called when game starts
+            virtual void begin();
+
+            //Called every frame for updating scene
+            virtual void update();
+
+            //Called every frame for rendering scene
+            virtual void render();
+
+            //Called every frame to handle SDL events
             virtual void handle_events(SDL_Event & event);
 
         private: 
@@ -40,8 +51,6 @@ namespace MicroNinja {
             Shader default_shader;
             Mat4x4 virtual_projection;
             Mat4x4 window_projection;
-
-            // BatchRenderer renderer;
             
 
         // Scene current_scene;
@@ -52,12 +61,11 @@ namespace MicroNinja {
     class MicroNinjaGame : public Game{
     
         using Game::Game;
+
+        float r;
         
-        void update();
+        void begin();
         void render();
-
-
-
 
     };
 

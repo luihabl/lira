@@ -11,6 +11,8 @@ add_subdirectory(lib/tinysdl)
 add_executable(micro_ninja 
 src/main.cpp
 src/game.cpp
+src/scene.cpp
+src/input.cpp
 # ${IMGUI_SRC}
 )
 

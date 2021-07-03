@@ -33,6 +33,7 @@ void Game::run() {
     default_shader = Shader::default_sprite_shaders();
     default_shader.use().set_mat4x4("projection", window_projection); 
 
+    begin();
 
     auto frame = std::chrono::duration_cast<std::chrono::system_clock::duration>(std::chrono::duration<float>{1.0f / target_fps});
     auto next_frame = std::chrono::system_clock::now();
@@ -55,24 +56,41 @@ void Game::run() {
     }
 }
 
+void Game::begin() {
+    current_scene.begin();
+}
+
+void Game::update() {
+    current_scene.update();
+}
+
+void Game::render() {
+    current_scene.render();
+}
+
 void Game::handle_events(SDL_Event & event) {
 
-            if (event.type == SDL_WINDOWEVENT) {
-                if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    Window::get_drawable_size(&window_width, &window_height);
-                    window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1);                   
-                }
-            }
+    if (event.type == SDL_WINDOWEVENT) {
+        if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+            Window::get_drawable_size(&window_width, &window_height);
+            window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1);                   
+        }
+    }
 
-            if (event.type == SDL_QUIT) {
-                quit_game = true;
-            }      
+    if (event.type == SDL_QUIT) {
+        quit_game = true;
+    }      
 }
 
 
 // ------------------------------------ Derived class ------------------------------------
 
-void MicroNinjaGame::update() {
+
+void MicroNinjaGame::begin() {
+    r = 12;
+    Log::debug("%.3f", r);
+
+    Game::begin();
 
 }
 
