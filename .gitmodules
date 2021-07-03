@@ -1,0 +1,3 @@
+[submodule "lib/tinysdl"]
+	path = lib/tinysdl
+	url = git@github.com:luihabl/tinysdl.git
