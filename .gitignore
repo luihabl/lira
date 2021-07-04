@@ -36,3 +36,4 @@ out
 # IDEs
 .vscode
 .vs
+CMakeSettings.json
