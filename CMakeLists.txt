@@ -14,7 +14,7 @@ src/game.cpp
 src/scene.cpp
 src/input.cpp
 # ${IMGUI_SRC}
-)
+ "src/content.cpp")
 
 #find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} lib/imgui)

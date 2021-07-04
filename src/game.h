@@ -4,6 +4,7 @@
 #include <tinysdl.h>
 
 #include "scene.h"
+#include "content.h"
 
 using namespace TinySDL;
 
@@ -27,8 +28,12 @@ namespace MicroNinja {
             int window_height;
 
             Scene current_scene;
+            Content content;
 
             BatchRenderer renderer;
+            Shader default_shader;
+            Mat4x4 virtual_projection;
+            Mat4x4 window_projection;
 
             //Called when game starts
             virtual void begin();
@@ -47,10 +52,6 @@ namespace MicroNinja {
             bool quit_game = false;
 
             float target_fps = 60.0f;
-
-            Shader default_shader;
-            Mat4x4 virtual_projection;
-            Mat4x4 window_projection;
         
     };
 
@@ -59,8 +60,10 @@ namespace MicroNinja {
     
         using Game::Game;
         
-        void begin();
-        void render();
+        void begin() override;
+        void render() override;
+
+        RenderTarget target;
 
     };
 
