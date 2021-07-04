@@ -22,19 +22,19 @@ namespace MicroNinja {
 		void set_folder_name(const std::string& name);
 		void load_all();
 		
-		//static Texture* find_tex(const std::string& name);
+		static Texture* find_tex(const std::string& name);
 		
-		template <typename T>
-		static T* find(const std::string& name);
+		//template <typename T>
+		//static T* find(const std::string& name);
 	};
 
-	template<typename T>
-	std::unordered_map<std::string, T> Content::assets;
-	
-	template <typename T>
-	T* Content::find(const std::string& name) {
-		return &(assets<T>.at(name));
-	}
+	//template<typename T>
+	//std::unordered_map<std::string, T> Content::assets;
+	//
+	//template <typename T>
+	//T* Content::find(const std::string& name) {
+	//	return &(assets<T>.at(name));
+	//}
 
 
 }
