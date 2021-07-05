@@ -14,12 +14,6 @@ namespace fs = std::filesystem;
 
 namespace {
 	std::unordered_map<std::string, Texture> textures;
-
-	//template <typename T>
-	//void add_file(std::unordered_map<std::string, T>& assets, const std::string & key, std::string path) {
-	//	assets[key] = T::from_file(path.c_str());
-	//}
-
 }
 
 void Content::set_folder_name(const std::string & name) {
@@ -60,8 +54,6 @@ void Content::load_all() {
 			
 			if (extension == ".png") {
 				textures[key_name] = Texture::from_file(item.path().generic_string().c_str());
-				//assets<Texture>[key_name] = Texture::from_file(item.path().generic_string().c_str());
-				//add_file(assets<Texture>, key_name, item.path().generic_string());
 			}
 				
 

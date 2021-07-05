@@ -3,12 +3,14 @@
 #include <string>
 #include <tinysdl.h>
 
-#include "scene.h"
-#include "content.h"
+#include "../core/scene.h"
+#include "../assets/content.h"
 
 using namespace TinySDL;
 
 namespace MicroNinja {
+
+    class Scene;
     
     class Game {
         
@@ -18,7 +20,7 @@ namespace MicroNinja {
 
             void run();
 
-        protected:
+        
             std::string window_title;
 
             int width;
@@ -27,7 +29,6 @@ namespace MicroNinja {
             int window_width;
             int window_height;
 
-            Scene current_scene;
             Content content;
 
             BatchRenderer renderer;
@@ -35,6 +36,13 @@ namespace MicroNinja {
             Mat4x4 virtual_projection;
             Mat4x4 window_projection;
 
+            template<typename T>
+            void set_scene() {
+                current_scene = T();
+                current_scene.game = this;
+            };
+        
+        protected:
             //Called when game starts
             virtual void begin();
 
@@ -48,26 +56,9 @@ namespace MicroNinja {
             virtual void handle_events(SDL_Event & event);
 
         private: 
-            
+            Scene current_scene;
             bool quit_game = false;
-
             float target_fps = 60.0f;
-        
     };
-
-
-    class MicroNinjaGame : public Game{
-    
-        using Game::Game;
-        
-        void begin() override;
-        void render() override;
-
-        RenderTarget target;
-
-    };
-
-
-
 
 } 

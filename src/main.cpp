@@ -1,5 +1,5 @@
 
-#include "game.h"
+#include "microninja.h"
 
 int main(int argc, char *argv[]) {
 

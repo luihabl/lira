@@ -10,11 +10,11 @@ add_subdirectory(lib/tinysdl)
 
 add_executable(micro_ninja 
 src/main.cpp
-src/game.cpp
-src/scene.cpp
-src/input.cpp
+"src/modules/game.cpp"
+"src/core/scene.cpp"
+"src/input/input.cpp"
 # ${IMGUI_SRC}
- "src/content.cpp")
+ "src/assets/content.cpp" "src/microninja.cpp" "src/microninja.h" "src/level0.h" "src/level0.cpp")
 
 #find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} lib/imgui)
