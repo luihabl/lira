@@ -1,7 +1,9 @@
 #include "microninja.h"
 #include "core/scene.h"
 
+#include "static/ref.h"
 #include "level0.h"
+
 
 void MicroNinjaGame::begin() {
 
@@ -9,8 +11,8 @@ void MicroNinjaGame::begin() {
     content.load_all();
 
     target = RenderTarget(width, height);
-
-    set_scene<Level0>(); //unique_ptr does not allow object copying
+    
+    move_to_scene(Ref::make<Level0>()); 
 
     Graphics::set_blend_mode();
     Game::begin();

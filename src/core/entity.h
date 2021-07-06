@@ -1,9 +1,9 @@
 #pragma once 
 
 #include <vector>
-#include <memory>
+#include <tinysdl.h>
 
-#include "tinysdl.h"
+#include "../static/ref.h"
 
 namespace MicroNinja
 {
@@ -20,6 +20,6 @@ namespace MicroNinja
 
     };
 
-    typedef std::unique_ptr<Entity> EntityRef;
+    typedef Ref::Unique<Entity> EntityRef;
 
 } 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+#include "../static/ref.h"
 
 namespace MicroNinja {
 
@@ -21,5 +21,5 @@ namespace MicroNinja {
 
     };
 
-    typedef std::unique_ptr<Component> ComponentRef;
+    typedef Ref::Unique<Component> ComponentRef;
 }

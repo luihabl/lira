@@ -1,11 +1,13 @@
 #pragma once
 
 #include <string>
+#include <chrono>
 #include <tinysdl.h>
 
 #include "../core/scene.h"
 #include "../assets/content.h"
 
+namespace chr = std::chrono;
 using namespace TinySDL;
 
 namespace MicroNinja {
@@ -20,7 +22,6 @@ namespace MicroNinja {
 
             void run();
 
-        
             std::string window_title;
 
             int width;
@@ -35,12 +36,11 @@ namespace MicroNinja {
             Shader default_shader;
             Mat4x4 virtual_projection;
             Mat4x4 window_projection;
+            
+            void move_to_scene(SceneRef & scene);
+            void move_to_scene(SceneRef && scene);
 
-            template<typename T>
-            void set_scene() {
-                current_scene = T();
-                current_scene.game = this;
-            };
+            void set_target_fps(float fps);
         
         protected:
             //Called when game starts
@@ -56,9 +56,15 @@ namespace MicroNinja {
             virtual void handle_events(SDL_Event & event);
 
         private: 
-            Scene current_scene;
+            void set_current_scene(SceneRef & scene);
+            SceneRef current_scene = nullptr;
+            SceneRef next_scene = nullptr;
+
             bool quit_game = false;
-            float target_fps = 60.0f;
+            
+            float target_fps;
+            chr::system_clock::duration frame_duration;
+            float dt;
     };
 
 } 
