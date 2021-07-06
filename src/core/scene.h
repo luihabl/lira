@@ -1,9 +1,12 @@
 #pragma once 
 
 #include <vector>
+#include <tinysdl.h>
 
 #include "entity.h"
 #include "component.h"
+
+using namespace TinySDL;
 
 namespace MicroNinja {
     

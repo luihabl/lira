@@ -21,34 +21,14 @@ void MicroNinjaGame::render() {
 
     target.begin();
 
-    Graphics::viewport(width, height);
-    Graphics::clear({ 10, 50, 115 });
+        Graphics::viewport(width, height);
+        Graphics::clear({ 10, 50, 115 });
 
-    default_shader.use().set_mat4x4("projection", virtual_projection);
+        default_shader.use().set_mat4x4("projection", virtual_projection);
+    
+        Game::render();
 
-
-    renderer.set_texture(Content::find_tex("tilesets/Game Boy GBC - Pokemon Gold Silver - Cinnabar Island"));
-    renderer.draw_tex({ 0.0f, 0.0f, 16.0f, 16.0f }, { 20.0f, 0.0f, 16.0f, 16.0f }, 0.5f, false);
-    renderer.draw_tex({ 16.0f, 16.0f, 16.0f, 16.0f }, { 100.0f + 20.0f, 20.0f, 16.0f, 16.0f }, 0.0f, false);
-
-    renderer.draw_rect_fill({ 120, 60, 30, 60 }, Color::blue);
-
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            renderer.draw_tex({ 16.0f * (float)i, 16.0f * (float)j, 16.0f, 16.0f }, { (float)i * 16.f, (float)j * 16.f });
-        }
-    }
-
-    renderer.draw_arc_line({ 80, 80 }, 40, 0.5f, 0.2f, 3, Color::red, 40);
-
-    renderer.set_texture(Content::find_tex("sprites/dude_transparent"));
-    //renderer.set_texture(&dude);
-    renderer.draw_tex({ 0, 0, 16, 16 }, { 20, 20 });
-    renderer.set_texture(Content::find_tex("tilesets/Game Boy GBC - Pokemon Gold Silver - Cinnabar Island"));
-    renderer.draw_tex({ 0, 0, 80, 80 }, { 30, 30 });
-
-
-    renderer.render();
+        renderer.render();
 
     target.end();
 
@@ -61,8 +41,6 @@ void MicroNinjaGame::render() {
     renderer.draw_tex(target.tex.full_rect, { (float)window_width / 2.0f, (float)window_height / 2.0f }, { scale, -scale }, 0.0f, true);
 
     renderer.render();
-
-    Game::render();
 }
 
 

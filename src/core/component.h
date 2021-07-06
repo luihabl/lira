@@ -2,6 +2,10 @@
 
 #include <memory>
 
+#include <tinysdl.h>
+
+using namespace TinySDL;
+
 namespace MicroNinja {
 
     class Scene;
