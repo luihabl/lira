@@ -4,7 +4,6 @@
 
 #include "entity.h"
 #include "component.h"
-#include "../static/ref.h"
 
 namespace MicroNinja {
     
@@ -23,5 +22,5 @@ namespace MicroNinja {
             std::vector<ComponentRef> components;
     };
 
-    typedef Ref::Unique<Scene> SceneRef;
+    typedef std::unique_ptr<Scene> SceneRef;
 }

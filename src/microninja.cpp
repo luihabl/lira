@@ -1,7 +1,6 @@
 #include "microninja.h"
 #include "core/scene.h"
 
-#include "static/ref.h"
 #include "level0.h"
 
 
@@ -11,8 +10,8 @@ void MicroNinjaGame::begin() {
     content.load_all();
 
     target = RenderTarget(width, height);
-    
-    move_to_scene(Ref::make<Level0>()); 
+
+    move_to_scene(SceneRef(new Level0())); 
 
     Graphics::set_blend_mode();
     Game::begin();

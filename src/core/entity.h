@@ -3,7 +3,7 @@
 #include <vector>
 #include <tinysdl.h>
 
-#include "../static/ref.h"
+#include <memory>
 
 namespace MicroNinja
 {
@@ -20,6 +20,6 @@ namespace MicroNinja
 
     };
 
-    typedef Ref::Unique<Entity> EntityRef;
+    typedef std::unique_ptr<Entity> EntityRef;
 
 } 
