@@ -1,7 +1,27 @@
 
-//#include "scene.h"
+#include <tinysdl.h>
 
-//using namespace MicroNinja;
+#include "entity.h"
+#include "scene.h"
+
+using namespace MicroNinja;
+using namespace TinySDL;
+
+
+Entity* Scene::add_entity(const IVec2& pos) {
+	auto& e = entities.emplace_back(new Entity(pos, this));
+	return e.get();
+}
+
+
+
+
+
+
+
+
+
+
 
 //void Scene::begin() {
 //    for(auto& entity: entities) 

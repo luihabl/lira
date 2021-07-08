@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <vector>
+#include <list>
 #include <tinysdl.h>
 
 #include "entity.h"
@@ -20,10 +20,14 @@ namespace MicroNinja {
 
             Game* game;
 
+            Entity* add_entity(const IVec2& pos = { 0, 0 });
+            
+
         protected:
-            std::vector<EntityRef> entities;
-            std::vector<ComponentRef> components;
+            std::list<EntityRef> entities;
+            std::list<ComponentRef> components;
     };
 
     typedef std::unique_ptr<Scene> SceneRef;
+
 }

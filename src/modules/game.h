@@ -36,7 +36,7 @@ namespace MicroNinja {
             Shader default_shader;
             Mat4x4 virtual_projection;
             Mat4x4 window_projection;
-            
+
             void move_to_scene(SceneRef & scene);
             void move_to_scene(SceneRef && scene);
 
