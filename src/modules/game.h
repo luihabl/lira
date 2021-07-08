@@ -37,8 +37,10 @@ namespace MicroNinja {
             Mat4x4 virtual_projection;
             Mat4x4 window_projection;
 
+            // Receives a unique pointer to a scene
+            void move_to_scene(SceneRef&& scene);
             void move_to_scene(SceneRef & scene);
-            void move_to_scene(SceneRef && scene);
+            
 
             void set_target_fps(float fps);
         

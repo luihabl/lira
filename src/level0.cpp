@@ -13,7 +13,7 @@ using namespace TinySDL;
 void Level0::begin() {
     // Add entities and components here...
 
-    auto e = add_entity({ 10, 2 });
+    auto* e = add_entity({ 10, 2 });
 
 }
 
