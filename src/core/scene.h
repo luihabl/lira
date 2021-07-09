@@ -35,7 +35,7 @@ namespace MicroNinja {
             virtual void render(BatchRenderer & renderer);
 
             
-            Entity* add_entity(const IVec2& pos = { 0, 0 });
+            Entity* add_entity(const IVec2& pos = { 0, 0 }, int layer = 0);
             
             template<typename T>
             T* add_component(T&& component, Entity * entity);
@@ -59,7 +59,39 @@ namespace MicroNinja {
     template <typename T>
     inline T* Scene::add_component(T&& component, Entity * entity) {
 
+        // T* c;
+        
+        // int entity_layer = entity->get_layer();
+        // std::list<ComponentRef>::iterator it = components.begin();
+        // for ( = ; it != components.end(); ++it) {
+
+        //     if (it == components.end()) {
+
+        //     }
+        // }
+
+        // do {
+
+        //     if (it == components.end()) {
+        //         Log::debug("asdasd");
+        //         c = (T*) components.emplace(it, ComponentRef(new T()))->get();
+        //         break;
+        //     }
+        //     else if (entity_layer > it->get()->get_layer())
+        //     {
+        //         c = (T*) components.emplace(it, ComponentRef(new T()))->get();
+        //         break;
+        //     }
+            
+        //     it++;
+        // } while (it != components.end());
+
+
         T* c = (T*) components.emplace_back(ComponentRef(new T())).get();
+
+
+
+
         *c = component;
 
         c->entity = entity;

@@ -18,17 +18,21 @@ namespace MicroNinja
         friend class Scene;
 
     public:
-        Entity(const IVec2& pos, Scene * s) : position(pos), scene(s) {};
+        Entity(const IVec2& pos, Scene * s, int layer = 0) : position(pos), scene(s), layer(layer) {};
 
         IVec2 position;
 
         bool is_active = true;
         bool is_visible = true;
         
+        
         template <typename T>
         T* add_component(T&& component = T());
 
+        int get_layer(){ return layer; }
+
     private:
+        int layer = 0;
         Scene* scene;
         std::vector<Component *> components;
     };
