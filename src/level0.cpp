@@ -25,9 +25,7 @@ void Level0::update() {
 
 }
 
-void Level0::render() {
-
-    auto& renderer = game->renderer;
+void Level0::render(BatchRenderer & renderer) {
 
     renderer.set_texture(Content::find_tex("tilesets/Game Boy GBC - Pokemon Gold Silver - Cinnabar Island"));
     renderer.draw_tex({ 0.0f, 0.0f, 16.0f, 16.0f }, { 20.0f, 0.0f, 16.0f, 16.0f }, 0.5f, false);

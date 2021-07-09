@@ -13,10 +13,9 @@ namespace MicroNinja {
 
     class Component {
 
-        bool active = true;
-        bool visible = true;
+        bool is_active = true;
+        bool is_visible = true;
 
-        Scene* scene;
         Entity* entity;
 
         virtual void begin() {};

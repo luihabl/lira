@@ -79,7 +79,7 @@ void Game::update() {
 }
 
 void Game::render() {
-    if(current_scene) current_scene->render();
+    if(current_scene) current_scene->render(renderer);
 }
 
 void Game::handle_events(SDL_Event & event) {

@@ -10,30 +10,48 @@
 using namespace TinySDL;
 
 namespace MicroNinja {
-    
+
+    // template <typename T>
+    // class RefType {
+    //     public:
+    //         template <typename A, typename... Types>
+    //         static std::unique_ptr<T> create(Types ... args) {
+    //             return std::unique_ptr<T>(new A(args...));
+    //         }
+
+    //         typedef std::unique_ptr<T> Ref;
+    // };
+
+
     class Game;
 
     class Scene {
+
+        friend class Game;
+
         public:
             virtual void begin() {};
             virtual void update() {};
-            virtual void render() {};
+            virtual void render(BatchRenderer & renderer) {};
 
-            Game* game;
+            
 
             Entity* add_entity(const IVec2& pos = { 0, 0 });
-            
-            template <typename T, typename... Types>
-            static std::unique_ptr<Scene> create(Types ... args) {
-                return std::unique_ptr<Scene>(new T(args...));
+
+            template <typename A, typename... Types>
+            static std::unique_ptr<Scene> create_ref(Types ... args) {
+                return std::unique_ptr<Scene>(new A(args...));
             }
-
-
+        
+        private:
+            Game* game;
+        
         protected:
             std::list<EntityRef> entities;
             std::list<ComponentRef> components;
     };
 
     typedef std::unique_ptr<Scene> SceneRef;
+
 
 }

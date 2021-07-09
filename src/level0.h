@@ -11,7 +11,7 @@ namespace MicroNinja {
 
 		void begin();
 		void update();
-		void render();
+		void render(BatchRenderer & renderer);
 
 	};
 }

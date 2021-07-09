@@ -11,7 +11,7 @@ void MicroNinjaGame::begin() {
 
     target = RenderTarget(width, height);
 
-    move_to_scene(Scene::create<Level0>());
+    move_to_scene(Scene::create_ref<Level0>());
 
     Graphics::set_blend_mode();
     Game::begin();
