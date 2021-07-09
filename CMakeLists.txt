@@ -17,7 +17,8 @@ src/main.cpp
  "src/assets/content.cpp" "src/microninja.cpp" "src/microninja.h" "src/level0.h" "src/level0.cpp")
 
 #find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS} lib/imgui)
+#include_directories(${SDL2_INCLUDE_DIRS} lib/imgui)
+include_directories(${SDL2_INCLUDE_DIRS})
 
 target_link_libraries(micro_ninja tinysdl)
 

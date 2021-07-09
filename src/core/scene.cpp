@@ -13,27 +13,23 @@ Entity* Scene::add_entity(const IVec2& pos) {
 	return e.get();
 }
 
+void Scene::begin() {
+   for(auto& component: components) 
+       component.get()->begin();
+}
 
+void Scene::update() {
+   for(const auto& c: components) {
+	   auto& component = *(c.get());
+	   if (component.is_active && component.entity->is_active)
+			component.update();
+   }      
+}
 
-
-
-
-
-
-
-
-
-//void Scene::begin() {
-//    for(auto& entity: entities) 
-//        entity->begin();
-//}
-//
-//void Scene::update() {
-//    for(auto& entity: entities) 
-//        entity->update();
-//}
-//
-//void Scene::render() {
-//    for(auto& entity: entities) 
-//        entity->render();
-//}
+void Scene::render(BatchRenderer & renderer) {
+   for(const auto& c: components) {
+	   auto& component = *(c.get());
+	   if (component.is_visible && component.entity->is_visible)
+			component.render(renderer);
+   }   
+}

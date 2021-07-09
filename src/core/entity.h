@@ -4,6 +4,7 @@
 #include <tinysdl.h>
 
 #include <memory>
+#include <utility>
 
 using namespace TinySDL;
 
@@ -36,8 +37,8 @@ namespace MicroNinja
 
 
     template <typename T>
-    T* add_component(T&& component) {
-
+    T* Entity::add_component(T&& component) {
+        return scene->add_component(std::forward<T>(component), this);
     }
 
 

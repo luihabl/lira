@@ -30,13 +30,17 @@ namespace MicroNinja {
         friend class Game;
 
         public:
-            virtual void begin() {};
-            virtual void update() {};
-            virtual void render(BatchRenderer & renderer) {};
+            virtual void begin();
+            virtual void update();
+            virtual void render(BatchRenderer & renderer);
 
             
-
             Entity* add_entity(const IVec2& pos = { 0, 0 });
+            
+            template<typename T>
+            T* add_component(T&& component, Entity * entity);
+
+
 
             template <typename A, typename... Types>
             static std::unique_ptr<Scene> create_ref(Types ... args) {
@@ -45,13 +49,23 @@ namespace MicroNinja {
         
         private:
             Game* game;
-        
-        protected:
             std::list<EntityRef> entities;
             std::list<ComponentRef> components;
     };
 
     typedef std::unique_ptr<Scene> SceneRef;
 
+
+    template <typename T>
+    inline T* Scene::add_component(T&& component, Entity * entity) {
+
+        T* c = (T*) components.emplace_back(ComponentRef(new T())).get();
+        *c = component;
+
+        c->entity = entity;
+        entity->components.push_back(c);
+        
+        return c;
+    }
 
 }

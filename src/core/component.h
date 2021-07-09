@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <tinysdl.h>
+#include "entity.h"
 
 using namespace TinySDL;
 
@@ -13,6 +14,10 @@ namespace MicroNinja {
 
     class Component {
 
+        friend class Scene;
+        friend class Entity;
+
+    public:
         bool is_active = true;
         bool is_visible = true;
 
@@ -20,7 +25,7 @@ namespace MicroNinja {
 
         virtual void begin() {};
         virtual void update() {};
-        virtual void render() {};
+        virtual void render(BatchRenderer & renderer) {};
 
     };
 
