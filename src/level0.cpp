@@ -17,7 +17,7 @@ void Level0::begin() {
     auto* e1 = add_entity({ 0, 0 }, -10);
     auto* c = e1->add_component(SimpleSprite(Content::find_tex("tilesets/Game Boy GBC - Pokemon Gold Silver - Cinnabar Island")));
 
-    auto* e2 = add_entity({ 50, 40 }, -1);
+    auto* e2 = add_entity({ 40, 40 }, -1);
     e2->add_component(SimpleSprite(Content::find_tex("sprites/dude_transparent")));
 
     auto* e3 = add_entity({ 50, 120 });
@@ -26,7 +26,7 @@ void Level0::begin() {
     auto* e4 = add_entity({ 50, 130 },  2);
     e4->add_component(SimpleSprite(Content::find_tex("sprites/dude_transparent")));
 
-    destroy_entity(e2);
+    queue_remove(c);
 
     Scene::begin();
 }

@@ -31,17 +31,15 @@ namespace MicroNinja {
             template<typename T>
             T* add_component(T&& component, Entity * entity);
 
-            void destroy_entity(Entity * entity);
-            void destroy_component(Component * component, Entity * entity);
+            //Queue component destruction for end of frame
+            void queue_remove(Component* component);
 
-            template <typename A, typename... Types>
-            static std::unique_ptr<Scene> create_ref(Types ... args) {
-                return std::unique_ptr<Scene>(new A(args...));
-            }
-        
+            //Queue entity destruction for end of frame
+            void queue_remove(Entity* entity);
+            
         private:
             Game* game;
-            
+
             template <typename T>
             struct LayerComparator {
                 bool operator()(const T & a, const T & b) const {
@@ -61,6 +59,15 @@ namespace MicroNinja {
 
             template <typename T>
             const std::unique_ptr<T>* find_ref(LayerSet<T>& mset, T* value);
+
+            std::vector<Component*> components_to_remove;
+            std::vector<Entity*> entities_to_remove;
+
+            //Immediately destroys entity
+            void destroy_entity(Entity* entity);
+
+            //Immediately destroys component
+            void destroy_component(Component* component, Entity* entity);
 
     };
 

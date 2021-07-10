@@ -27,7 +27,9 @@ namespace MicroNinja {
 
         void update() {
             
-
+            if (entity->position[0] == 40) {
+                entity->destroy();
+            }
 
         }
     };

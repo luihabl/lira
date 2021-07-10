@@ -10,10 +10,7 @@ using namespace TinySDL;
 
 
 Entity* Scene::add_entity(const IVec2& pos, int layer) {
-
-	EntityRef new_entity{ new Entity(pos, this, layer) };
-
-	auto& e = entities.insert(std::move(new_entity));
+	auto& e = entities.insert(EntityRef(new Entity(pos, this, layer)));
 	return e->get();
 }
 
@@ -27,7 +24,17 @@ void Scene::update() {
 	   auto& component = *(c.get());
 	   if (component.is_active && component.entity->is_active)
 			component.update();
-   }      
+   }
+
+   for (auto& c : components_to_remove) 
+	   destroy_component(c, c->entity);
+   
+   for (auto& e : entities_to_remove) 
+	   destroy_entity(e);
+ 
+   components_to_remove.clear();
+   entities_to_remove.clear();
+
 }
 
 void Scene::render(BatchRenderer & renderer) {
@@ -38,6 +45,14 @@ void Scene::render(BatchRenderer & renderer) {
    }   
 }
 
+void Scene::queue_remove(Component* component) {
+	components_to_remove.push_back(component);
+}
+
+void Scene::queue_remove(Entity* entity) {
+	entities_to_remove.push_back(entity);
+}
+
 void Scene::destroy_entity(Entity * entity) {
 
 	auto& c_list = entity->components;
@@ -46,6 +61,7 @@ void Scene::destroy_entity(Entity * entity) {
 		destroy_component(c_list[i], entity);
 
 	entities.erase(*find_ref(entities, entity));
+	entity = nullptr;
 }
 
 
@@ -63,3 +79,4 @@ void Scene::destroy_component(Component * component, Entity * entity) {
 	//Transfer this to cache instead of deleting?
 	components.erase(*find_ref(components, component));
 }
+

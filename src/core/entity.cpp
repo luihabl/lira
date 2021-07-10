@@ -4,5 +4,5 @@
 using namespace MicroNinja;
 
 void Entity::destroy() { 
-    scene->destroy_entity(this); 
+    scene->queue_remove(this); 
 }
