@@ -14,11 +14,17 @@ using namespace TinySDL;
 void Level0::begin() {
     // Add entities and components here...
 
-    auto* e = add_entity({ 0, 0 });
-    e->add_component(SimpleSprite(Content::find_tex("tilesets/Game Boy GBC - Pokemon Gold Silver - Cinnabar Island")));
+    auto* e1 = add_entity({ 0, 0 }, -10);
+    e1->add_component(SimpleSprite(Content::find_tex("tilesets/Game Boy GBC - Pokemon Gold Silver - Cinnabar Island")));
 
-    auto* e2 = add_entity({ 50, 40 });
+    auto* e2 = add_entity({ 50, 40 }, -1);
     e2->add_component(SimpleSprite(Content::find_tex("sprites/dude_transparent")));
+
+    auto* e3 = add_entity({ 50, 120 });
+    e3->add_component(SimpleSprite(Content::find_tex("sprites/dude_transparent")));
+
+    auto* e4 = add_entity({ 50, 130 },  2);
+    e4->add_component(SimpleSprite(Content::find_tex("sprites/dude_transparent")));
 
     Scene::begin();
 }

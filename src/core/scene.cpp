@@ -1,21 +1,22 @@
 
 #include <tinysdl.h>
 
-#include "entity.h"
 #include "scene.h"
+#include "entity.h"
+#include "component.h"
 
 using namespace MicroNinja;
 using namespace TinySDL;
 
 
 Entity* Scene::add_entity(const IVec2& pos, int layer) {
-	auto& e = entities.emplace_back(new Entity(pos, this, layer));
-	return e.get();
+	entities.emplace_back(new Entity(pos, this, layer));
+	return entities.back().get();
 }
 
 void Scene::begin() {
-   for(auto& component: components) 
-       component.get()->begin();
+   for(auto& c: components) 
+       c.get()->begin();
 }
 
 void Scene::update() {
@@ -32,4 +33,17 @@ void Scene::render(BatchRenderer & renderer) {
 	   if (component.is_visible && component.entity->is_visible)
 			component.render(renderer);
    }   
+}
+
+void Scene::destroy_entity(Entity * entity) {
+
+
+
+}
+
+
+void Scene::destroy_component(Component * component) {
+
+
+
 }

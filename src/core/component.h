@@ -1,9 +1,7 @@
 #pragma once
 
 #include <memory>
-
 #include <tinysdl.h>
-#include "entity.h"
 
 using namespace TinySDL;
 
@@ -27,7 +25,7 @@ namespace MicroNinja {
         virtual void update() {};
         virtual void render(BatchRenderer & renderer) {};
 
-        int get_layer() { return entity->get_layer(); }
+        int get_layer();
 
     };
 

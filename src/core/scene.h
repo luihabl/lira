@@ -1,8 +1,10 @@
 #pragma once 
 
 #include <list>
-#include <tinysdl.h>
+#include <set>
 #include <memory>
+
+#include <tinysdl.h>
 
 #include "entity.h"
 #include "component.h"
@@ -11,19 +13,9 @@ using namespace TinySDL;
 
 namespace MicroNinja {
 
-    // template <typename T>
-    // class RefType {
-    //     public:
-    //         template <typename A, typename... Types>
-    //         static std::unique_ptr<T> create(Types ... args) {
-    //             return std::unique_ptr<T>(new A(args...));
-    //         }
-
-    //         typedef std::unique_ptr<T> Ref;
-    // };
-
-
     class Game;
+    class Entity;
+    class Component;
 
     class Scene {
 
@@ -40,7 +32,8 @@ namespace MicroNinja {
             template<typename T>
             T* add_component(T&& component, Entity * entity);
 
-
+            void destroy_entity(Entity * entity);
+            void destroy_component(Component * component);
 
             template <typename A, typename... Types>
             static std::unique_ptr<Scene> create_ref(Types ... args) {
@@ -50,7 +43,19 @@ namespace MicroNinja {
         private:
             Game* game;
             std::list<EntityRef> entities;
-            std::list<ComponentRef> components;
+
+            struct LayerComparison {
+                bool operator()(const ComponentRef & a, const ComponentRef & b) const {
+                    return a->get_layer() < b->get_layer();
+                } 
+            };
+
+            // Note: 
+            // multiset is used here to keep the layers ordered,
+            // however this is not necesseraly the fastest way to do it. 
+            // Maybe this will change in the future.
+            std::multiset<ComponentRef, LayerComparison> components;
+
     };
 
     typedef std::unique_ptr<Scene> SceneRef;
@@ -59,42 +64,12 @@ namespace MicroNinja {
     template <typename T>
     inline T* Scene::add_component(T&& component, Entity * entity) {
 
-        // T* c;
-        
-        // int entity_layer = entity->get_layer();
-        // std::list<ComponentRef>::iterator it = components.begin();
-        // for ( = ; it != components.end(); ++it) {
-
-        //     if (it == components.end()) {
-
-        //     }
-        // }
-
-        // do {
-
-        //     if (it == components.end()) {
-        //         Log::debug("asdasd");
-        //         c = (T*) components.emplace(it, ComponentRef(new T()))->get();
-        //         break;
-        //     }
-        //     else if (entity_layer > it->get()->get_layer())
-        //     {
-        //         c = (T*) components.emplace(it, ComponentRef(new T()))->get();
-        //         break;
-        //     }
-            
-        //     it++;
-        // } while (it != components.end());
-
-
-        T* c = (T*) components.emplace_back(ComponentRef(new T())).get();
-
-
-
-
+        ComponentRef new_component{new T()};
+        T* c = (T*) new_component.get();
         *c = component;
-
         c->entity = entity;
+
+        auto & c_it = components.insert(std::move(new_component));
         entity->components.push_back(c);
         
         return c;

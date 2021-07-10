@@ -1,10 +1,10 @@
 #pragma once 
 
-#include <vector>
-#include <tinysdl.h>
-
 #include <memory>
 #include <utility>
+#include <vector>
+
+#include <tinysdl.h>
 
 using namespace TinySDL;
 
@@ -25,11 +25,13 @@ namespace MicroNinja
         bool is_active = true;
         bool is_visible = true;
         
-        
         template <typename T>
         T* add_component(T&& component = T());
 
         int get_layer(){ return layer; }
+
+        void destroy();
+
 
     private:
         int layer = 0;
