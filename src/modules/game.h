@@ -8,7 +8,6 @@
 #include "../assets/content.h"
 
 namespace chr = std::chrono;
-using namespace TinySDL;
 
 namespace MicroNinja {
 
@@ -32,10 +31,10 @@ namespace MicroNinja {
 
             Content content;
 
-            BatchRenderer renderer;
-            Shader default_shader;
-            Mat4x4 virtual_projection;
-            Mat4x4 window_projection;
+            TinySDL::BatchRenderer renderer;
+            TinySDL::Shader default_shader;
+            TinySDL::Mat4x4 virtual_projection;
+            TinySDL::Mat4x4 window_projection;
 
             // Receives a unique pointer to a scene
             void move_to_scene(SceneRef&& scene);

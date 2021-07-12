@@ -3,8 +3,6 @@
 #include <memory>
 #include <tinysdl.h>
 
-using namespace TinySDL;
-
 namespace MicroNinja {
 
     class Scene;
@@ -23,7 +21,7 @@ namespace MicroNinja {
 
         virtual void begin() {};
         virtual void update() {};
-        virtual void render(BatchRenderer & renderer) {};
+        virtual void render(TinySDL::BatchRenderer & renderer) {};
 
         int get_layer();
 

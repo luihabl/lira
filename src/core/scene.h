@@ -8,8 +8,6 @@
 #include "entity.h"
 #include "component.h"
 
-using namespace TinySDL;
-
 namespace MicroNinja {
 
     class Game;
@@ -23,10 +21,10 @@ namespace MicroNinja {
         public:
             virtual void begin();
             virtual void update();
-            virtual void render(BatchRenderer & renderer);
+            virtual void render(TinySDL::BatchRenderer & renderer);
 
             
-            Entity* add_entity(const IVec2& pos = { 0, 0 }, int layer = 0);
+            Entity* add_entity(const TinySDL::IVec2& pos = { 0, 0 }, int layer = 0);
             
             template<typename T>
             T* add_component(T&& component, Entity * entity);
@@ -92,7 +90,9 @@ namespace MicroNinja {
     const std::unique_ptr<T>* Scene::find_ref(LayerSet<T>& mset, T* value) {
         for (auto& v : mset) 
             if (v.get() == value) 
-                return &v;   
+                return &v;
+        
+        return nullptr;
     }
 
 }

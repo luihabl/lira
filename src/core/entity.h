@@ -6,8 +6,6 @@
 
 #include <tinysdl.h>
 
-using namespace TinySDL;
-
 namespace MicroNinja
 {
     class Scene;
@@ -18,9 +16,9 @@ namespace MicroNinja
         friend class Scene;
 
     public:
-        Entity(const IVec2& pos, Scene * s, int layer = 0) : position(pos), scene(s), layer(layer) {};
+        Entity(const TinySDL::IVec2& pos, Scene * s, int layer = 0) : position(pos), scene(s), layer(layer) {};
 
-        IVec2 position;
+        TinySDL::IVec2 position;
 
         bool is_active = true;
         bool is_visible = true;

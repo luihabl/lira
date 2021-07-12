@@ -6,8 +6,6 @@
 
 #include <unordered_map>
 
-using namespace TinySDL;
-
 namespace MicroNinja {
 
 	class Content {
@@ -19,7 +17,7 @@ namespace MicroNinja {
 		void set_folder_name(const std::string& name);
 		void load_all();
 		
-		static Texture* find_tex(const std::string& name);
+		static TinySDL::Texture* find_tex(const std::string& name);
 		
 	};
 }
