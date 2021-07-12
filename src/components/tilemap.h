@@ -22,10 +22,10 @@ namespace MicroNinja {
     private: 
         
         std::vector<TinySDL::TexRegion> cells;
-        int tile_w = 0;
-        int tile_h = 0;
-        int columns = 0;
-        int rows = 0;
+        int tw = 0;
+        int th = 0;
+        int nx = 0;
+        int ny = 0;
 
     };
 

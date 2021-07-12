@@ -17,7 +17,7 @@ namespace MicroNinja {
 		void set_folder_name(const std::string& name);
 		void load_all();
 		
-		static TinySDL::Texture* find_tex(const std::string& name);
-		
+		template <typename T>
+		static T* find(const std::string& name);
 	};
 }

@@ -1,11 +1,11 @@
-#include <tinysdl.h>
-#include <unordered_map>
-#include <filesystem> 
-#include <any>
-
 #include "content.h"
 
+#include <tinysdl.h>
+#include "ldtk.h"
+
 #include <iostream>
+#include <unordered_map>
+#include <filesystem> 
 
 using namespace TinySDL;
 using namespace MicroNinja;
@@ -13,7 +13,15 @@ using namespace MicroNinja;
 namespace fs = std::filesystem;
 
 namespace {
-	std::unordered_map<std::string, Texture> textures;
+
+	template <typename T>
+	std::unordered_map<std::string, T> assets;
+
+	template <typename T>
+	void set_asset(std::string key, const T & asset) {
+		assets<T>[key] = asset;
+	}
+
 }
 
 void Content::set_folder_name(const std::string & name) {
@@ -51,9 +59,12 @@ void Content::load_all() {
 			std::string key_name = file_path.generic_string();
 			std::replace(key_name.begin(), key_name.end(), '\\', '/');
 
-			
 			if (extension == ".png") {
-				textures[key_name] = Texture::from_file(item.path().generic_string().c_str());
+				set_asset<Texture>(key_name, Texture::from_file(item.path().generic_string().c_str()));
+			}
+
+			if (extension == ".ldtk") {
+				set_asset<LDTk::File>(key_name, nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())));
 			}
 				
 
@@ -61,7 +72,12 @@ void Content::load_all() {
 	}
 }
 
-Texture* Content::find_tex(const std::string& name) {
-	return &(textures.at(name));
+
+template <typename T>
+T* Content::find(const std::string& name) {
+	return &(assets<T>[name]);
 }
+
+template Texture* Content::find<Texture>(const std::string& name);
+template LDTk::File* Content::find<LDTk::File>(const std::string& name);
 
