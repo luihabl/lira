@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.11)
 project(micro_ninja)
 
-include(FetchContent)
-set(FETCHCONTENT_QUIET OFF)
-
 # C++ version
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(lib/tinysdl)
+add_subdirectory(lib/json)
 # add_subdirectory(lib/imgui)
 
 add_executable(micro_ninja 
@@ -27,15 +25,6 @@ src/main.cpp
  "src/level0.cpp"
  "src/components/tilemap.cpp"
  )
-
-
-FetchContent_Declare(json
-    GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent.git
-)
-FetchContent_GetProperties(json)
-if(NOT json_POPULATED)
-  FetchContent_MakeAvailable(json)
-endif()
 
 
 #find_package(SDL2 REQUIRED)
