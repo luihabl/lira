@@ -14,12 +14,18 @@ namespace fs = std::filesystem;
 
 namespace {
 
-	template <typename T>
-	std::unordered_map<std::string, T> assets;
+	fs::path content_path = "";
 
 	template <typename T>
-	void set_asset(std::string key, const T & asset) {
-		assets<T>[key] = asset;
+	std::unordered_map<std::string, Content::Asset<T>> assets;
+
+	template <typename T>
+	void add_asset(std::string key, fs::path file_name, fs::path folder, const T & asset) {
+		assets<T>[key] = {
+			asset,
+			file_name,
+			folder
+		};
 	}
 
 }
@@ -49,7 +55,10 @@ fs::path Content::find_path() {
 
 void Content::load_all() {
 
-	auto content_path = find_path();
+	content_path = find_path();
+
+	Log::info("Content path: %s", content_path.generic_string().c_str());
+
 	for (auto& item : fs::recursive_directory_iterator(content_path)) {
 		if (item.is_regular_file()) {
 			fs::path file_path = fs::relative(item.path(), content_path);
@@ -60,11 +69,11 @@ void Content::load_all() {
 			std::replace(key_name.begin(), key_name.end(), '\\', '/');
 
 			if (extension == ".png") {
-				set_asset<Texture>(key_name, Texture::from_file(item.path().generic_string().c_str()));
+				add_asset<Texture>(key_name, item.path().filename(), item.path().parent_path(), Texture::from_file(item.path().generic_string().c_str()));
 			}
 
 			if (extension == ".ldtk") {
-				set_asset<LDTk::File>(key_name, nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())));
+				add_asset<LDTk::File>(key_name, item.path().filename(), item.path().parent_path(), nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())));
 			}
 				
 
@@ -72,12 +81,22 @@ void Content::load_all() {
 	}
 }
 
+std::filesystem::path Content::get_content_path() {
+	return content_path;
+}
 
 template <typename T>
 T* Content::find(const std::string& name) {
-	return &(assets<T>[name]);
+	return &(assets<T>[name].data);
+}
+
+template <typename T>
+std::filesystem::path Content::file_folder(const std::string& name) {
+	return assets<T>[name].folder;
 }
 
 template Texture* Content::find<Texture>(const std::string& name);
 template LDTk::File* Content::find<LDTk::File>(const std::string& name);
 
+template std::filesystem::path Content::file_folder<Texture>(const std::string& name);
+template std::filesystem::path Content::file_folder<LDTk::File>(const std::string& name);

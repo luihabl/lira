@@ -23,6 +23,7 @@ src/main.cpp
  "src/microninja.h" 
  "src/level0.h" 
  "src/level0.cpp"
+ "src/composer.cpp"
  "src/components/tilemap.cpp"
  )
 

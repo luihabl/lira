@@ -19,5 +19,19 @@ namespace MicroNinja {
 		
 		template <typename T>
 		static T* find(const std::string& name);
+		
+		template <typename T>
+		static std::filesystem::path file_folder(const std::string& name);
+
+		static std::filesystem::path get_content_path();
+	
+	private:
+		template <typename T>
+		struct Asset {
+			T data;
+			std::filesystem::path file_name;
+			std::filesystem::path folder;
+		};
+	
 	};
 }
