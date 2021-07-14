@@ -5,6 +5,7 @@
 #include "assets/tileset.h"
 
 #include "components/tilemap.h"
+#include "components/simple_sprite.h"
 
 #include <filesystem>
 
@@ -41,6 +42,14 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
 
     auto * component = entity->add_component(TileMap(level_w, level_h, grid_size, grid_size));
     component->set_cells(tileset, cx, cy, t);
+
+    return entity;
+}
+
+
+Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL::IVec2 & position, const int layer) {
+    auto* entity = scene->add_entity(position, layer);
+    entity->add_component(SimpleSprite(Content::find<Texture>(name)));
 
     return entity;
 }

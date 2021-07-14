@@ -11,6 +11,7 @@
 namespace MicroNinja::Composer { 
 
     Entity * create_map(Scene * scene, std::string name, const TinySDL::IVec2 & position, const int layer = 0);
+    Entity * create_player(Scene * scene, std::string name, const TinySDL::IVec2 & position, const int layer = 0);
 
 
 }
