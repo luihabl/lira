@@ -2,6 +2,7 @@
 
 #include <tinysdl.h>
 #include "../core/component.h"
+#include "../input/input.h"
 
 using namespace TinySDL;
 
@@ -27,10 +28,8 @@ namespace MicroNinja {
 
         void update() {
             
-            if (entity->position[0] == 40) {
-                entity->destroy();
-            }
-
+            if (Input::just_pressed(Key::Right))
+                entity->position[0] += 5;
         }
     };
 

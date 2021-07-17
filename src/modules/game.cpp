@@ -4,6 +4,7 @@
 #include <thread>
 #include <utility>
 
+#include "../input/input.h"
 #include "game.h"
 
 namespace chr = std::chrono;
@@ -46,6 +47,9 @@ void Game::run() {
 
     SDL_Event event; 
     while(!quit_game) {
+
+        Input::update();
+
         while (SDL_PollEvent(&event) != 0) handle_events(event);
 
         // Changing scenes
