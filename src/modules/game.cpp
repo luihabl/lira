@@ -23,14 +23,15 @@ Game::Game(int res_width, int res_height, int win_width, int win_height, const c
     window_width = win_width;
     window_height = win_height;
 
-    Window::init(title, window_width, window_height, 
-                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-                 SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL, false);
+    Window::init(title, window_width, window_height);
 
     virtual_projection = LinAlg::ortho(0, (float) width, (float) height, 0, -1, 1);
     window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1); 
 
     set_target_fps(default_fps);
+
+    input_handler.on_quit = [this](){quit();};
+    input_handler.on_window_resize = [this](int w, int h){set_window_projection(w, h);};
 }
 
 void Game::run() {   
@@ -45,12 +46,9 @@ void Game::run() {
     auto next_frame = chr::system_clock::now();
     auto last_frame = next_frame - frame_duration;
 
-    SDL_Event event; 
     while(!quit_game) {
 
-        Input::update();
-
-        while (SDL_PollEvent(&event) != 0) handle_events(event);
+        Input::update(input_handler);
 
         // Changing scenes
         if(next_scene != nullptr && next_scene != current_scene) {
@@ -86,19 +84,29 @@ void Game::render() {
     if(current_scene) current_scene->render(renderer);
 }
 
-void Game::handle_events(SDL_Event & event) {
-
-    if (event.type == SDL_WINDOWEVENT) {
-        if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-            Window::get_drawable_size(&window_width, &window_height);
-            window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1);                   
-        }
-    }
-
-    if (event.type == SDL_QUIT) {
-        quit_game = true;
-    }      
+void Game::quit() {
+    quit_game = true;
 }
+
+void Game::set_window_projection(int window_w, int window_h) {
+    window_width = window_w;
+    window_height = window_h;
+    window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1);
+}
+
+// void Game::handle_events(SDL_Event & event) {
+
+//     if (event.type == SDL_WINDOWEVENT) {
+//         if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+//             Window::get_drawable_size(&window_width, &window_height);
+//             window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1);                   
+//         }
+//     }
+
+//     if (event.type == SDL_QUIT) {
+//         quit();
+//     }      
+// }
 
 void Game::move_to_scene(SceneRef & scene) {
     next_scene = std::move(scene);

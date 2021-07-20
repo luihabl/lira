@@ -28,7 +28,7 @@ namespace MicroNinja {
 
         void update() {
             
-            if (Input::just_pressed(Key::Right))
+            if (Input::just_pressed(Key::Right) || Input::released(Key::Right))
                 entity->position[0] += 5;
         }
     };

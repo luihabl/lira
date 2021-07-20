@@ -4,6 +4,7 @@
 #include <chrono>
 #include <tinysdl.h>
 
+#include "../input/input.h"
 #include "../core/scene.h"
 #include "../assets/content.h"
 
@@ -20,6 +21,7 @@ namespace MicroNinja {
             Game(int res_width, int res_height, int win_width, int win_height, const char * title);
 
             void run();
+            void quit();
 
             std::string window_title;
 
@@ -54,7 +56,9 @@ namespace MicroNinja {
             virtual void render();
 
             //Called every frame to handle SDL events
-            virtual void handle_events(SDL_Event & event);
+            InputHandler input_handler;
+
+            void set_window_projection(int window_w, int window_h);
 
         private: 
             void set_current_scene(SceneRef & scene);

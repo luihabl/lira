@@ -8,17 +8,36 @@
 #include <memory>
 
 using namespace MicroNinja;
-
+using namespace TinySDL;
 
 namespace {
     int n_keys = 512;
-    const uint8_t * current_keyboard_state = SDL_GetKeyboardState(&n_keys);
-    std::unique_ptr<uint8_t[]> previous_keyboard_state(new uint8_t[n_keys]);
+    const bool * current_keyboard_state = (bool*) SDL_GetKeyboardState(&n_keys);
+    std::unique_ptr<bool[]> previous_keyboard_state(new bool[n_keys]);
 }
 
-void Input::update() {
+void Input::update(InputHandler & handler) {
     std::memcpy(previous_keyboard_state.get(), current_keyboard_state, sizeof(uint8_t) * n_keys);
-    SDL_PumpEvents();
+
+    SDL_Event event;
+    while (SDL_PollEvent(&event) != 0) {
+
+        if (event.type == SDL_WINDOWEVENT) {
+            if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                int w, h;
+
+                Window::get_drawable_size(&w, &h);
+                handler.on_window_resize(w, h);
+            }
+        }
+
+        if (event.type == SDL_QUIT) {
+            handler.on_quit();
+        }      
+
+
+
+    }
 }
 
 bool Input::pressed(Key k) {
