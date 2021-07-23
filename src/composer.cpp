@@ -6,6 +6,7 @@
 
 #include "components/tilemap.h"
 #include "components/simple_sprite.h"
+#include "components/ball.h"
 
 #include <filesystem>
 
@@ -50,6 +51,13 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
 Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL::IVec2 & position, const int layer) {
     auto* entity = scene->add_entity(position, layer);
     entity->add_component(SimpleSprite(Content::find<Texture>(name)));
+
+    return entity;
+}
+
+Entity * Composer::create_ball(Scene * scene, const TinySDL::IVec2 & position) {
+    auto* entity = scene->add_entity(position, 0);
+    entity->add_component(Ball());
 
     return entity;
 }

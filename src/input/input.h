@@ -1,6 +1,9 @@
 #pragma once
 
 #include "keys.h"
+
+#include <tinysdl.h>
+
 #include <functional>
 
 namespace MicroNinja
@@ -20,6 +23,9 @@ namespace MicroNinja
         bool pressed(Key k);
         bool released(Key k);
 
+        TinySDL::IVec2 get_mouse_window_pos();
+        TinySDL::IVec2 get_mouse_global_pos();
+        
         void update(InputHandler & handler);
     }
 } 

@@ -94,20 +94,6 @@ void Game::set_window_projection(int window_w, int window_h) {
     window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1);
 }
 
-// void Game::handle_events(SDL_Event & event) {
-
-//     if (event.type == SDL_WINDOWEVENT) {
-//         if(event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-//             Window::get_drawable_size(&window_width, &window_height);
-//             window_projection = LinAlg::ortho(0, (float) window_width, (float) window_height, 0, -1, 1);                   
-//         }
-//     }
-
-//     if (event.type == SDL_QUIT) {
-//         quit();
-//     }      
-// }
-
 void Game::move_to_scene(SceneRef & scene) {
     next_scene = std::move(scene);
 }
