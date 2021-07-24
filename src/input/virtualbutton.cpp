@@ -4,6 +4,19 @@
 
 using namespace MicroNinja;
 
+VirtualButton::~VirtualButton(){
+    if(registered) Input::unregister_button(this);
+}
+
+VirtualButton & VirtualButton::register_input() {
+
+    if(!registered) {
+        registered = true;
+        Input::register_button(this);
+    }
+
+    return *this;
+}
 
 VirtualButton & VirtualButton::add(Key key) {
     nodes.push_back(key);

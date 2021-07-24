@@ -10,6 +10,7 @@
 #include <cstring>
 #include <memory>
 #include <vector>
+#include <list>
 
 using namespace MicroNinja;
 using namespace TinySDL;
@@ -24,6 +25,8 @@ namespace {
 
     IVec2 window_size = IVec2::zeros;
     IVec2 window_position = IVec2::zeros;
+
+    std::list<VirtualButton *> registered_buttons;
 }
 
 void Input::update(InputHandler & handler) {
@@ -49,6 +52,10 @@ void Input::update(InputHandler & handler) {
             handler.on_quit();
         }      
     }
+
+    for (auto & b : registered_buttons) {
+        b->update();
+    }
 }
 
 bool Input::pressed(Key k) {
@@ -69,4 +76,12 @@ IVec2 Input::get_mouse_window_pos() {
 
 IVec2 Input::get_mouse_global_pos() {
     return mouse_global_position;
+}
+
+void Input::register_button(VirtualButton * button) {
+    registered_buttons.emplace_back(button);
+}
+
+void Input::unregister_button(VirtualButton * button) {
+    registered_buttons.remove(button);
 }

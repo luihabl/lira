@@ -11,6 +11,9 @@ namespace MicroNinja {
         public:
             VirtualButton() = default;
             VirtualButton & add(Key key);
+            VirtualButton & register_input();
+            ~VirtualButton();
+
 
             void update();
 
@@ -18,16 +21,6 @@ namespace MicroNinja {
             bool just_pressed(){return _just_pressed;}
             bool released(){return _released;}
 
-
-            struct Group {
-
-                Group() = default;
-                Group(const std::vector<VirtualButton *> & b) : buttons(b){}
-                std::vector<VirtualButton *> buttons;
-                void update(){for(auto & b : buttons) b->update();}
-            };
-        
-        
         private:
 
             struct KeyNode {
@@ -43,5 +36,8 @@ namespace MicroNinja {
             bool _pressed = false;
             bool _just_pressed = false;
             bool _released = false;
+
+            bool registered = false;
+    
     };
 }

@@ -20,16 +20,25 @@ namespace MicroNinja {
         SimpleSprite(Texture * tex): tex(tex) {}
 
         VirtualButton right, left, up, down;
-        VirtualButton::Group buttons;
 
         void begin() override {
 
-            right = VirtualButton().add(Key::Right).add(Key::D);
-            left =  VirtualButton().add(Key::Left).add(Key::A);
-            up = VirtualButton().add(Key::Up).add(Key::W);
-            down = VirtualButton().add(Key::Down).add(Key::S);
+            right.add(Key::Right)
+                 .add(Key::D)
+                 .register_input();
 
-            buttons = VirtualButton::Group({&right, &left, &up, &down});
+            left.add(Key::Left)
+                .add(Key::A)
+                .register_input();
+           
+            up.add(Key::Up)
+                .add(Key::W)
+                .register_input();
+
+            down.add(Key::Down)
+                .add(Key::S)
+                .register_input();
+
         }
 
         void render(BatchRenderer & renderer) override {
@@ -40,7 +49,7 @@ namespace MicroNinja {
 
 
         void update() {
-            buttons.update();
+
             if (right.just_pressed() || right.released())
                 entity->position[0] += 5;
         }

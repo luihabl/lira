@@ -16,6 +16,7 @@ namespace MicroNinja
 
     };
 
+    class VirtualButton;
 
     namespace Input {
 
@@ -26,6 +27,9 @@ namespace MicroNinja
         TinySDL::IVec2 get_mouse_window_pos();
         TinySDL::IVec2 get_mouse_global_pos();
         
+        void register_button(VirtualButton * button);
+        void unregister_button(VirtualButton * button);
+
         void update(InputHandler & handler);
     }
 } 
