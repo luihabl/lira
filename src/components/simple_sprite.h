@@ -2,7 +2,7 @@
 
 #include <tinysdl.h>
 #include "../core/component.h"
-#include "../input/input.h"
+#include "../input/virtualbutton.h"
 
 using namespace TinySDL;
 
@@ -19,6 +19,19 @@ namespace MicroNinja {
         SimpleSprite() = default;
         SimpleSprite(Texture * tex): tex(tex) {}
 
+        VirtualButton right, left, up, down;
+        VirtualButton::Group buttons;
+
+        void begin() override {
+
+            right = VirtualButton().add(Key::Right).add(Key::D);
+            left =  VirtualButton().add(Key::Left).add(Key::A);
+            up = VirtualButton().add(Key::Up).add(Key::W);
+            down = VirtualButton().add(Key::Down).add(Key::S);
+
+            buttons = VirtualButton::Group({&right, &left, &up, &down});
+        }
+
         void render(BatchRenderer & renderer) override {
 
             renderer.set_texture(tex);
@@ -27,8 +40,8 @@ namespace MicroNinja {
 
 
         void update() {
-            
-            if (Input::just_pressed(Key::Right) || Input::released(Key::Right))
+            buttons.update();
+            if (right.just_pressed() || right.released())
                 entity->position[0] += 5;
         }
     };

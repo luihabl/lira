@@ -2,20 +2,22 @@
 #include "keys.h"
 
 #include "../modules/game.h"
+#include "virtualbutton.h"
 
 #include <tinysdl.h>
 
 #include <SDL.h>
 #include <cstring>
 #include <memory>
+#include <vector>
 
 using namespace MicroNinja;
 using namespace TinySDL;
 
 namespace {
     int n_keys = 512;
-    bool * current_keyboard_state = (bool*) SDL_GetKeyboardState(&n_keys);
-    std::unique_ptr<bool[]> previous_keyboard_state(new bool[n_keys]);
+    uint8_t * current_keyboard_state = (uint8_t*) SDL_GetKeyboardState(&n_keys);
+    std::vector<uint8_t> previous_keyboard_state(n_keys);
 
     IVec2 mouse_global_position = IVec2::zeros;
     IVec2 mouse_window_position = IVec2::zeros;
@@ -25,7 +27,7 @@ namespace {
 }
 
 void Input::update(InputHandler & handler) {
-    std::memcpy(previous_keyboard_state.get(), current_keyboard_state, sizeof(uint8_t) * n_keys);
+    std::memcpy(&(previous_keyboard_state[0]), current_keyboard_state, sizeof(uint8_t) * n_keys);
 
     SDL_GetWindowPosition(Window::get_window(), &window_position[0], &window_position[1]); 
     SDL_GetGlobalMouseState(&mouse_global_position[0], &mouse_global_position[1]);
@@ -54,11 +56,11 @@ bool Input::pressed(Key k) {
 }
 
 bool Input::just_pressed(Key k) {
-    return current_keyboard_state[(int) k] && !previous_keyboard_state.get()[(int) k];
+    return current_keyboard_state[(int) k] && !previous_keyboard_state[(int) k];
 }
 
 bool Input::released(Key k) {
-    return !current_keyboard_state[(int) k] && previous_keyboard_state.get()[(int) k];
+    return !current_keyboard_state[(int) k] && previous_keyboard_state[(int) k];
 }
 
 IVec2 Input::get_mouse_window_pos() {
