@@ -2,6 +2,10 @@
 #include "keys.h"
 #include "input.h"
 
+#include <tinysdl.h>
+
+using namespace TinySDL;
+
 using namespace MicroNinja;
 
 VirtualButton::~VirtualButton(){
@@ -18,6 +22,12 @@ VirtualButton & VirtualButton::register_input() {
     return *this;
 }
 
+VirtualButton & VirtualButton::set_repeat(float first_delay, float multi_delay) {
+    can_repeat = true;
+    repeat_first_delay_ms = first_delay;
+    repeat_multi_delay_ms = multi_delay;
+}
+
 VirtualButton & VirtualButton::add(Key key) {
     nodes.push_back(key);
     return *this;
@@ -25,23 +35,52 @@ VirtualButton & VirtualButton::add(Key key) {
 
 void VirtualButton::update() {
 
-    bool last_press = _pressed;
-    _pressed = false;
+    bool last_press = btn_pressed;
+    btn_pressed = false;
     for(auto & node : nodes) {
         if(node.check()) {
-            _pressed = true;
+            btn_pressed = true;
             break;
         }
     }
 
-    _just_pressed = false;
-    if ((_pressed && !last_press) || repeating) {
-        _just_pressed = true;
+    if (!btn_pressed) {
+        repeating = false;
+        first_repeat = true;
+        repeat_timer.reset();
+    }
+    else if(can_repeat) {
+
+        if(repeat_timer.is_paused) {
+            repeat_timer.start();
+        }
+        else {
+
+            repeating = false;
+
+            if((repeat_timer.get_time_ms() >= repeat_first_delay_ms) && first_repeat) {
+                repeat_timer.reset();
+                repeat_timer.start();
+                repeating = true;
+                first_repeat = false;
+            }
+
+            if ((repeat_timer.get_time_ms() >= repeat_multi_delay_ms) && !first_repeat) {
+                repeat_timer.reset();
+                repeat_timer.start();
+                repeating = true;   
+            }
+        }
+    }
+
+    btn_just_pressed = false;
+    if ((btn_pressed && !last_press) || repeating) {
+        btn_just_pressed = true;
     }
     
-    _released = false;
-    if (last_press && !_pressed) {
-        _released = true;
+    btn_released = false;
+    if (last_press && !btn_pressed) {
+        btn_released = true;
     }
     
 }

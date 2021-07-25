@@ -25,18 +25,22 @@ namespace MicroNinja {
 
             right.add(Key::Right)
                  .add(Key::D)
+                 .set_repeat(500, 150)
                  .register_input();
 
             left.add(Key::Left)
                 .add(Key::A)
+                .set_repeat(500, 150)
                 .register_input();
            
             up.add(Key::Up)
                 .add(Key::W)
+                .set_repeat(500, 150)
                 .register_input();
 
             down.add(Key::Down)
                 .add(Key::S)
+                .set_repeat(500, 150)
                 .register_input();
 
         }
@@ -50,7 +54,7 @@ namespace MicroNinja {
 
         void update() {
 
-            if (right.just_pressed() || right.released())
+            if (right.just_pressed())
                 entity->position[0] += 5;
         }
     };
