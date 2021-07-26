@@ -56,6 +56,9 @@ namespace MicroNinja {
 
             if (right.just_pressed())
                 entity->position[0] += 5;
+
+            if (left.just_pressed())
+                entity->position[0] -= 5;
         }
     };
 

@@ -26,6 +26,7 @@ VirtualButton & VirtualButton::set_repeat(float first_delay, float multi_delay) 
     can_repeat = true;
     repeat_first_delay_ms = first_delay;
     repeat_multi_delay_ms = multi_delay;
+    return *this;
 }
 
 VirtualButton & VirtualButton::add(Key key) {
