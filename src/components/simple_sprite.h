@@ -3,6 +3,7 @@
 #include <tinysdl.h>
 #include "../core/component.h"
 #include "../input/virtualbutton.h"
+#include "../input/virtualaxis.h"
 
 using namespace TinySDL;
 
@@ -20,18 +21,10 @@ namespace MicroNinja {
         SimpleSprite(Texture * tex): tex(tex) {}
 
         VirtualButton right, left, up, down;
+        VirtualAxis horizontal_input;
 
         void begin() override {
 
-            right.add(Key::Right)
-                 .add(Key::D)
-                 .set_repeat(500, 150)
-                 .register_input();
-
-            left.add(Key::Left)
-                .add(Key::A)
-                .set_repeat(500, 150)
-                .register_input();
            
             up.add(Key::Up)
                 .add(Key::W)
@@ -42,6 +35,10 @@ namespace MicroNinja {
                 .add(Key::S)
                 .set_repeat(500, 150)
                 .register_input();
+
+            horizontal_input.add(Key::Left, Key::Right)
+                            .add(Key::A, Key::D)
+                            .register_input();
 
         }
 
@@ -54,11 +51,8 @@ namespace MicroNinja {
 
         void update() {
 
-            if (right.just_pressed())
-                entity->position[0] += 5;
-
-            if (left.just_pressed())
-                entity->position[0] -= 5;
+            entity->position[0] += 5 * (int) horizontal_input.value();
+        
         }
     };
 

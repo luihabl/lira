@@ -17,6 +17,7 @@ src/main.cpp
 "src/core/entity.cpp"
 "src/input/input.cpp"
 src/input/virtualbutton.cpp
+src/input/virtualaxis.cpp
 # ${IMGUI_SRC}
  "src/assets/content.cpp" 
  "src/assets/tileset.cpp"

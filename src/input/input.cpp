@@ -26,7 +26,7 @@ namespace {
     IVec2 window_size = IVec2::zeros;
     IVec2 window_position = IVec2::zeros;
 
-    std::list<VirtualButton *> registered_buttons;
+    std::list<VirtualInput *> registered_buttons;
 }
 
 void Input::update(InputHandler & handler) {
@@ -78,10 +78,10 @@ IVec2 Input::get_mouse_global_pos() {
     return mouse_global_position;
 }
 
-void Input::register_button(VirtualButton * button) {
+void Input::register_button(VirtualInput * button) {
     registered_buttons.emplace_back(button);
 }
 
-void Input::unregister_button(VirtualButton * button) {
+void Input::unregister_button(VirtualInput * button) {
     registered_buttons.remove(button);
 }

@@ -1,12 +1,13 @@
 #pragma once 
 
+#include "virtualinput.h"
 #include "keys.h"
 #include <tinysdl.h>
 #include <vector>
 
 namespace MicroNinja {
 
-    class VirtualButton {
+    class VirtualButton : public VirtualInput {
         
         public:
             VirtualButton() = default;
@@ -15,7 +16,7 @@ namespace MicroNinja {
             VirtualButton & set_repeat(float first_delay, float multi_delay);
             ~VirtualButton();
 
-            void update();
+            void update() override;
 
             bool pressed(){return btn_pressed;}
             bool just_pressed(){return btn_just_pressed;}
