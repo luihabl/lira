@@ -13,6 +13,19 @@ using namespace TinySDL;
 
 constexpr float default_fps = 60.0f;
 
+namespace {
+    float dt;
+    float target_fps;
+}
+
+float GameProperties::delta_time() {
+    return dt;
+}
+
+float GameProperties::fps() {
+    return target_fps;
+}
+
 Game::Game(int res_width, int res_height, int win_width, int win_height, const char * title) {
 
     window_title = title;
@@ -112,4 +125,3 @@ void Game::set_target_fps(float fps) {
     dt = 1.0f/target_fps;
     frame_duration = chr::duration_cast<chr::system_clock::duration>(chr::duration<float>{dt});
 }
-

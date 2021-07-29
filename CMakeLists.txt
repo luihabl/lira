@@ -27,6 +27,7 @@ src/input/virtualaxis.cpp
  "src/level0.cpp"
  "src/composer.cpp"
  "src/components/tilemap.cpp"
+ src/components/sprite.cpp
  )
 
 

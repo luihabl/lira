@@ -66,10 +66,13 @@ namespace MicroNinja {
             SceneRef next_scene = nullptr;
 
             bool quit_game = false;
-            
-            float target_fps;
+
             chr::system_clock::duration frame_duration;
-            float dt;
     };
+
+    namespace GameProperties {
+        float delta_time();
+        float fps();
+    }
 
 } 

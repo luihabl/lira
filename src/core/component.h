@@ -1,5 +1,7 @@
 #pragma once
 
+#include "entity.h"
+
 #include <memory>
 #include <tinysdl.h>
 
