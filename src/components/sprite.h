@@ -10,9 +10,34 @@
 
 namespace MicroNinja {
 
-
     class AnimatedSprite : public Component {
     
+    private:
+
+        struct Frame {
+            TinySDL::TexRegion tex;
+            float delay_ms;
+        };
+
+        struct Animation {
+            size_t size(){ return frames.size(); }
+            std::vector<Frame> frames;
+            bool loop = true;
+        };
+
+        std::string current_id = "";
+        std::unordered_map<std::string, Animation> animations;
+        Animation * current_animation = nullptr;
+        Frame * current_frame = nullptr;
+
+        float animation_timer = 0.0f;
+        size_t current_frame_index;
+        bool playing = false;
+
+
+        size_t animation_lenght(){ return current_animation->size(); }
+        void set_frame(Frame * frame) { current_frame = frame; }
+
     public:
         void update () override;
         void render(TinySDL::BatchRenderer & renderer) override;
@@ -20,33 +45,6 @@ namespace MicroNinja {
         void play(const std::string & id, bool restart = false);
         void stop();
 
-    private:
-
-        struct Frame {
-            TinySDL::TexRegion tex;
-            float delay;
-        };
-
-        struct Animation {
-            size_t size(){ return frames.size(); }
-            std::vector<Frame> frames;
-            bool loop;
-        };
-
-        std::string current_id;
-        std::unordered_map<std::string, Animation> animations;
-        Animation * current_animation;
-        Frame * current_frame;
-
-        float animation_timer;
-        size_t current_frame_index;
-        bool playing;
-
-
-        size_t animation_lenght(){ return current_animation->size(); }
-        void set_frame(Frame * frame) { current_frame = frame; }
-
-
-  
+        Animation * add(const std::string & id);
     };
 }

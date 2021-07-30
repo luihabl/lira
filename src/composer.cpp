@@ -7,6 +7,7 @@
 #include "components/tilemap.h"
 #include "components/simple_sprite.h"
 #include "components/ball.h"
+#include "components/sprite.h"
 
 #include <filesystem>
 
@@ -51,6 +52,16 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
 Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL::IVec2 & position, const int layer) {
     auto* entity = scene->add_entity(position, layer);
     entity->add_component(SimpleSprite(Content::find<Texture>(name)));
+
+    
+    auto * animator = entity->add_component(AnimatedSprite());
+    
+    auto * walk_animation = animator->add("walk");
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>(name), Rect(0, 0, 32, 32)), 150.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>(name), Rect(5, 0, 32, 32)), 150.0f});
+    
+    animator->play("walk");
+
 
     return entity;
 }

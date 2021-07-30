@@ -44,8 +44,8 @@ namespace MicroNinja {
 
         void render(BatchRenderer & renderer) override {
 
-            renderer.set_texture(tex);
-            renderer.draw_tex({0, 0, (float) tex->w, (float) tex->h}, {(float) entity->position[0], (float) entity->position[1]});
+            // renderer.set_texture(tex);
+            // renderer.draw_tex({0, 0, (float) tex->w, (float) tex->h}, {(float) entity->position[0], (float) entity->position[1]});
         }
 
 

@@ -6,13 +6,22 @@
 using namespace MicroNinja;
 using namespace TinySDL;
 
+AnimatedSprite::Animation * AnimatedSprite::add(const std::string & id) {
+
+    if ( animations.find(id) == animations.end() ) {
+        animations[id] = Animation();
+    } 
+
+    return &(animations[id]);
+}
+
 
 void AnimatedSprite::update() {
 
     if(playing) {
 
-        animation_timer += GameProperties::delta_time();
-        if(animation_timer >= current_frame->delay) {
+        animation_timer += 1000.0f * GameProperties::delta_time();
+        if(animation_timer >= current_frame->delay_ms) {
             
             animation_timer = 0.0f;
             current_frame_index += 1;
@@ -21,6 +30,7 @@ void AnimatedSprite::update() {
                 
                 if (current_animation->loop) {
                     current_frame_index = 0;
+                    set_frame(&(current_animation->frames[current_frame_index]));
                 }
                 else {
                     playing = false;
@@ -36,7 +46,8 @@ void AnimatedSprite::update() {
 
 
 void AnimatedSprite::render(BatchRenderer & renderer) {
-    renderer.draw_tex(current_frame->tex, entity->position.cast_to<float>());
+    if (current_frame)
+        renderer.draw_tex(current_frame->tex, entity->position.cast_to<float>());
 }
 
 void AnimatedSprite::play(const std::string & id, bool restart) {
