@@ -46,8 +46,14 @@ void AnimatedSprite::update() {
 
 
 void AnimatedSprite::render(BatchRenderer & renderer) {
-    if (current_frame)
-        renderer.draw_tex(current_frame->tex, entity->position.cast_to<float>());
+    if (current_frame) {
+
+        auto & tex = current_frame->tex;
+
+        renderer.push_transform(LinAlg2D::gen_transform(entity->position.cast_to<float>(), scale, current_frame->origin.cast_to<float>(), 0.0f));
+        renderer.draw_tex(tex);
+        renderer.pop_transform();
+    }
 }
 
 void AnimatedSprite::play(const std::string & id, bool restart) {

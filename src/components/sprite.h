@@ -16,6 +16,7 @@ namespace MicroNinja {
 
         struct Frame {
             TinySDL::TexRegion tex;
+            TinySDL::IVec2 origin;
             float delay_ms;
         };
 
@@ -27,13 +28,13 @@ namespace MicroNinja {
 
         std::string current_id = "";
         std::unordered_map<std::string, Animation> animations;
+        
         Animation * current_animation = nullptr;
         Frame * current_frame = nullptr;
 
         float animation_timer = 0.0f;
         size_t current_frame_index;
         bool playing = false;
-
 
         size_t animation_lenght(){ return current_animation->size(); }
         void set_frame(Frame * frame) { current_frame = frame; }
@@ -46,5 +47,9 @@ namespace MicroNinja {
         void stop();
 
         Animation * add(const std::string & id);
+
+        TinySDL::Vec2 scale = TinySDL::Vec2::ones;
+        // bool flip_x = false;
+        // bool flip_y = false;
     };
 }
