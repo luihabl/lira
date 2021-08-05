@@ -28,7 +28,11 @@ namespace MicroNinja {
         virtual void render(TinySDL::BatchRenderer & renderer) {};
 
         int get_layer();
-
+        
+        template <typename T>
+        T* get_sibling() {
+            return entity->get_component<T>();
+        }
     };
 
     typedef std::unique_ptr<Component> ComponentRef;

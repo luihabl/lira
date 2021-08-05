@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "type_id.h"
+
 #include <memory>
 #include <utility>
 #include <vector>
@@ -26,6 +28,9 @@ namespace MicroNinja
         template <typename T>
         T* add_component(T&& component = T());
 
+        template <typename T>
+        T* get_component();
+
         int get_layer(){ return layer; }
 
         void destroy();
@@ -43,6 +48,17 @@ namespace MicroNinja
     template <typename T>
     T* Entity::add_component(T&& component) {
         return scene->add_component(std::forward<T>(component), this);
+    }
+
+    template <typename T>
+    T* Entity::get_component() {
+        for (auto* c : components) {
+            if (c->type_id == TypeID::get<T>()) {
+                return (T*) c;
+            }
+        }
+        
+        return nullptr;
     }
 
 

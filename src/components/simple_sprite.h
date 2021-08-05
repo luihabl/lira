@@ -43,19 +43,8 @@ namespace MicroNinja {
             horizontal_input.add(Key::Left, Key::Right)
                             .add(Key::A, Key::D)
                             .register_input();
-
-
-            animator = entity->add_component(AnimatedSprite());
-            
-            auto * walk_animation = animator->add("walk");
-            walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(0, 0, 32, 32)), {16, 0}, 150.0f});
-            walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(5, 0, 32, 32)), {16, 0}, 150.0f});
-            
-            animator->play("walk");
-
-            Log::debug("%d", TypeID::get<AnimatedSprite>());
-            Log::debug("%d", TypeID::get<SimpleSprite>());
-            Log::debug("%d", TypeID::get<TexRegion>());
+                            
+            animator = get_sibling<AnimatedSprite>();
         
         }
 
