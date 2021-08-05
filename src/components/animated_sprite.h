@@ -48,7 +48,7 @@ namespace MicroNinja {
         Animation * add(const std::string & id);
 
         TinySDL::Vec2 scale = TinySDL::Vec2::ones;
-        // bool flip_x = false;
-        // bool flip_y = false;
+        bool flip_x = false;
+        bool flip_y = false;
     };
 }

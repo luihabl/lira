@@ -23,7 +23,7 @@ namespace MicroNinja {
         SimpleSprite(Texture * tex): tex(tex) {}
 
         VirtualButton right, left, up, down;
-        VirtualAxis horizontal_input;
+        VirtualAxis horizontal_input, vertical_input;
         AnimatedSprite * animator;
 
         void begin() override {
@@ -41,6 +41,10 @@ namespace MicroNinja {
 
             horizontal_input.add(Key::Left, Key::Right)
                             .add(Key::A, Key::D)
+                            .register_input();
+
+            vertical_input.add(Key::Up, Key::Down)
+                            .add(Key::W, Key::S)
                             .register_input();
 
             animator = get_sibling<AnimatedSprite>();
@@ -65,7 +69,19 @@ namespace MicroNinja {
                 // Log::debug("HInput: %f", Mathf::sign(h_input));
             }
 
-            entity->position[0] += 5 * (int) horizontal_input.value();
+            float v_input = vertical_input.value();
+
+            if (Mathf::sign(v_input) != 0) {
+                //modify AnimatedSprite scale
+
+                // animator->scale = {Mathf::sign(v_input), 1.0f};
+                animator->flip_y = Mathf::sign(v_input) > 0;
+                // Log::debug("HInput: %f", Mathf::sign(h_input));
+            }
+
+
+            entity->position[0] += 5 * (int) h_input;
+            entity->position[1] += 5 * (int) v_input;
         
         }
     };

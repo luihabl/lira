@@ -47,7 +47,7 @@ void AnimatedSprite::update() {
 
 void AnimatedSprite::render(BatchRenderer & renderer) {
     if (current_frame) {
-        current_frame->render(renderer, entity->position.cast_to<float>(), scale);
+        current_frame->render(renderer, entity->position.cast_to<float>(), flip_x, flip_y, scale);
     }
 }
 
