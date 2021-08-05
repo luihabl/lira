@@ -2,7 +2,6 @@
 
 #include <tinysdl.h>
 #include "../core/component.h"
-#include "../core/type_id.h"
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
 #include "sprite.h"
@@ -43,7 +42,7 @@ namespace MicroNinja {
             horizontal_input.add(Key::Left, Key::Right)
                             .add(Key::A, Key::D)
                             .register_input();
-                            
+
             animator = get_sibling<AnimatedSprite>();
         
         }

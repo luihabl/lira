@@ -24,7 +24,7 @@ void Level0::begin() {
 
     auto* e2 = Composer::create_player(this, "sprites/player", {0, 0});
 
-    auto* e3 = Composer::create_ball(this, {0, 0});
+    // auto* e3 = Composer::create_ball(this, {0, 0});
 
 
     Scene::begin();

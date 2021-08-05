@@ -1,7 +1,5 @@
 #pragma once 
 
-#include "type_id.h"
-
 #include <memory>
 #include <utility>
 #include <vector>
@@ -53,7 +51,7 @@ namespace MicroNinja
     template <typename T>
     T* Entity::get_component() {
         for (auto* c : components) {
-            if (c->type_id == TypeID::get<T>()) {
+            if (c->type_id == TinySDL::TypeID::get<T>()) {
                 return (T*) c;
             }
         }

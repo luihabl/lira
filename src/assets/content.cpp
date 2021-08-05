@@ -12,24 +12,6 @@ using namespace MicroNinja;
 
 namespace fs = std::filesystem;
 
-namespace {
-
-	fs::path content_path = "";
-
-	template <typename T>
-	std::unordered_map<std::string, Content::Asset<T>> assets;
-
-	template <typename T>
-	void add_asset(std::string key, fs::path file_name, fs::path folder, const T & asset) {
-		assets<T>[key] = {
-			asset,
-			file_name,
-			folder
-		};
-	}
-
-}
-
 void Content::set_folder_name(const std::string & name) {
 	folder_name = name;
 }
@@ -80,23 +62,3 @@ void Content::load_all() {
 		}
 	}
 }
-
-std::filesystem::path Content::get_content_path() {
-	return content_path;
-}
-
-template <typename T>
-T* Content::find(const std::string& name) {
-	return &(assets<T>[name].data);
-}
-
-template <typename T>
-std::filesystem::path Content::file_folder(const std::string& name) {
-	return assets<T>[name].folder;
-}
-
-template Texture* Content::find<Texture>(const std::string& name);
-template LDTk::File* Content::find<LDTk::File>(const std::string& name);
-
-template std::filesystem::path Content::file_folder<Texture>(const std::string& name);
-template std::filesystem::path Content::file_folder<LDTk::File>(const std::string& name);
