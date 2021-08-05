@@ -15,6 +15,8 @@ namespace MicroNinja {
         friend class Scene;
         friend class Entity;
 
+        unsigned int type_id;
+
     public:
         bool is_active = true;
         bool is_visible = true;

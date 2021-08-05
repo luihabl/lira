@@ -7,6 +7,7 @@
 
 #include "entity.h"
 #include "component.h"
+#include "type_id.h"
 
 namespace MicroNinja {
 
@@ -79,6 +80,7 @@ namespace MicroNinja {
         T* c = (T*) new_component.get();
         *c = component;
         c->entity = entity;
+        c->type_id = TypeID::get<T>();
 
         auto & c_it = components.insert(std::move(new_component));
         entity->components.push_back(c);

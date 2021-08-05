@@ -2,9 +2,11 @@
 
 #include <tinysdl.h>
 #include "../core/component.h"
+#include "../core/type_id.h"
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
 #include "sprite.h"
+
 
 using namespace TinySDL;
 
@@ -50,6 +52,10 @@ namespace MicroNinja {
             walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(5, 0, 32, 32)), {16, 0}, 150.0f});
             
             animator->play("walk");
+
+            Log::debug("%d", TypeID::get<AnimatedSprite>());
+            Log::debug("%d", TypeID::get<SimpleSprite>());
+            Log::debug("%d", TypeID::get<TexRegion>());
         
         }
 
@@ -68,7 +74,7 @@ namespace MicroNinja {
                 //modify AnimatedSprite scale
 
                 animator->scale = {Mathf::sign(h_input), 1.0f};
-                Log::debug("HInput: %f", Mathf::sign(h_input));
+                // Log::debug("HInput: %f", Mathf::sign(h_input));
             }
 
             entity->position[0] += 5 * (int) horizontal_input.value();
