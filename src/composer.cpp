@@ -7,7 +7,7 @@
 #include "components/tilemap.h"
 #include "components/simple_sprite.h"
 #include "components/ball.h"
-#include "components/sprite.h"
+#include "components/animated_sprite.h"
 
 #include <filesystem>
 

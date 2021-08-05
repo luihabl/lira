@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "../core/component.h"
+#include "../assets/sprite.h"
 
 #include <tinysdl.h>
 
@@ -14,9 +15,7 @@ namespace MicroNinja {
     
     private:
 
-        struct Frame {
-            TinySDL::TexRegion tex;
-            TinySDL::IVec2 origin;
+        struct Frame : Sprite {
             float delay_ms;
         };
 

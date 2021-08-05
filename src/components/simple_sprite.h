@@ -4,7 +4,7 @@
 #include "../core/component.h"
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
-#include "sprite.h"
+#include "animated_sprite.h"
 
 
 using namespace TinySDL;

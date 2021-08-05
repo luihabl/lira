@@ -1,4 +1,4 @@
-#include "sprite.h"
+#include "animated_sprite.h"
 #include <tinysdl.h>
 
 #include "../modules/game.h"
@@ -47,12 +47,7 @@ void AnimatedSprite::update() {
 
 void AnimatedSprite::render(BatchRenderer & renderer) {
     if (current_frame) {
-
-        auto & tex = current_frame->tex;
-
-        renderer.push_transform(LinAlg2D::gen_transform(entity->position.cast_to<float>(), scale, current_frame->origin.cast_to<float>(), 0.0f));
-        renderer.draw_tex(tex);
-        renderer.pop_transform();
+        current_frame->render(renderer, entity->position.cast_to<float>(), scale);
     }
 }
 
