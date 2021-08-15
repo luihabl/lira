@@ -60,25 +60,12 @@ namespace MicroNinja {
         void update() {
             
             float h_input = horizontal_input.value();
-
-            if (Mathf::sign(h_input) != 0) {
-                //modify AnimatedSprite scale
-
-                animator->scale = {Mathf::sign(h_input), 1.0f};
-                // Log::debug("HInput: %f", Mathf::sign(h_input));
-            }
-
             float v_input = vertical_input.value();
 
-            // if (Mathf::sign(v_input) != 0) {
-                //modify AnimatedSprite scale
+            if (Mathf::sign(h_input) != 0) 
+                animator->scale = {Mathf::sign(h_input), 1.0f};
 
-                // animator->scale = {Mathf::sign(v_input), 1.0f};
-                // animator->flip_y = Mathf::sign(v_input) > 0;
-                // Log::debug("HInput: %f", Mathf::sign(h_input));
-            // }
-
-
+            
             if(h_input != 0 || v_input != 0) {
                 animator->play("walk");
             }
@@ -86,9 +73,12 @@ namespace MicroNinja {
                 animator->play("idle");
             }
 
-            actor->move_x(2 * (int) h_input);
-            actor->move_y(2 * (int) v_input);
-        
+            if (h_input != 0)
+                actor->velocity[0] = 25.0f * h_input;
+            
+            if (v_input != 0)
+                actor->velocity[1] = 25.0f * v_input;
+
         }
     };
 

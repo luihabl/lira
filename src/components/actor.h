@@ -13,9 +13,15 @@ namespace MicroNinja {
         Collider* collider = nullptr;
 
         TinySDL::Vec2 velocity = {0, 0};
-        TinySDL::Vec2 remainder = {0, 0};
+        TinySDL::Vec2 move_remainder = {0, 0};
+
+        void move_x(float amount);
+        void move_y(float amount);
         
-        void move_x(int amount);
-        void move_y(int amount);
+        void move_exact_x(int amount);
+        void move_exact_y(int amount);
+    
+        void update() override;
+    
     };
 }
