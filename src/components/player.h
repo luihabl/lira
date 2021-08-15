@@ -5,26 +5,25 @@
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
 #include "animated_sprite.h"
+#include "actor.h"
 
 
 using namespace TinySDL;
 
 namespace MicroNinja {
 
-    class SimpleSprite : public Component {
+    class Player : public Component {
 
     public:
         int w = 10;
         int h = 10;
 
-        Texture * tex = nullptr;
-
-        SimpleSprite() = default;
-        SimpleSprite(Texture * tex): tex(tex) {}
+        Player() = default;
 
         VirtualButton right, left, up, down;
         VirtualAxis horizontal_input, vertical_input;
         AnimatedSprite * animator;
+        Actor * actor;
 
         void begin() override {
 
@@ -48,7 +47,7 @@ namespace MicroNinja {
                             .register_input();
 
             animator = get_sibling<AnimatedSprite>();
-        
+            actor = get_sibling<Actor>();
         }
 
         // void render(BatchRenderer & renderer) override {
@@ -87,9 +86,8 @@ namespace MicroNinja {
                 animator->play("idle");
             }
 
-
-            entity->position[0] += 2 * (int) h_input;
-            entity->position[1] += 2 * (int) v_input;
+            actor->move_x(2 * (int) h_input);
+            actor->move_y(2 * (int) v_input);
         
         }
     };

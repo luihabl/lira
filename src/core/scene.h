@@ -34,9 +34,6 @@ namespace MicroNinja {
 
             //Queue entity destruction for end of frame
             void queue_remove(Entity* entity);
-            
-        private:
-            Game* game;
 
             template <typename T>
             struct LayerComparator {
@@ -47,6 +44,14 @@ namespace MicroNinja {
 
             template <typename T>
             using LayerSet = std::multiset<std::unique_ptr<T>, LayerComparator<std::unique_ptr<T>>>;
+
+            LayerSet<Component>* get_component_set() {
+                return &components;
+            }
+            
+        private:
+            Game* game;
+
 
             // Note: 
             // multiset is used here to keep the layers ordered,

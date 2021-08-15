@@ -6,7 +6,6 @@
 #include "composer.h"
 #include "assets/content.h"
 #include "modules/game.h"
-#include "components/simple_sprite.h"
 #include "components/tilemap.h"
 #include "assets/ldtk.h"
 #include "assets/tileset.h"

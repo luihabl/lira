@@ -15,13 +15,14 @@ namespace MicroNinja {
         friend class Scene;
         friend class Entity;
 
-        TinySDL::Type type;
-
     public:
         bool is_active = true;
         bool is_visible = true;
 
         Entity* entity;
+        Scene* scene() { return entity->get_scene(); }
+
+        TinySDL::Type type;
 
         virtual void begin() {};
         virtual void update() {};

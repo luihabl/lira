@@ -33,6 +33,7 @@ namespace MicroNinja
 
         void destroy();
 
+        Scene* get_scene() { return scene; }
 
     private:
         int layer = 0;

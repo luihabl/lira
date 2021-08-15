@@ -5,9 +5,10 @@
 #include "assets/tileset.h"
 
 #include "components/tilemap.h"
-#include "components/simple_sprite.h"
-#include "components/ball.h"
+#include "components/player.h"
+#include "components/actor.h"
 #include "components/animated_sprite.h"
+#include "components/collider.h"
 
 #include <filesystem>
 
@@ -51,7 +52,7 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
 
 Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL::IVec2 & position, const int layer) {
     auto* entity = scene->add_entity(position, layer);
-    entity->add_component(SimpleSprite(Content::find<Texture>(name)));
+    entity->add_component(Player());
 
     
     auto * animator = entity->add_component(AnimatedSprite());
@@ -67,12 +68,31 @@ Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL:
 
     animator->play("idle");
 
-    return entity;
-}
+    auto * collider = entity->add_component(Collider({-8, 0, 16, 16}));
 
-Entity * Composer::create_ball(Scene * scene, const TinySDL::IVec2 & position) {
-    auto* entity = scene->add_entity(position, 0);
-    entity->add_component(Ball());
+    auto * actor = entity->add_component(Actor());
+    actor->collider = collider;
+
+    /*
+        Debug area below vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    */ 
+
+    auto test_entity = scene->add_entity({20, 20});
+
+    auto test_collider = test_entity->add_component(Collider({-8, 0, 16, 16}));
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return entity;
 }
