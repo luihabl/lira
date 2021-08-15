@@ -51,11 +51,11 @@ namespace MicroNinja {
         
         }
 
-        void render(BatchRenderer & renderer) override {
+        // void render(BatchRenderer & renderer) override {
 
             // renderer.set_texture(tex);
             // renderer.draw_tex({0, 0, (float) tex->w, (float) tex->h}, {(float) entity->position[0], (float) entity->position[1]});
-        }
+        // }
 
 
         void update() {
@@ -71,17 +71,25 @@ namespace MicroNinja {
 
             float v_input = vertical_input.value();
 
-            if (Mathf::sign(v_input) != 0) {
+            // if (Mathf::sign(v_input) != 0) {
                 //modify AnimatedSprite scale
 
                 // animator->scale = {Mathf::sign(v_input), 1.0f};
-                animator->flip_y = Mathf::sign(v_input) > 0;
+                // animator->flip_y = Mathf::sign(v_input) > 0;
                 // Log::debug("HInput: %f", Mathf::sign(h_input));
+            // }
+
+
+            if(h_input != 0 || v_input != 0) {
+                animator->play("walk");
+            }
+            else {
+                animator->play("idle");
             }
 
 
-            entity->position[0] += 5 * (int) h_input;
-            entity->position[1] += 5 * (int) v_input;
+            entity->position[0] += 2 * (int) h_input;
+            entity->position[1] += 2 * (int) v_input;
         
         }
     };

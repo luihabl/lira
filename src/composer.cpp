@@ -57,10 +57,15 @@ Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL:
     auto * animator = entity->add_component(AnimatedSprite());
     
     auto * walk_animation = animator->add("walk");
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(0, 0, 32, 32)), {16, 16}, 150.0f});
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(0, 0, 32, 32)), {16, 16}, 150.0f});
-    
-    animator->play("walk");
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(0, 0, 32, 32)), {16, 16}, 60.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(2, 0, 32, 32)), {16, 16}, 60.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(5, 0, 32, 32)), {16, 16}, 60.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(2, 0, 32, 32)), {16, 16}, 60.0f});
+
+    auto * idle_animation = animator->add("idle");
+    idle_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(0, 0, 32, 32)), {16, 16}, 150.0f});
+
+    animator->play("idle");
 
     return entity;
 }

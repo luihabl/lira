@@ -15,7 +15,7 @@ namespace MicroNinja {
         friend class Scene;
         friend class Entity;
 
-        unsigned int type_id;
+        TinySDL::Type type;
 
     public:
         bool is_active = true;

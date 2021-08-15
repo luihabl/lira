@@ -51,7 +51,7 @@ namespace MicroNinja
     template <typename T>
     T* Entity::get_component() {
         for (auto* c : components) {
-            if (c->type_id == TinySDL::TypeID::get<T>()) {
+            if (c->type == TinySDL::Type::type_of<T>()) {
                 return (T*) c;
             }
         }
