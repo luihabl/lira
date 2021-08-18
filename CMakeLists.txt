@@ -29,6 +29,7 @@ src/input/virtualaxis.cpp
  "src/components/tilemap.cpp"
  src/components/animated_sprite.cpp
  src/components/collider.cpp
+ src/components/collider_grid.cpp
  src/components/actor.cpp
  )
 

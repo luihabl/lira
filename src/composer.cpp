@@ -9,6 +9,7 @@
 #include "components/actor.h"
 #include "components/animated_sprite.h"
 #include "components/collider.h"
+#include "components/collider_grid.h"
 
 #include <filesystem>
 
@@ -27,6 +28,9 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
     int grid_size = (int) level_layer.grid_size;
     int level_w = (int) (level.px_wid % grid_size == 0 ? level.px_wid / grid_size : level.px_wid / grid_size + 1);
     int level_h = (int) (level.px_hei % grid_size == 0 ? level.px_hei / grid_size : level.px_hei / grid_size + 1);
+    
+    auto * tilemap = entity->add_component(TileMap(level_w, level_h, grid_size, grid_size));
+    auto * collider = entity->add_component(ColliderGrid(level_w, level_h, grid_size, grid_size)); 
 
     std::vector<int> cx;
     std::vector<int> cy;
@@ -36,6 +40,8 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
         cx.push_back((int) (gtiles.px[0] / level_layer.grid_size));
         cy.push_back((int) (gtiles.px[1] / level_layer.grid_size));
         t.push_back((int) gtiles.t);
+
+        collider->set_cell((int) (gtiles.px[0] / level_layer.grid_size), (int) (gtiles.px[1] / level_layer.grid_size), true);
     }
 
     std::filesystem::path filepath = Content::file_folder<LDTk::File>(name) / *(level_layer.tileset_rel_path.get());
@@ -43,8 +49,8 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
 
     TileSet tileset(16, 16, Content::find<Texture>(key.generic_string().c_str()));
 
-    auto * component = entity->add_component(TileMap(level_w, level_h, grid_size, grid_size));
-    component->set_cells(tileset, cx, cy, t);
+    
+    tilemap->set_cells(tileset, cx, cy, t);
 
     return entity;
 }

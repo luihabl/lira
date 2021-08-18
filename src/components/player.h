@@ -50,12 +50,6 @@ namespace MicroNinja {
             actor = get_sibling<Actor>();
         }
 
-        // void render(BatchRenderer & renderer) override {
-
-            // renderer.set_texture(tex);
-            // renderer.draw_tex({0, 0, (float) tex->w, (float) tex->h}, {(float) entity->position[0], (float) entity->position[1]});
-        // }
-
 
         void update() {
             
@@ -73,11 +67,9 @@ namespace MicroNinja {
                 animator->play("idle");
             }
 
-            if (h_input != 0)
-                actor->velocity[0] = 25.0f * h_input;
-            
-            if (v_input != 0)
-                actor->velocity[1] = 25.0f * v_input;
+
+            actor->velocity[0] = 70.0f * h_input;            
+            actor->velocity[1] = 70.0f * v_input;
 
         }
     };
