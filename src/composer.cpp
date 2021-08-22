@@ -64,17 +64,20 @@ Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL:
     auto * animator = entity->add_component(AnimatedSprite());
     
     auto * walk_animation = animator->add("walk");
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(0, 0, 32, 32)), {16, 16}, 60.0f});
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(2, 0, 32, 32)), {16, 16}, 60.0f});
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(5, 0, 32, 32)), {16, 16}, 60.0f});
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(2, 0, 32, 32)), {16, 16}, 60.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player2"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player3"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player4"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player5"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
 
     auto * idle_animation = animator->add("idle");
-    idle_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player"), Rect(0, 0, 32, 32)), {16, 16}, 150.0f});
+    idle_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player1"), Rect(0, 0, 32, 32)), {16, 16}, 150.0f});
+
+    auto * jump_animation = animator->add("jump");
+    jump_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player6"), Rect(0, 0, 32, 32)), {16, 16}, 150.0f});
 
     animator->play("idle");
 
-    auto * collider = entity->add_component(Collider({-8, 0, 16, 16}));
+    auto * collider = entity->add_component(Collider({-7, -1, 14, 17}));
 
     auto * actor = entity->add_component(Actor());
     actor->collider = collider;
@@ -83,9 +86,9 @@ Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL:
         Debug area below vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     */ 
 
-    auto test_entity = scene->add_entity({20, 20});
+    // auto test_entity = scene->add_entity({20, 20});
 
-    auto test_collider = test_entity->add_component(Collider({-8, 0, 16, 16}));
+    // auto test_collider = test_entity->add_component(Collider({-8, 0, 16, 16}));
 
 
 

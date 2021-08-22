@@ -11,7 +11,9 @@ namespace MicroNinja {
     
     public:
         Collider() = default;
-        Collider(TinySDL::IntRect r) : rect(r) {} 
+        Collider(TinySDL::IntRect r) : rect(r) {
+            is_visible = false;
+        } 
 
         bool check(Collider & other, const TinySDL::IVec2 & offset = TinySDL::IVec2::zeros);
         bool check(ColliderGrid & other, const TinySDL::IVec2 & offset = TinySDL::IVec2::zeros);

@@ -7,6 +7,8 @@ using namespace TinySDL;
 
 ColliderGrid::ColliderGrid(int columns, int rows, int cell_w, int cell_h) {
     grid = VirtualMap<bool>(columns, rows, cell_w, cell_h);
+    is_visible = false;
+    is_active = true;
 }
 
 void ColliderGrid::render(BatchRenderer & renderer) {

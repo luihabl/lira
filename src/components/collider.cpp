@@ -20,10 +20,10 @@ bool Collider::check(ColliderGrid & other, const IVec2 & offset) {
 
 
     int x_0 = (int) ((float) r.x / (float) w);
-    int x_1 = (int) ((float) (r.x + r.w - 1) / (float) w); //Why - 1?
+    int x_1 = (int) ((float) (r.x + r.w - 1) / (float) w);
     
     int y_0 = (int) ((float) r.y / (float) h);
-    int y_1 = (int) ((float) (r.y + r.h - 1) / (float) h); //Why - 1?
+    int y_1 = (int) ((float) (r.y + r.h - 1) / (float) h);
 
     for(int y = y_0; y <= y_1; y++) {
         for(int x = x_0; x <= x_1; x++) {

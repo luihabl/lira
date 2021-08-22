@@ -4,6 +4,8 @@
 #include "../core/component.h"
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
+#include "../modules/game.h"
+
 #include "animated_sprite.h"
 #include "actor.h"
 
@@ -15,8 +17,6 @@ namespace MicroNinja {
     class Player : public Component {
 
     public:
-        int w = 10;
-        int h = 10;
 
         Player() = default;
 
@@ -30,7 +30,6 @@ namespace MicroNinja {
            
             up.add(Key::Up)
                 .add(Key::W)
-                .set_repeat(500, 150)
                 .register_input();
 
             down.add(Key::Down)
@@ -60,16 +59,23 @@ namespace MicroNinja {
                 animator->scale = {Mathf::sign(h_input), 1.0f};
 
             
-            if(h_input != 0 || v_input != 0) {
+            if(h_input != 0) {
                 animator->play("walk");
             }
             else {
                 animator->play("idle");
             }
 
+            
 
-            actor->velocity[0] = 70.0f * h_input;            
-            actor->velocity[1] = 70.0f * v_input;
+
+            
+            if(up.just_pressed()) {
+                actor->velocity[1] -= 150.0f;
+            }
+
+            actor->velocity[1] += 600.0f * GameProperties::delta_time();
+            actor->velocity[0] = 80.0f * h_input;            
 
         }
     };
