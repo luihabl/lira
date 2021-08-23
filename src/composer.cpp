@@ -64,10 +64,11 @@ Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL:
     auto * animator = entity->add_component(AnimatedSprite());
     
     auto * walk_animation = animator->add("walk");
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player2"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player3"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player4"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
-    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player5"), Rect(0, 0, 32, 32)), {16, 16}, 90.0f});
+    float walk_delay = 90.0f;
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player2"), Rect(0, 0, 32, 32)), {16, 16}, walk_delay});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player3"), Rect(0, 0, 32, 32)), {16, 16}, walk_delay});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player4"), Rect(0, 0, 32, 32)), {16, 16}, walk_delay});
+    walk_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player5"), Rect(0, 0, 32, 32)), {16, 16}, walk_delay});
 
     auto * idle_animation = animator->add("idle");
     idle_animation->frames.push_back({TexRegion(Content::find<Texture>("sprites/player1"), Rect(0, 0, 32, 32)), {16, 16}, 150.0f});

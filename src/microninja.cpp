@@ -22,7 +22,7 @@ void MicroNinjaGame::render() {
     target.begin();
 
         Graphics::viewport(width, height);
-        Graphics::clear({0, 0, 0});
+        Graphics::clear({22, 27, 56});
 
         default_shader.use().set_mat4x4("projection", virtual_projection);
     

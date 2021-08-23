@@ -20,6 +20,8 @@ namespace MicroNinja {
         
         void move_exact_x(int amount);
         void move_exact_y(int amount);
+
+        bool on_ground(int offset = 1);
     
         void update() override;
     

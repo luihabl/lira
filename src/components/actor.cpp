@@ -74,6 +74,14 @@ void Actor::move_exact_y(int amount) {
     }
 }
 
+bool Actor::on_ground(int offset) {
+    if(collider) {
+        return collider->check_first({0, offset});
+    }
+
+    return false;
+}
+
 
 
 void Actor::update() {
