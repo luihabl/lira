@@ -2,8 +2,11 @@
 
 #include "entity.h"
 
-#include <memory>
+#include <unordered_map>
+#include <algorithm>
+
 #include <tinysdl.h>
+
 
 namespace MicroNinja {
 
@@ -35,6 +38,4 @@ namespace MicroNinja {
             return entity->get_component<T>();
         }
     };
-
-    typedef std::unique_ptr<Component> ComponentRef;
 }

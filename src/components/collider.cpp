@@ -37,19 +37,25 @@ bool Collider::check(ColliderGrid & other, const IVec2 & offset) {
 
 
 bool Collider::check_first(const IVec2 & offset) {
-    auto * components = scene()->get_component_set();
 
-    for(const auto& c: *components) {
-	   auto& component = *(c.get());
-	   if (component.is_active && component.type == Type::type_of<Collider>() && (&component) != this) {
-			Collider & coll = (Collider&) component;
+    auto& colliders = scene()->get_components<Collider>();
+
+    for(const auto* c: colliders) {
+	   if (c->is_active && (Collider*)c != this) {
+			Collider & coll = (Collider&) c;
             if(check(coll, offset)) return true;
        }
-       else if(component.is_active && component.type == Type::type_of<ColliderGrid>() && (&component) != this) {
-            ColliderGrid & coll = (ColliderGrid&) component;
-            if(check(coll, offset)) return true;
-       }
-   }
+    }
+
+    auto& grid_colliders = scene()->get_components<ColliderGrid>();
+
+    for (const auto* c : grid_colliders) {
+        if (c->is_active) {
+            ColliderGrid& coll = (ColliderGrid&) *c;
+            if (check(coll, offset)) return true;
+        }
+    }
+
     return false;
 }
 

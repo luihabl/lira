@@ -5,6 +5,8 @@
 #include "entity.h"
 #include "component.h"
 
+#include <algorithm>
+
 using namespace MicroNinja;
 using namespace TinySDL;
 
@@ -15,16 +17,19 @@ Entity* Scene::add_entity(const IVec2& pos, int layer) {
 }
 
 void Scene::begin() {
-   for(auto& c: components) 
-       c.get()->begin();
+	for (const auto& [id, items] : components)
+		for (auto* component : items)
+			component->begin();
 }
 
 void Scene::update() {
-   for(const auto& c: components) {
-	   auto& component = *(c.get());
-	   if (component.is_active && component.entity->is_active)
-			component.update();
-   }
+
+   for (const auto& [id, items] : components)
+	   for (auto* component : items) 
+	   {
+		   if (component->is_active && component->entity->is_active)
+			   component->update();
+	   }
 
    for (auto& c : components_to_remove) 
 	   destroy_component(c, c->entity);
@@ -38,11 +43,24 @@ void Scene::update() {
 }
 
 void Scene::render(BatchRenderer & renderer) {
-   for(const auto& c: components) {
-	   auto& component = *(c.get());
-	   if (component.is_visible && component.entity->is_visible)
-			component.render(renderer);
-   }   
+
+	std::vector<Component*> render_list;
+	
+	for (const auto& [id, items] : components)
+	   for (auto* component : items)
+	   {
+		   if (component->is_visible && component->entity->is_visible)
+			   render_list.push_back(component);
+	   }
+
+
+	std::sort(render_list.begin(), render_list.end(), [](Component* a, Component* b)->bool {
+		return a->get_layer() < b->get_layer();
+	});
+
+	for (auto* item : render_list)
+		item->render(renderer);
+
 }
 
 void Scene::queue_remove(Component* component) {
@@ -71,12 +89,17 @@ void Scene::destroy_component(Component * component, Entity * entity) {
 	
 	for (int i = (int)c_list.size() - 1; i >= 0; i--) {
 		if (c_list[i] == component) {
-			c_list.erase(c_list.begin() + i);
-			break;
+
+			c_list[i] = c_list.back();
+			c_list.pop_back();
+
+			//Transfer this to cache instead of deleting?
+			components.erase(component);
+
+			return;
 		}
 	}
 	
-	//Transfer this to cache instead of deleting?
-	components.erase(*find_ref(components, component));
+	
 }
 

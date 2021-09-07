@@ -7,6 +7,7 @@
 
 #include "entity.h"
 #include "component.h"
+#include "../util/type_table.h"
 
 namespace MicroNinja {
 
@@ -45,19 +46,18 @@ namespace MicroNinja {
             template <typename T>
             using LayerSet = std::multiset<std::unique_ptr<T>, LayerComparator<std::unique_ptr<T>>>;
 
-            LayerSet<Component>* get_component_set() {
-                return &components;
+            template <typename T>
+            const std::vector<Component*>& get_components() {
+                return components.get_group<T>();
             }
             
         private:
             Game* game;
 
+            TypeTable<Component> components;
 
-            // Note: 
-            // multiset is used here to keep the layers ordered,
-            // however this is not necesseraly the fastest way to do it. 
-            // Maybe this will change in the future.
-            LayerSet<Component> components;
+            // std::vector<Entity*> entities;
+
             LayerSet<Entity> entities;
 
             template <typename T>
@@ -80,13 +80,12 @@ namespace MicroNinja {
     template <typename T>
     inline T* Scene::add_component(T&& component, Entity * entity) {
 
-        ComponentRef new_component{new T()};
-        T* c = (T*) new_component.get();
+        T* c = new T();
         *c = component;
         c->entity = entity;
         c->type = TinySDL::Type::type_of<T>();
 
-        auto & c_it = components.insert(std::move(new_component));
+        components.add(c);
         entity->components.push_back(c);
         
         return c;
