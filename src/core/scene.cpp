@@ -11,10 +11,6 @@ using namespace MicroNinja;
 using namespace TinySDL;
 
 
-Entity* Scene::add_entity(const IVec2& pos, int layer) {
-	auto& e = entities.insert(EntityRef(new Entity(pos, this, layer)));
-	return e->get();
-}
 
 void Scene::begin() {
 	for (const auto& [id, items] : components)
@@ -71,6 +67,12 @@ void Scene::queue_remove(Entity* entity) {
 	entities_to_remove.push_back(entity);
 }
 
+Entity* Scene::add_entity(const IVec2& pos, int layer) {
+	auto* e = new Entity(pos, this, layer);
+	entities.push_back(e);
+	return e;
+}
+
 void Scene::destroy_entity(Entity * entity) {
 
 	auto& c_list = entity->components;
@@ -78,10 +80,17 @@ void Scene::destroy_entity(Entity * entity) {
 	for (int i = (int) c_list.size() - 1; i >= 0; i--)
 		destroy_component(c_list[i], entity);
 
-	entities.erase(*find_ref(entities, entity));
-	entity = nullptr;
+	for (size_t i = 0; i < entities.size(); i++)
+	{
+		if (entities[i] == entity)
+		{
+			entities[i] == entities.back();
+			entities.pop_back();
+			delete entity;
+			return;
+		}
+	}
 }
-
 
 void Scene::destroy_component(Component * component, Entity * entity) {
 

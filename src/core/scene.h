@@ -37,16 +37,6 @@ namespace MicroNinja {
             void queue_remove(Entity* entity);
 
             template <typename T>
-            struct LayerComparator {
-                bool operator()(const T & a, const T & b) const {
-                    return a->get_layer() < b->get_layer();
-                } 
-            };
-
-            template <typename T>
-            using LayerSet = std::multiset<std::unique_ptr<T>, LayerComparator<std::unique_ptr<T>>>;
-
-            template <typename T>
             const std::vector<Component*>& get_components() {
                 return components.get_group<T>();
             }
@@ -55,13 +45,7 @@ namespace MicroNinja {
             Game* game;
 
             TypeTable<Component> components;
-
-            // std::vector<Entity*> entities;
-
-            LayerSet<Entity> entities;
-
-            template <typename T>
-            const std::unique_ptr<T>* find_ref(LayerSet<T>& mset, T* value);
+            std::vector<Entity*> entities;
 
             std::vector<Component*> components_to_remove;
             std::vector<Entity*> entities_to_remove;
@@ -90,14 +74,4 @@ namespace MicroNinja {
         
         return c;
     }
-
-    template <typename T>
-    const std::unique_ptr<T>* Scene::find_ref(LayerSet<T>& mset, T* value) {
-        for (auto& v : mset) 
-            if (v.get() == value) 
-                return &v;
-        
-        return nullptr;
-    }
-
 }
