@@ -43,7 +43,11 @@ bool Collider::check_first(const IVec2 & offset) {
     for(const auto* c: colliders) {
 	   if (c->is_active && (Collider*)c != this) {
 			Collider & coll = (Collider&) c;
-            if(check(coll, offset)) return true;
+            if (check(coll, offset)) 
+            {
+                if (on_collide) on_collide(coll);
+                return true;
+            } 
        }
     }
 
@@ -52,7 +56,11 @@ bool Collider::check_first(const IVec2 & offset) {
     for (const auto* c : grid_colliders) {
         if (c->is_active) {
             ColliderGrid& coll = (ColliderGrid&) *c;
-            if (check(coll, offset)) return true;
+            if (check(coll, offset)) 
+            {
+                if (on_collide) on_collide(coll);
+                return true;
+            } 
         }
     }
 

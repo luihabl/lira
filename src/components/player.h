@@ -32,7 +32,6 @@ namespace MicroNinja {
         bool on_ground = true;
 
 
-
         void begin() override {
             
             jump.add(Key::Z)
@@ -58,6 +57,11 @@ namespace MicroNinja {
 
             animator = get_sibling<AnimatedSprite>();
             actor = get_sibling<Actor>();
+
+            //Collider* coll = get_sibling<Collider>();
+            //coll->on_collide = [this](const Component& c) {
+            //    scene()->queue_remove(entity);
+            //};
         }
 
 

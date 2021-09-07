@@ -3,6 +3,8 @@
 #include "../core/component.h"
 #include <tinysdl.h>
 
+#include <functional>
+
 namespace MicroNinja {
 
     class ColliderGrid;
@@ -21,6 +23,8 @@ namespace MicroNinja {
         bool check_first(const TinySDL::IVec2 & offset = TinySDL::IVec2::zeros);
 
         void render(TinySDL::BatchRenderer & renderer) override; 
+
+        std::function<void(const Component&)> on_collide = nullptr;
 
     private:
 

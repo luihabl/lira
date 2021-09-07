@@ -108,7 +108,5 @@ void Scene::destroy_component(Component * component, Entity * entity) {
 			return;
 		}
 	}
-	
-	
 }
 

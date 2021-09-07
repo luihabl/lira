@@ -19,6 +19,8 @@ namespace MicroNinja {
         friend class Entity;
 
     public:
+        virtual ~Component() {};
+
         bool is_active = true;
         bool is_visible = true;
 

@@ -37,9 +37,7 @@ namespace MicroNinja {
             void queue_remove(Entity* entity);
 
             template <typename T>
-            const std::vector<Component*>& get_components() {
-                return components.get_group<T>();
-            }
+            const std::vector<Component*>& get_components();
             
         private:
             Game* game;
@@ -62,7 +60,14 @@ namespace MicroNinja {
 
 
     template <typename T>
-    inline T* Scene::add_component(T&& component, Entity * entity) {
+    const std::vector<Component*>& Scene::get_components()
+    {
+        return components.get_group<T>();
+    }
+
+    template <typename T>
+    inline T* Scene::add_component(T&& component, Entity * entity) 
+    {
 
         T* c = new T();
         *c = component;
