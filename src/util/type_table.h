@@ -19,6 +19,7 @@ namespace MicroNinja
         void add(G* c)
         {
             table[TinySDL::Type::type_of<G>()].push_back((T*) c);
+            count++;
         }
         
         void erase(T* c)
@@ -31,6 +32,8 @@ namespace MicroNinja
                 {
                     vec[i] = vec.back();
                     vec.pop_back();
+                    count--;
+
                     delete c;
                     return;
                 }
@@ -53,8 +56,14 @@ namespace MicroNinja
             return table.end();
         }
 
+        size_t size()
+        {
+            return count;
+        }
+
     private:
         std::unordered_map<size_t, std::vector<T*>> table;
+        size_t count = 0;
 
     };
 }
