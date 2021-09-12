@@ -2,15 +2,12 @@
 #include <tinysdl.h>
 
 #include "level0.h" 
-#include "tinysdl.h"
 #include "composer.h"
-#include "assets/content.h"
 #include "modules/game.h"
-#include "components/tilemap.h"
-#include "assets/ldtk.h"
-#include "assets/tileset.h"
+#include "input/input.h"
 
-#include <iostream>
+#include "components/collider.h"
+#include "components/collider_grid.h"
 
 using namespace MicroNinja;
 using namespace TinySDL;
@@ -19,11 +16,10 @@ using namespace TinySDL;
 void Level0::begin() {
 
 
-    auto* e1 = Composer::create_map(this, "tilemaps/map0", {0, 0});
+    auto* map = Composer::create_map(this, "tilemaps/map0", {0, 0});
+    auto* player = Composer::create_player(this, "sprites/player", {0, 0}, 1);
+    auto* turret = Composer::create_turret(this, { 16 * 5, 16 * 5 });
 
-    auto* e2 = Composer::create_player(this, "sprites/player", {0, 0});
-
-    // auto* e3 = Composer::create_ball(this, {0, 0});
 
 
     Scene::begin();
@@ -31,9 +27,28 @@ void Level0::begin() {
 
 
 void Level0::update() {
-    // Add logic here
-    // Input should be captured in the main game class
-    
+    if (Input::just_pressed(Key::F1))
+        render_colliders = !render_colliders;
 
     Scene::update();
+}
+
+void Level0::render(TinySDL::BatchRenderer& renderer)
+{
+    Graphics::clear({ 31, 15, 0 });
+
+    Scene::render(renderer);
+    
+    if (render_colliders)
+    {
+        auto& colliders = get_components<Collider>();
+        auto& grid_colliders = get_components<ColliderGrid>();
+
+        for (auto* c : colliders)
+            c->render(renderer);
+
+        for (auto* c : grid_colliders)
+            c->render(renderer);
+    }
+
 }

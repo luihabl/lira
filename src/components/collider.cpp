@@ -42,7 +42,7 @@ bool Collider::check_first(const IVec2 & offset) {
 
     for(const auto* c: colliders) {
 	   if (c->is_active && (Collider*)c != this) {
-			Collider & coll = (Collider&) c;
+			Collider & coll = (Collider&) *c;
             if (check(coll, offset)) 
             {
                 if (on_collide) on_collide(coll);

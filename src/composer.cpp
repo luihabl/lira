@@ -83,22 +83,22 @@ Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL:
     auto * actor = entity->add_component(Actor());
     actor->collider = collider;
 
-    /*
-        Debug area below vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    */ 
+  
+    return entity;
+}
 
-    // auto test_entity = scene->add_entity({20, 20});
+Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, const int layer)
+{
+    auto* entity = scene->add_entity(position, layer);
 
-    // auto test_collider = test_entity->add_component(Collider({-8, 0, 16, 16}));
+    auto* animator = entity->add_component(AnimatedSprite());
+    
+    auto* idle = animator->add("idle");
+    idle->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret1"), Rect(0, 0, 32, 32)), {9, 15}, 150.0f });
 
+    animator->play("idle");
 
-
-
-
-
-
-
-
+    auto* collider = entity->add_component(Collider({ 0, 0, 16, 17 }));
 
 
 

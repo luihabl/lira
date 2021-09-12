@@ -9,8 +9,11 @@ namespace MicroNinja {
 
 	class Level0 : public Scene {
 
-		void begin();
-		void update();
+		void begin() override;
+		void update() override;
+		void render(TinySDL::BatchRenderer& renderer) override;
+
+		bool render_colliders = false;
 
 	};
 }
