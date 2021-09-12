@@ -18,7 +18,7 @@ void Level0::begin() {
 
     auto* map = Composer::create_map(this, "tilemaps/map0", {0, 0});
     auto* player = Composer::create_player(this, "sprites/player", {0, 0}, 1);
-    auto* turret = Composer::create_turret(this, { 16 * 5, 16 * 5 });
+    auto* turret = Composer::create_turret(this, { 16 * 15, 16 * 8 });
 
 
 
