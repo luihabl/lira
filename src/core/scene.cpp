@@ -84,7 +84,7 @@ void Scene::destroy_entity(Entity * entity) {
 	{
 		if (entities[i] == entity)
 		{
-			entities[i] == entities.back();
+			entities[i] = entities.back();
 			entities.pop_back();
 			delete entity;
 			return;
