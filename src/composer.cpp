@@ -10,6 +10,8 @@
 #include "components/animated_sprite.h"
 #include "components/collider.h"
 #include "components/collider_grid.h"
+#include "components/timer.h"
+#include "components/multitimer.h"
 
 #include <filesystem>
 
@@ -96,7 +98,53 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
     auto* idle = animator->add("idle");
     idle->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret1"), Rect(0, 0, 32, 32)), {9, 16}, 150.0f });
 
+
+    auto* opening = animator->add("opening");
+    float opening_delay = 80.0f;
+    opening->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret1"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    opening->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret2"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    opening->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret3"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    opening->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret4"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    opening->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret5"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    opening->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret6"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    opening->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret7"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+
+    auto* preparing = animator->add("preparing");
+    preparing->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret7"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    preparing->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret8"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+
+    auto* shoot = animator->add("shoot");
+    shoot->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret7"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+
+    auto* closing = animator->add("closing");
+    closing->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret9"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    closing->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret10"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    closing->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret11"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+    closing->frames.push_back({ TexRegion(Content::find<Texture>("sprites/turret12"), Rect(0, 0, 32, 32)), {9, 16}, opening_delay });
+
     animator->play("idle");
+
+
+    auto* timer = entity->add_component(MultiTimer({
+            {0.0f, [](MultiTimer* self) {
+                self->get_sibling<AnimatedSprite>()->play("opening");
+            }},
+            {opening->lenght(), [](MultiTimer* self) {
+                self->get_sibling<AnimatedSprite>()->play("preparing");
+            }},
+            {4.0f * preparing->lenght(), [](MultiTimer* self) {
+                self->get_sibling<AnimatedSprite>()->play("shoot");
+            }},
+            {2.0f * shoot->lenght(), [](MultiTimer* self) {
+                self->get_sibling<AnimatedSprite>()->play("closing");
+            }},
+            {closing->lenght(), [](MultiTimer* self) {
+                self->get_sibling<AnimatedSprite>()->play("idle");
+            }},
+            {2.0f, [](MultiTimer* self) {}}
+    }));
+
+
 
     auto* collider = entity->add_component(Collider({ 0, 0, 16, 16 }));
 

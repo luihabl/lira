@@ -20,9 +20,17 @@ namespace MicroNinja {
         };
 
         struct Animation {
-            size_t size(){ return frames.size(); }
             std::vector<Frame> frames;
             bool loop = true;
+
+            size_t size(){ return frames.size(); }
+            float lenght() 
+            { 
+                float t = 0.0f;
+                for (const auto& frame : frames) 
+                    t += frame.delay_ms;
+                return t / 1000.0f;
+            }
         };
 
         std::string current_id = "";

@@ -39,5 +39,7 @@ namespace MicroNinja {
         T* get_sibling() {
             return entity->get_component<T>();
         }
+
+        void destroy();
     };
 }

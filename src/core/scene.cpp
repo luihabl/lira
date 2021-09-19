@@ -21,11 +21,11 @@ void Scene::begin() {
 void Scene::update() {
 
    for (const auto& [id, items] : components)
-	   for (auto* component : items) 
-	   {
-		   if (component->is_active && component->entity->is_active)
-			   component->update();
-	   }
+	  for (size_t i = 0; i < items.size(); i++)
+	  {
+	      if (items[i]->is_active && items[i]->entity->is_active)
+			  items[i]->update();
+	  }
 
    for (auto& c : components_to_remove) 
 	   destroy_component(c, c->entity);

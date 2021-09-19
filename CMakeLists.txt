@@ -11,27 +11,30 @@ add_subdirectory(lib/json)
 
 add_executable(micro_ninja 
 src/main.cpp
-"src/modules/game.cpp"
-"src/core/scene.cpp"
-"src/core/component.cpp"
-"src/core/entity.cpp"
-"src/input/input.cpp"
+src/modules/game.cpp
+src/core/scene.cpp
+src/core/component.cpp
+src/core/entity.cpp
+src/input/input.cpp
 src/input/virtualbutton.cpp
 src/input/virtualaxis.cpp
-# ${IMGUI_SRC}
- "src/assets/content.cpp" 
- "src/assets/tileset.cpp"
- "src/microninja.cpp" 
- "src/microninja.h" 
- "src/level0.h" 
- "src/level0.cpp"
- "src/composer.cpp"
- "src/components/tilemap.cpp"
+
+ src/assets/content.cpp
+ src/assets/tileset.cpp
+ src/microninja.cpp 
+ src/microninja.h
+ src/level0.h
+ src/level0.cpp
+ src/composer.cpp
+ src/components/tilemap.cpp
  src/components/animated_sprite.cpp
  src/components/collider.cpp
  src/components/collider_grid.cpp
  src/components/actor.cpp
- )
+ src/components/timer.cpp
+
+ # ${IMGUI_SRC}
+  "src/components/multitimer.h" "src/components/multitimer.cpp")
 
 
 #find_package(SDL2 REQUIRED)
