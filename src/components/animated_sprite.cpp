@@ -2,16 +2,30 @@
 #include <tinysdl.h>
 
 #include "../modules/game.h"
+#include "../assets/content.h"
+
+#include <string>
 
 using namespace MicroNinja;
 using namespace TinySDL;
 
-AnimatedSprite::Animation * AnimatedSprite::add(const std::string & id) {
+AnimatedSprite::AnimatedSprite(std::string key)
+{
+    animations = Content::find<SpriteSheet>(key)->animations;
+}
+
+
+SpriteSheet::Animation * AnimatedSprite::add(const std::string & id) {
 
     if ( animations.find(id) == animations.end() ) {
-        animations[id] = Animation();
+        animations[id] = SpriteSheet::Animation();
     } 
 
+    return &(animations[id]);
+}
+
+SpriteSheet::Animation* MicroNinja::AnimatedSprite::get(const std::string& id)
+{
     return &(animations[id]);
 }
 

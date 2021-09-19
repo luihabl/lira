@@ -119,12 +119,14 @@
    { "name": "opening", "from": 0, "to": 6, "direction": "forward", "color": "#000000ff" },
    { "name": "idle", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
    { "name": "preparing", "from": 6, "to": 7, "direction": "forward", "color": "#000000ff" },
+   { "name": "shooting", "from": 6, "to": 6, "direction": "forward", "color": "#000000ff" },
    { "name": "closing", "from": 8, "to": 11, "direction": "forward", "color": "#000000ff" }
   ],
   "layers": [
    { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
+   { "name": "origin", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 0, "w": 32, "h": 32 }, "pivot": {"x": 9, "y": 16 } }] }
   ]
  }
 }

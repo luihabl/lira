@@ -1,9 +1,10 @@
 #include "content.h"
 
 #include <tinysdl.h>
-#include "ldtk.h"
 
-#include <iostream>
+#include "ldtk.h"
+#include "spritesheet.h"
+
 #include <unordered_map>
 #include <filesystem> 
 
@@ -50,15 +51,32 @@ void Content::load_all() {
 			std::string key_name = file_path.generic_string();
 			std::replace(key_name.begin(), key_name.end(), '\\', '/');
 
-			if (extension == ".png") {
+			if (extension == ".png") 
+			{
 				add_asset<Texture>(key_name, item.path().filename(), item.path().parent_path(), Texture::from_file(item.path().generic_string().c_str()));
 			}
 
-			if (extension == ".ldtk") {
+			if (extension == ".ldtk") 
+			{
 				add_asset<LDTk::File>(key_name, item.path().filename(), item.path().parent_path(), nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())));
-			}
-				
+			}			
 
+		}
+	}
+
+	for (auto& item : fs::recursive_directory_iterator(content_path)) {
+		if (item.is_regular_file()) {
+			fs::path file_path = fs::relative(item.path(), content_path);
+			std::string extension = file_path.extension().generic_string();
+			file_path.replace_extension("");
+
+			std::string key_name = file_path.generic_string();
+			std::replace(key_name.begin(), key_name.end(), '\\', '/');
+
+			if (extension == ".json")
+			{
+				add_asset<SpriteSheet>(key_name, item.path().filename(), item.path().parent_path(), { nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())), key_name });
+			}
 		}
 	}
 }

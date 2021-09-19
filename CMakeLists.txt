@@ -34,7 +34,7 @@ src/input/virtualaxis.cpp
  src/components/timer.cpp
 
  # ${IMGUI_SRC}
-  "src/components/multitimer.h" "src/components/multitimer.cpp")
+  "src/components/multitimer.h" "src/components/multitimer.cpp" "src/assets/spritesheet.h")
 
 
 #find_package(SDL2 REQUIRED)
