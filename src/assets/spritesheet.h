@@ -44,9 +44,14 @@ namespace MicroNinja
             std::vector<Frame> frames;
             for (auto& frame : json["frames"])
             {
-                frames.push_back({ TexRegion(Content::find<Texture>(key),
-                                   Rect(frame["frame"]["x"], frame["frame"]["y"], frame["frame"]["w"], frame["frame"]["h"])), 
-                                   {json["meta"]["slices"][0]["keys"][0]["pivot"]["x"], json["meta"]["slices"][0]["keys"][0]["pivot"]["y"]},
+                auto& slice = json["meta"]["slices"][0]["keys"][0];
+                Rect rect = Rect((float) frame["frame"]["x"] + (float) slice["bounds"]["x"], 
+                                 (float) frame["frame"]["y"] + (float) slice["bounds"]["y"],
+                                  slice["bounds"]["w"], slice["bounds"]["h"]);
+
+
+                frames.push_back({ TexRegion(Content::find<Texture>(key), rect),
+                                   {slice["pivot"]["x"], slice["pivot"]["y"]},
                                    frame["duration"]});
             }
 

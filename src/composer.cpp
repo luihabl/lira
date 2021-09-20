@@ -90,8 +90,9 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
             }},
             {4.0f * animator->get("preparing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("shooting");
+                create_bullet(self->scene(), { -1.0f, 0.0f }, self->entity->position + IVec2({-12, -1}));
             }},
-            {2.0f * animator->get("preparing")->lenght(), [](MultiTimer* self) {
+            {1.0f * animator->get("preparing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("closing");
             }},
             {animator->get("closing")->lenght(), [](MultiTimer* self) {
@@ -104,6 +105,35 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
 
     auto* collider = entity->add_component(Collider({ 0, 0, 16, 16 }));
 
+    return entity;
+}
+
+Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const TinySDL::IVec2& position, const int layer)
+{
+    auto* entity = scene->add_entity(position, layer);
+    
+    auto* animator = entity->add_component(AnimatedSprite("sprites/turret-bullet"));
+    animator->play("drift");
+    
+    auto* actor = entity->add_component(Actor());
+    actor->velocity = direction * 100.0f;
+
+    auto* collider = entity->add_component(Collider({ 0, 0, 12, 7 }));
+    actor->collider = collider;
+
+    actor->on_collide_x = [](Actor* self)
+    {
+        self->stop_x();
+        auto* animator = self->get_sibling<AnimatedSprite>();
+        self->get_sibling<Collider>()->destroy();
+        
+        animator->play("exploding");
+
+        self->entity->add_component(Timer(animator->get("exploding")->lenght(), [](Timer* self) {
+            self->entity->destroy();
+        }));
+
+    };
 
     return entity;
 }

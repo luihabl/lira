@@ -38,9 +38,11 @@ void Actor::move_exact_x(int amount) {
                 remaining -= step;
             }
             else {
-                velocity[0] = 0;
-                move_remainder[0] = 0;
-                break;
+                if (on_collide_x)
+                    on_collide_x(this);
+                else
+                    stop_x();
+                return;
             }
         }
     }
@@ -63,15 +65,30 @@ void Actor::move_exact_y(int amount) {
                 remaining -= step;
             }
             else {
-                velocity[1] = 0;
-                move_remainder[1] = 0;
-                break;
+
+                if (on_collide_y)
+                    on_collide_y(this);
+                else
+                    stop_y();
+                return;
             }
         }
     }
     else {
         entity->position[1] += amount;
     }
+}
+
+void Actor::stop_x()
+{
+    velocity[0] = 0;
+    move_remainder[0] = 0;
+}
+
+void Actor::stop_y()
+{
+    velocity[1] = 0;
+    move_remainder[1] = 0;
 }
 
 bool Actor::on_ground(int offset) {

@@ -5,6 +5,8 @@
 
 #include <tinysdl.h>
 
+#include <functional>
+
 namespace MicroNinja {
 
     class Actor : public Component {
@@ -20,6 +22,12 @@ namespace MicroNinja {
         
         void move_exact_x(int amount);
         void move_exact_y(int amount);
+
+        void stop_x();
+        void stop_y();
+
+        std::function<void(Actor*)> on_collide_x = nullptr;
+        std::function<void(Actor*)> on_collide_y = nullptr;
 
         bool on_ground(int offset = 1);
     
