@@ -94,41 +94,28 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
     auto* entity = scene->add_entity(position, layer);
 
     auto* animator = entity->add_component(AnimatedSprite("sprites/turret"));
-    
-    auto* idle = animator->get("idle");
-    auto* opening = animator->get("opening");
-    auto* preparing = animator->get("preparing");
-    auto* closing = animator->get("closing");
-
-
-    animator->play("opening");
-
+    animator->play("idle");
 
     auto* timer = entity->add_component(MultiTimer({
             {0.0f, [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("opening");
             }},
-            {opening->lenght(), [](MultiTimer* self) {
+            {animator->get("opening")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("preparing");
             }},
-            {4.0f * preparing->lenght(), [](MultiTimer* self) {
+            {4.0f * animator->get("preparing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("shooting");
             }},
-            {2.0f * preparing->lenght(), [](MultiTimer* self) {
+            {2.0f * animator->get("preparing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("closing");
             }},
-            {closing->lenght(), [](MultiTimer* self) {
+            {animator->get("closing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("idle");
             }},
             {2.0f, [](MultiTimer* self) {}}
     }));
 
-
-
     auto* collider = entity->add_component(Collider({ 0, 0, 16, 16 }));
-
-
-
 
 
     return entity;
