@@ -25,6 +25,8 @@ namespace MicroNinja
 
 		void update() override;
 
+		void restart(size_t index = 0);
+
 	private:
 
 		size_t current_timer = 0;
@@ -32,9 +34,5 @@ namespace MicroNinja
 		float total_duration = 0.0f;
 		float counter = 0.0f;
 		std::vector<SingleTimer> timers;
-
 	};
-
-
-
 }

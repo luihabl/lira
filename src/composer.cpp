@@ -58,12 +58,12 @@ Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & pos
 }
 
 
-Entity * Composer::create_player(Scene * scene, std::string name, const TinySDL::IVec2 & position, const int layer) {
+Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position, const int layer) {
     auto* entity = scene->add_entity(position, layer);
     entity->add_component(Player());
 
     
-    auto * animator = entity->add_component(AnimatedSprite(name));
+    auto * animator = entity->add_component(AnimatedSprite("sprites/player"));
     animator->play("idle");
 
     auto * collider = entity->add_component(Collider({-7, -1, 14, 17}));
@@ -80,7 +80,7 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
 
     auto* animator = entity->add_component(AnimatedSprite("sprites/turret"));
     animator->play("idle");
-
+    
     auto* timer = entity->add_component(MultiTimer({
             {0.0f, [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("opening");
@@ -99,6 +99,8 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
             }},
             {2.0f, [](MultiTimer* self) {}}
     }));
+
+    timer->loop = true;
 
     auto* collider = entity->add_component(Collider({ 0, 0, 16, 16 }));
 
