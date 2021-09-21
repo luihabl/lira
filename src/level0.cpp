@@ -15,9 +15,8 @@ using namespace TinySDL;
 
 void Level0::begin() {
 
-    auto* map = Composer::create_map(this, "tilemaps/map0", {0, 0});
+    auto* map = Composer::create_level(this, "tilemaps/map0", 1, {0, 0});
     auto* player = Composer::create_player(this, {0, 0}, 1);
-    auto* turret = Composer::create_turret(this, { 16 * 15, 16 * 8 });
 
     Scene::begin();
 }

@@ -18,41 +18,61 @@
 using namespace MicroNinja;
 using namespace TinySDL;
 
-Entity * Composer::create_map(Scene * scene, std::string name, const IVec2 & position, const int layer) {
+Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n, const IVec2 & position, const int layer) {
 
     auto* entity = scene->add_entity(position, layer);
 
     auto* map = Content::find<LDTk::File>(name);
 
-    auto & level = map->levels[0];
-    auto & level_layer = (*(level.layer_instances.get()))[0];
+    auto & level = map->levels[level_n];
 
-    int grid_size = (int) level_layer.grid_size;
-    int level_w = (int) (level.px_wid % grid_size == 0 ? level.px_wid / grid_size : level.px_wid / grid_size + 1);
-    int level_h = (int) (level.px_hei % grid_size == 0 ? level.px_hei / grid_size : level.px_hei / grid_size + 1);
-    
-    auto * tilemap = entity->add_component(TileMap(level_w, level_h, grid_size, grid_size));
-    auto * collider = entity->add_component(ColliderGrid(level_w, level_h, grid_size, grid_size)); 
+    auto* level_layers = level.layer_instances.get();
+    for (auto& layer : *level_layers)
+    {
+        if (layer.type == "Tiles")
+        {
 
-    std::vector<int> cx;
-    std::vector<int> cy;
-    std::vector<int> t;
+            int grid_size = (int)layer.grid_size;
+            int level_w = (int)(level.px_wid % grid_size == 0 ? level.px_wid / grid_size : level.px_wid / grid_size + 1);
+            int level_h = (int)(level.px_hei % grid_size == 0 ? level.px_hei / grid_size : level.px_hei / grid_size + 1);
 
-    for (const auto & gtiles : level_layer.grid_tiles) {
-        cx.push_back((int) (gtiles.px[0] / level_layer.grid_size));
-        cy.push_back((int) (gtiles.px[1] / level_layer.grid_size));
-        t.push_back((int) gtiles.t);
+            auto* tilemap = entity->add_component(TileMap(level_w, level_h, grid_size, grid_size));
+            auto* collider = entity->add_component(ColliderGrid(level_w, level_h, grid_size, grid_size));
 
-        collider->set_cell((int) (gtiles.px[0] / level_layer.grid_size), (int) (gtiles.px[1] / level_layer.grid_size), true);
+            std::vector<int> cx;
+            std::vector<int> cy;
+            std::vector<int> t;
+
+            for (const auto& gtiles : layer.grid_tiles) {
+                cx.push_back((int)(gtiles.px[0] / layer.grid_size));
+                cy.push_back((int)(gtiles.px[1] / layer.grid_size));
+                t.push_back((int)gtiles.t);
+
+                collider->set_cell((int)(gtiles.px[0] / layer.grid_size), (int)(gtiles.px[1] / layer.grid_size), true);
+            }
+
+            std::filesystem::path filepath = Content::file_folder<LDTk::File>(name) / *(layer.tileset_rel_path.get());
+            std::filesystem::path key = filepath.parent_path().stem() / filepath.stem();
+
+            TileSet tileset(16, 16, Content::find<Texture>(key.generic_string().c_str()));
+
+            tilemap->set_cells(tileset, cx, cy, t);
+        }
+
+        if (layer.type == "Entities")
+        {
+            for (auto& entity : layer.entity_instances)
+            {
+                if (entity.identifier == "Turret")
+                {
+                    create_turret(scene, { (int) entity.px[0], (int) entity.px[1] });
+                }
+
+
+            }
+        }
     }
 
-    std::filesystem::path filepath = Content::file_folder<LDTk::File>(name) / *(level_layer.tileset_rel_path.get());
-    std::filesystem::path key = filepath.parent_path().stem() / filepath.stem();
-
-    TileSet tileset(16, 16, Content::find<Texture>(key.generic_string().c_str()));
-
-    
-    tilemap->set_cells(tileset, cx, cy, t);
 
     return entity;
 }
