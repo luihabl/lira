@@ -14,6 +14,8 @@
 #include "components/multitimer.h"
 
 #include <filesystem>
+#include <algorithm>
+#include <unordered_map>
 
 using namespace MicroNinja;
 using namespace TinySDL;
@@ -21,43 +23,83 @@ using namespace TinySDL;
 Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n, const IVec2 & position, const int layer) {
 
     auto* entity = scene->add_entity(position, layer);
-
     auto* map = Content::find<LDTk::File>(name);
-
     auto & level = map->levels[level_n];
+    auto& level_layers = *(level.layer_instances.get());
 
-    auto* level_layers = level.layer_instances.get();
-    for (auto& layer : *level_layers)
+
+    struct TilsetInfo
     {
-        if (layer.type == "Tiles")
+        LDTk::TilesetDefinition def;
+        std::unordered_map<std::string, std::vector<int>> enums;
+    };
+
+
+    std::unordered_map<int, TilsetInfo> tilesets;
+    for (auto& ts :  map->defs.tilesets)
+    {
+        TilsetInfo info;
+        info.def = ts;
+
+        for(const auto& tag : ts.enum_tags)
+            info.enums[tag.at("enumValueId")] = tag.at("tileIds").get<std::vector<int>>(); 
+
+        tilesets[(int)ts.uid] = info;
+    }
+        
+
+    for (int i = (int)level_layers.size() - 1; i >= 0; i--)
+    {
+        auto& layer = level_layers[i];
+
+        if (layer.type == "Tiles" || layer.type == "IntGrid")
         {
+            int uid = (int) *layer.tileset_def_uid.get();
+            
+            std::filesystem::path filepath = Content::file_folder<LDTk::File>(name) / *(layer.tileset_rel_path.get());
+            std::filesystem::path key = filepath.parent_path().stem() / filepath.stem();
+            
+            TileSet tileset((int) tilesets[uid].def.tile_grid_size, (int) tilesets[uid].def.tile_grid_size, Content::find<Texture>(key.generic_string().c_str()));
 
             int grid_size = (int)layer.grid_size;
             int level_w = (int)(level.px_wid % grid_size == 0 ? level.px_wid / grid_size : level.px_wid / grid_size + 1);
             int level_h = (int)(level.px_hei % grid_size == 0 ? level.px_hei / grid_size : level.px_hei / grid_size + 1);
 
             auto* tilemap = entity->add_component(TileMap(level_w, level_h, grid_size, grid_size));
-            auto* collider = entity->add_component(ColliderGrid(level_w, level_h, grid_size, grid_size));
 
-            std::vector<int> cx;
-            std::vector<int> cy;
-            std::vector<int> t;
+            ColliderGrid* collider = nullptr;
+            std::vector<int>* solid_tiles;
 
-            for (const auto& gtiles : layer.grid_tiles) {
+            if(tilesets[uid].enums.count("Solid"))
+            {
+                if (tilesets[uid].enums["Solid"].size() > 0)
+                    collider = entity->add_component(ColliderGrid(level_w, level_h, grid_size, grid_size));
+            
+                solid_tiles = &(tilesets[uid].enums["Solid"]);
+            }
+
+            std::vector<int> cx, cy, t;            
+            std::vector<LDTk::TileInstance> tiles;
+
+            if(layer.type == "Tiles")
+                tiles = layer.grid_tiles;
+            if(layer.type == "IntGrid")
+                tiles = layer.auto_layer_tiles;
+
+            for (const auto& gtiles : tiles) {
                 cx.push_back((int)(gtiles.px[0] / layer.grid_size));
                 cy.push_back((int)(gtiles.px[1] / layer.grid_size));
                 t.push_back((int)gtiles.t);
 
-                collider->set_cell((int)(gtiles.px[0] / layer.grid_size), (int)(gtiles.px[1] / layer.grid_size), true);
+                if(solid_tiles)
+                    if (std::find(solid_tiles->begin(), solid_tiles->end(), (int)gtiles.t) != solid_tiles->end())
+                        collider->set_cell((int)(gtiles.px[0] / layer.grid_size), (int)(gtiles.px[1] / layer.grid_size), true);
             }
-
-            std::filesystem::path filepath = Content::file_folder<LDTk::File>(name) / *(layer.tileset_rel_path.get());
-            std::filesystem::path key = filepath.parent_path().stem() / filepath.stem();
-
-            TileSet tileset(16, 16, Content::find<Texture>(key.generic_string().c_str()));
-
+            
             tilemap->set_cells(tileset, cx, cy, t);
         }
+
+
 
         if (layer.type == "Entities")
         {
@@ -68,7 +110,11 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
                     create_turret(scene, { (int) entity.px[0], (int) entity.px[1] });
                 }
 
-
+                if (entity.identifier == "Player")
+                {
+                    create_player(scene, { (int) entity.px[0], (int) entity.px[1] }, 1);
+                }
+                
             }
         }
     }

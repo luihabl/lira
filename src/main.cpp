@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) {
 
-    auto game = MicroNinja::MicroNinjaGame(400, 240, 800, 480, "Micro Ninja");
+    auto game = MicroNinja::MicroNinjaGame(320, 180, 800, 480, "Lira");
     game.run();
     return 0;
 }

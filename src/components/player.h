@@ -77,14 +77,14 @@ namespace MicroNinja {
 
             
             if(h_input != 0) {
-                animator->play("walk");
+                animator->play("run");
             }
             else {
                 animator->play("idle");
             }
 
             if(!on_ground) {
-                animator->play("jump");
+                animator->play("jump_up");
             }
             
             

@@ -15,8 +15,7 @@ using namespace TinySDL;
 
 void Level0::begin() {
 
-    auto* map = Composer::create_level(this, "tilemaps/map0", 1, {0, 0});
-    auto* player = Composer::create_player(this, {0, 0}, 1);
+    auto* map = Composer::create_level(this, "tilemaps/map1", 1, {0, 0}, -1);
 
     Scene::begin();
 }
@@ -31,7 +30,7 @@ void Level0::update() {
 
 void Level0::render(TinySDL::BatchRenderer& renderer)
 {
-    Graphics::clear({ 31, 15, 0 });
+    Graphics::clear(Color::black);
 
     Scene::render(renderer);
     
