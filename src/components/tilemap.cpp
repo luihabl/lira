@@ -29,8 +29,22 @@ void TileMap::render(TinySDL::BatchRenderer & renderer) {
         }
 }
 
-void TileMap::set_cells(const TileSet & tileset, const std::vector<int> & cx_list,  const std::vector<int> & cy_list, const std::vector<int> & tile_ids) {
+void TileMap::set_cells(const TileSet & tileset, const std::vector<int> & cx_list,  const std::vector<int> & cy_list, const std::vector<int> & tile_ids, const std::vector<int> & flip) {
     for(int i = 0; i <  cx_list.size(); i++) 
+    {
         cells[cx_list[i] + cy_list[i] * nx] = tileset[tile_ids[i]];
+
+        if(flip[i] & 0x1)
+        {
+            cells[cx_list[i] + cy_list[i] * nx].flip_x();
+        }
+
+        if(flip[i] & 0x3)
+        {
+            cells[cx_list[i] + cy_list[i] * nx].flip_y();
+        }
+
+    }
+        
 }
 

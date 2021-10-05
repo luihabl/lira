@@ -78,7 +78,9 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
                 solid_tiles = &(tilesets[uid].enums["Solid"]);
             }
 
-            std::vector<int> cx, cy, t;            
+            std::vector<int> cx, cy, t;  
+            std::vector<int> f;
+
             std::vector<LDTk::TileInstance> tiles;
 
             if(layer.type == "Tiles")
@@ -90,13 +92,14 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
                 cx.push_back((int)(gtiles.px[0] / layer.grid_size));
                 cy.push_back((int)(gtiles.px[1] / layer.grid_size));
                 t.push_back((int)gtiles.t);
-
+                f.push_back((int)gtiles.f);             
+                   
                 if(solid_tiles)
                     if (std::find(solid_tiles->begin(), solid_tiles->end(), (int)gtiles.t) != solid_tiles->end())
                         collider->set_cell((int)(gtiles.px[0] / layer.grid_size), (int)(gtiles.px[1] / layer.grid_size), true);
             }
             
-            tilemap->set_cells(tileset, cx, cy, t);
+            tilemap->set_cells(tileset, cx, cy, t, f);
         }
 
 

@@ -14,7 +14,7 @@ namespace MicroNinja {
         TileMap() = default;
         TileMap(int columns, int rows, int tile_w, int tile_h);
 
-        void set_cells(const TileSet & tileset, const std::vector<int> & cx_list,  const std::vector<int> & cy_list, const std::vector<int> & tile_ids);
+        void set_cells(const TileSet & tileset, const std::vector<int> & cx_list,  const std::vector<int> & cy_list, const std::vector<int> & tile_ids, const std::vector<int> & flip);
         void set_cell(int cell_x, int cell_y, const TinySDL::TexRegion & reg);
 
         void render(TinySDL::BatchRenderer & renderer) override;
