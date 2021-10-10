@@ -1,7 +1,7 @@
 #include "microninja.h"
 #include "core/scene.h"
 
-#include "level0.h"
+#include "level.h"
 #include "input/input.h"
 
 
@@ -12,7 +12,7 @@ void MicroNinjaGame::begin() {
 
     target = RenderTarget(width, height);
 
-    move_to_scene(SceneRef(new Level0()));
+    move_to_scene(SceneRef(new Level()));
 
     Graphics::set_blend_mode();
     Game::begin();

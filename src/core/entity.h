@@ -27,7 +27,7 @@ namespace MicroNinja
         T* add_component(T&& component = T());
 
         template <typename T>
-        T* get_component();
+        T* get_component() const;
 
         int get_layer(){ return layer; }
 
@@ -50,7 +50,7 @@ namespace MicroNinja
     }
 
     template <typename T>
-    T* Entity::get_component() {
+    T* Entity::get_component() const {
         for (auto* c : components) {
             if (c->type == TinySDL::Type::type_of<T>()) {
                 return (T*) c;

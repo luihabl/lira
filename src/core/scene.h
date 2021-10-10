@@ -15,6 +15,8 @@ namespace MicroNinja {
     class Entity;
     class Component;
 
+    constexpr size_t N_MAX_CACHE = 512;
+
     class Scene {
 
         friend class Game;
@@ -40,14 +42,22 @@ namespace MicroNinja {
             const std::vector<Component*>& get_components();
 
             template <typename T>
+            size_t components_count();
+
+            template <typename T>
             const Component* get_first();
+
+            const std::vector<Entity*>& get_entities();
 
             
         private:
             Game* game;
 
             TypeTable<Component> components;
+            TypeTable<Component> components_cache;
+
             std::vector<Entity*> entities;
+            std::vector<Entity*> entities_cache;
 
             std::vector<Component*> components_to_remove;
             std::vector<Entity*> entities_to_remove;
@@ -70,6 +80,12 @@ namespace MicroNinja {
     }
 
     template <typename T>
+    size_t Scene::components_count()
+    {       
+        return components.count<T>();
+    }
+
+    template <typename T>
     const Component* Scene::get_first()
     {
         const auto& group = components.get_group<T>();
@@ -82,8 +98,17 @@ namespace MicroNinja {
     template <typename T>
     inline T* Scene::add_component(T&& component, Entity * entity) 
     {
+        T* c = nullptr;
 
-        T* c = new T();
+        if (components_cache.count<T>() > 0)
+        {
+            c = components_cache.pop<T>();
+        }
+        else 
+        {
+            c = new T();
+        }
+            
         *c = component;
         c->entity = entity;
         c->type = TinySDL::Type::type_of<T>();

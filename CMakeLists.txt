@@ -23,8 +23,8 @@ src/input/virtualaxis.cpp
  src/assets/tileset.cpp
  src/microninja.cpp 
  src/microninja.h
- src/level0.h
- src/level0.cpp
+ "src/level.h"
+ src/level.cpp
  src/composer.cpp
  src/components/tilemap.cpp
  src/components/animated_sprite.cpp

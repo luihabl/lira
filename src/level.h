@@ -7,7 +7,7 @@ using namespace TinySDL;
 
 namespace MicroNinja {
 
-	class Level0 : public Scene {
+	class Level : public Scene {
 
 		void begin() override;
 		void update() override;
@@ -28,6 +28,7 @@ namespace MicroNinja {
 
 		void set_map_info(const std::string& map_name);
 		void load_room(size_t id);
+		void unload_room();
 
 
 	};

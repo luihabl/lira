@@ -71,7 +71,7 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
             auto* tilemap = entity->add_component(TileMap(level_w, level_h, grid_size, grid_size));
 
             ColliderGrid* collider = nullptr;
-            std::vector<int>* solid_tiles;
+            std::vector<int>* solid_tiles = nullptr;
 
             if(tilesets[uid].enums.count("Solid"))
             {
@@ -118,7 +118,8 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
                 if (entity.identifier == "Player")
                 {
-                    create_player(scene, { (int) entity.px[0] + level_pos[0], (int) entity.px[1] + level_pos[1]}, 1);
+                    if(!scene->get_first<Player>())
+                        create_player(scene, { (int) entity.px[0] + level_pos[0], (int) entity.px[1] + level_pos[1]}, 1);
                 }
                 
             }

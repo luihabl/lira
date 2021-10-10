@@ -1,7 +1,7 @@
 
 #include <tinysdl.h>
 
-#include "level0.h" 
+#include "level.h" 
 #include "composer.h"
 #include "modules/game.h"
 #include "input/input.h"
@@ -17,20 +17,21 @@ using namespace MicroNinja;
 using namespace TinySDL;
 
 
-void Level0::begin() {
+void Level::begin() {
 
     set_map_info("tilemaps/map1");
-    
-    load_room(0);
-    load_room(1);
 
-    current_room_bbox = bbox_rooms[0];
+
+    current_room_id = 1;
+    
+    load_room(current_room_id);
+    current_room_bbox = bbox_rooms[current_room_id];
     camera_offset = {current_room_bbox.x, current_room_bbox.y};
 
     Scene::begin();
 }
 
-void Level0::set_map_info(const std::string& _map_name)
+void Level::set_map_info(const std::string& _map_name)
 {
     current_map_name = _map_name;
 
@@ -42,13 +43,23 @@ void Level0::set_map_info(const std::string& _map_name)
     }
 }
 
-void Level0::load_room(size_t id)
+void Level::load_room(size_t id)
 {
     auto* room = Composer::create_level(this, current_map_name, id, {0, 0}, -1);
 }
 
+void Level::unload_room()
+{
+    for(Entity* entity : get_entities())
+    {
+        if(!entity->get_component<Player>())
+        {
+            entity->destroy();
+        }
+    }
+}
 
-void Level0::update() {
+void Level::update() {
     
     Scene::update();
 
@@ -58,33 +69,25 @@ void Level0::update() {
     const auto* player = get_first<Player>();
     if(player)
     {
-        const auto& pos = player->entity->position;
+        if(!current_room_bbox.contains(player->entity->position))
+        {           
+            const auto& pos = player->entity->position;
+            for(size_t i = 0; i < bbox_rooms.size(); i++)
+            {
+                if(bbox_rooms[i].contains(pos))
+                {
+                    unload_room();
 
-        camera_offset = IVec2({current_room_bbox.x, current_room_bbox.y}) + pos - IVec2({160, 90});
-
-        
-        if(!current_room_bbox.contains(pos))
-        {
-            
-            Log::debug("asdasdasd");
-
-
+                    load_room(i);
+                    current_room_bbox = bbox_rooms[i];
+                    camera_offset = {current_room_bbox.x, current_room_bbox.y};
+                }
+            }
         }
-
-
-
     }
-
-
-
-
-
-
-
-    
 }
 
-void Level0::render(TinySDL::BatchRenderer& renderer)
+void Level::render(TinySDL::BatchRenderer& renderer)
 {
     Graphics::clear(Color::black);
 
