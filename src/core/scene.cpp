@@ -10,6 +10,14 @@
 using namespace MicroNinja;
 using namespace TinySDL;
 
+Scene::~Scene()
+{
+	for (Entity* e : entities)
+		delete e;
+	
+	for (Entity* e : entities_cache)
+		delete e;
+}
 
 void Scene::begin() {
 	for (const auto& [id, items] : components)

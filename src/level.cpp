@@ -78,9 +78,11 @@ void Level::update() {
                 {
                     unload_room();
 
-                    load_room(i);
-                    current_room_bbox = bbox_rooms[i];
-                    camera_offset = {current_room_bbox.x, current_room_bbox.y};
+                    current_room_id = i;
+
+                    load_room(current_room_id);
+                    current_room_bbox = bbox_rooms[current_room_id];
+                    camera_offset = { current_room_bbox.x, current_room_bbox.y };
                 }
             }
         }

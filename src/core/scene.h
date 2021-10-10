@@ -26,6 +26,7 @@ namespace MicroNinja {
             virtual void update();
             virtual void render(TinySDL::BatchRenderer & renderer);
 
+            virtual ~Scene();
             
             Entity* add_entity(const TinySDL::IVec2& pos = { 0, 0 }, int layer = 0);
             
