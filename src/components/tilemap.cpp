@@ -23,10 +23,15 @@ void TileMap::set_cell(int cell_x, int cell_y, const TinySDL::TexRegion & reg) {
 }
 
 void TileMap::render(TinySDL::BatchRenderer & renderer) {
+
+    renderer.push_transform(LinAlg2D::gen_translation((float)entity->position[0], (float)entity->position[1]));
+
     for (int cy = 0; cy < ny; cy++)
         for (int cx = 0; cx < nx; cx++) {
-            renderer.draw_tex(cells[cx + cy * nx], {(float) (entity->position[0] + cx * tw), (float) (entity->position[1] + cy * th)});
+            renderer.draw_tex(cells[cx + cy * nx], {(float) (cx * tw), (float) (cy * th)});
         }
+    
+    renderer.pop_transform();
 }
 
 void TileMap::set_cells(const TileSet & tileset, const std::vector<int> & cx_list,  const std::vector<int> & cy_list, const std::vector<int> & tile_ids, const std::vector<int> & flip) {

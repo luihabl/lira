@@ -15,7 +15,7 @@ bool Collider::check(Collider & other, const IVec2 & offset) {
 
 bool Collider::check(ColliderGrid & other, const IVec2 & offset) {
     
-    const auto& r = rect + entity->position + offset;
+    const auto& r = rect + (offset + entity->position - other.entity->position);
     const auto& [w, h] = other.get_cell_size();
 
 

@@ -22,10 +22,13 @@ using namespace TinySDL;
 
 Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n, const IVec2 & position, const int layer) {
 
-    auto* entity = scene->add_entity(position, layer);
     auto* map = Content::find<LDTk::File>(name);
-    auto & level = map->levels[level_n];
+    auto& level = map->levels[level_n];
     auto& level_layers = *(level.layer_instances.get());
+
+    IVec2 level_pos = IVec2({(int)level.world_x, (int)level.world_y});
+
+    auto* entity = scene->add_entity(position + level_pos, layer);
 
 
     struct TilsetInfo
@@ -110,12 +113,12 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
             {
                 if (entity.identifier == "Turret")
                 {
-                    create_turret(scene, { (int) entity.px[0], (int) entity.px[1] });
+                    create_turret(scene, { (int) entity.px[0] + level_pos[0], (int) entity.px[1] + level_pos[1]});
                 }
 
                 if (entity.identifier == "Player")
                 {
-                    create_player(scene, { (int) entity.px[0], (int) entity.px[1] }, 1);
+                    create_player(scene, { (int) entity.px[0] + level_pos[0], (int) entity.px[1] + level_pos[1]}, 1);
                 }
                 
             }

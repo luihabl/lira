@@ -38,6 +38,10 @@ namespace MicroNinja {
 
             template <typename T>
             const std::vector<Component*>& get_components();
+
+            template <typename T>
+            const Component* get_first();
+
             
         private:
             Game* game;
@@ -63,6 +67,16 @@ namespace MicroNinja {
     const std::vector<Component*>& Scene::get_components()
     {
         return components.get_group<T>();
+    }
+
+    template <typename T>
+    const Component* Scene::get_first()
+    {
+        const auto& group = components.get_group<T>();
+        if(group.size() > 0)
+            return group[0];
+        
+        return nullptr;
     }
 
     template <typename T>

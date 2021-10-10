@@ -638,6 +638,17 @@
 							"defUid": 17,
 							"px": [192,96],
 							"fieldInstances": [{ "__identifier": "Direction", "__value": 1, "__type": "Int", "defUid": 18, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "Player",
+							"__grid": [16,16],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 50,
+							"px": [128,128],
+							"fieldInstances": []
 						}
 					]
 				},
