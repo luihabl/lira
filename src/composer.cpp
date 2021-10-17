@@ -139,7 +139,7 @@ Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position,
     auto * animator = entity->add_component(AnimatedSprite("sprites/player"));
     animator->play("idle");
 
-    auto * collider = entity->add_component(Collider({-7, -1, 14, 17}));
+    auto * collider = entity->add_component(Collider({-4, 0, 8, 16}));
 
     auto * actor = entity->add_component(Actor());
     actor->collider = collider;
