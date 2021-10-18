@@ -107,6 +107,8 @@ namespace MicroNinja {
 
         void set_movement()
         {
+            Vec2& velocity = actor->velocity;
+
             on_ground = actor->on_ground();
 
             current_gravity = gravity;
@@ -118,7 +120,7 @@ namespace MicroNinja {
 
             if (jump.just_pressed() && jump_counter < n_jumps) 
             {
-                actor->velocity[1] = jump_speed;
+                velocity[1] = jump_speed;
                 jump_counter++;
             }
 
@@ -154,13 +156,13 @@ namespace MicroNinja {
 
                 if (dash_direction.length() == 0.0f)
                 {
-                    dash_direction = actor->velocity.normalized();
+                    dash_direction = velocity.normalized();
                 }
 
                 actor->velocity += dash_accel * dash_direction;
 
-                if (actor->velocity.length() > dash_max_speed)
-                    actor->velocity = actor->velocity.normalized() * dash_max_speed;
+                if (velocity.length() > dash_max_speed)
+                    velocity = velocity.normalized() * dash_max_speed;
             }
             else
             {
@@ -172,23 +174,28 @@ namespace MicroNinja {
             if (!is_dashing)
             {
                 if (on_ground)
-                    actor->velocity[0] += horizontal_input.value() * floor_accel * GameProperties::delta_time();
+                    velocity[0] += horizontal_input.value() * floor_accel * GameProperties::delta_time();
                 else
-                    actor->velocity[0] += horizontal_input.value() * air_accel * GameProperties::delta_time();
+                    velocity[0] += horizontal_input.value() * air_accel * GameProperties::delta_time();
 
 
-                if (abs(actor->velocity[0]) > floor_max_speed)
-                    actor->velocity[0] = Mathf::approach(actor->velocity[0],  floor_max_speed * Mathf::sign(actor->velocity[0]), 1000.0f * GameProperties::delta_time());
+                if (abs(velocity[0]) > floor_max_speed)
+                    velocity[0] = Mathf::approach(velocity[0],  floor_max_speed * Mathf::sign(velocity[0]), 1000.0f * GameProperties::delta_time());
 
 
                 if (horizontal_input.value() == 0.0f && on_ground)
-                    actor->velocity[0] = Mathf::approach(actor->velocity[0], 0.0f, floor_friction * GameProperties::delta_time());
+                    velocity[0] = Mathf::approach(velocity[0], 0.0f, floor_friction * GameProperties::delta_time());
 
             }
 
             // Vertical movement
             
-            actor->velocity[1] += current_gravity * GameProperties::delta_time();
+            velocity[1] += current_gravity * GameProperties::delta_time();
+
+            if (abs(velocity[1] > 4 * floor_max_speed))
+            {
+                velocity[1] = Mathf::approach(velocity[1], vertical_max_speed * Mathf::sign(velocity[1]), 1000 * GameProperties::delta_time());
+            }
         }
 
         void set_animations()
