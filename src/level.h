@@ -14,6 +14,7 @@ namespace MicroNinja {
 		void render(TinySDL::BatchRenderer& renderer) override;
 
 		bool render_colliders = false;
+		bool render_minimap = false; // Move to component later
 
 
 		IVec2 camera_offset = IVec2::zeros;

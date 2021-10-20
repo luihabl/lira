@@ -66,6 +66,10 @@ void Level::update() {
     if (Input::just_pressed(Key::F1))
         render_colliders = !render_colliders;
 
+    if (Input::just_pressed(Key::Q)) // Move to component later
+        render_minimap = !render_minimap;
+
+
     const auto* player = get_first<Player>();
     if(player)
     {
@@ -118,6 +122,43 @@ void Level::render(TinySDL::BatchRenderer& renderer)
         for (auto* c : grid_colliders)
             c->render(renderer);
     }
+
+    /*
+        Move this to component later.
+        Maybe this type of component that can be rendered always on screen, 
+        independent of the camera. Canvas?
+    */
+    if (render_minimap)
+    {
+        renderer.push_transform(LinAlg2D::gen_translation((float)camera_offset[0], (float)camera_offset[1]));
+
+        renderer.draw_rect_fill(Rect({ 0.0f, 0.0f, (float)room_default_width, (float)room_default_height }), {0, 0, 50, 150});
+        
+        float scale = 0.1f;
+
+        renderer.push_transform(LinAlg2D::gen_translation((float)room_default_width * 0.25f, (float)room_default_height * 0.5f));
+
+        for (size_t i = 0; i < bbox_rooms.size(); i++)
+        {
+            
+            auto bbox = bbox_rooms[i].cast_to<float>();
+            bbox = Rect{ bbox.x * scale, bbox.y * scale, bbox.w * scale, bbox.h * scale };
+
+            renderer.draw_rect_line(bbox, {42, 53, 99, 255}, 1);            
+        }
+
+        renderer.draw_rect_line(Rect({ (float)current_room_bbox.x * scale, (float)current_room_bbox.y * scale, (float)current_room_bbox.w * scale, (float)current_room_bbox.h * scale }), { 48, 145, 54 }, 1);
+
+        const auto* player = get_first<Player>();
+        const auto& pos = player->entity->position.cast_to<float>();
+        renderer.draw_rect_fill(Rect({ pos[0] * scale, pos[1] * scale, 1.0f, 2.0f }), { 161, 80, 53 });
+        
+        renderer.pop_transform();
+        renderer.pop_transform();
+    }
+
+
+
 
     renderer.pop_transform();
 }
