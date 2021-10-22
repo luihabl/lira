@@ -94,12 +94,12 @@ void Level::update() {
         if (current_room_bbox.w > room_default_width)
         {
 
-            camera_offset[0] = Mathf::clamp(player->entity->position[0] - room_default_width / 2, current_room_bbox.x, current_room_bbox.x + current_room_bbox.w - room_default_width / 2);
+            camera_offset[0] = Mathf::clamp(player->entity->position[0] - room_default_width / 2, current_room_bbox.x, current_room_bbox.x + current_room_bbox.w - room_default_width);
         }
 
         if (current_room_bbox.h > room_default_height)
         {
-            camera_offset[1] = player->entity->position[1] - room_default_height / 2;
+            camera_offset[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room_bbox.y, current_room_bbox.y + current_room_bbox.h - room_default_height);
         }
     }
 }
