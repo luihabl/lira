@@ -31,7 +31,7 @@ namespace MicroNinja {
         float vertical_max_speed = 340.0f;
         float floor_accel = 700.0f;
         float floor_friction = 650.0f;
-        float max_slide_speed = 70.0f;
+        float max_slide_speed = 50.0f;
 
         float dash_length = 15.0f;
         float dash_max_speed = 220.0f;
@@ -134,7 +134,7 @@ namespace MicroNinja {
 
             if (jump.just_pressed() && jump_counter < n_jumps) 
             {
-                velocity[1] = jump_speed;
+                
 
                 bool on_wall_margin_r = actor->on_wall(wall_jump_margin);
                 bool on_wall_margin_l = actor->on_wall(-wall_jump_margin);
@@ -143,11 +143,17 @@ namespace MicroNinja {
                     if (on_wall_margin_r)
                     {
                         velocity[0] = -wall_jump_speed;
+                        velocity[1] = 1.1f * jump_speed;
                     }
                     else if (on_wall_margin_l)
                     {
                         velocity[0] = wall_jump_speed;
+                        velocity[1] = 1.1f * jump_speed;
                     }   
+                }
+                else
+                {
+                    velocity[1] = jump_speed;
                 }
 
                 jump_counter++;
@@ -226,7 +232,8 @@ namespace MicroNinja {
                 {
                     sliding = true;
                     current_gravity = slide_gravity_multiplier * gravity;
-                    velocity[1] = std::min(velocity[1], max_slide_speed);
+                    //velocity[1] = std::min(velocity[1], max_slide_speed);
+                    // Change friction!
                     
                     jump_counter = 1;
                 }
@@ -238,10 +245,15 @@ namespace MicroNinja {
             
             velocity[1] += current_gravity * GameProperties::delta_time();
 
-            if (abs(velocity[1] > 4 * floor_max_speed))
+            if (abs(velocity[1] > 4 * floor_max_speed) && !sliding)
             {
                 velocity[1] = Mathf::approach(velocity[1], vertical_max_speed * Mathf::sign(velocity[1]), 1000 * GameProperties::delta_time());
             }
+            else if (sliding)
+            {
+                velocity[1] = Mathf::approach(velocity[1], max_slide_speed, 1000 * GameProperties::delta_time());
+            }
+
         }
 
         void set_animations()
