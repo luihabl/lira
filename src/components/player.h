@@ -32,20 +32,29 @@ namespace MicroNinja {
         float floor_accel = 700.0f;
         float floor_friction = 650.0f;
         float max_slide_speed = 70.0f;
-        
+
         float dash_length = 15.0f;
         float dash_max_speed = 220.0f;
         float dash_accel = 150.0f;
+        float dash_recharge_delay = 0.2f;
         
         float gravity = 600.0f;
         float current_gravity = gravity;
         
         float air_accel = 300.0f;
         float jump_speed = -150.0f;
+        float wall_jump_speed = 170.0f;
         int jump_counter = 0;
         int n_jumps = 2;
+        int wall_jump_margin = 3;
+
         
         bool on_ground = true;
+        bool on_wall = false;
+        bool was_on_wall = false;
+
+        bool sliding = false;
+        float slide_gravity_multiplier = 0.18f;
 
         bool is_dashing = false;
         bool is_recharging_dash = false;
@@ -111,7 +120,12 @@ namespace MicroNinja {
 
             on_ground = actor->on_ground();
 
+            was_on_wall = on_wall;
+            on_wall = actor->on_wall(1) || actor->on_wall(-1);
+
             current_gravity = gravity;
+
+            // Jump
 
             if (on_ground) 
             {
@@ -121,6 +135,21 @@ namespace MicroNinja {
             if (jump.just_pressed() && jump_counter < n_jumps) 
             {
                 velocity[1] = jump_speed;
+
+                bool on_wall_margin_r = actor->on_wall(wall_jump_margin);
+                bool on_wall_margin_l = actor->on_wall(-wall_jump_margin);
+                if ((on_wall_margin_r || on_wall_margin_l) && !on_ground)
+                {                    
+                    if (on_wall_margin_r)
+                    {
+                        velocity[0] = -wall_jump_speed;
+                    }
+                    else if (on_wall_margin_l)
+                    {
+                        velocity[0] = wall_jump_speed;
+                    }   
+                }
+
                 jump_counter++;
             }
 
@@ -138,7 +167,7 @@ namespace MicroNinja {
             if (on_ground && !is_dashing && dash_counter >= dash_length && !is_recharging_dash) 
             {
                 is_recharging_dash = true;
-                entity->add_component(Timer(1.0f , [this](Timer* self) {
+                entity->add_component(Timer(dash_recharge_delay , [this](Timer* self) {
                     is_recharging_dash = false;
                     dash_counter = 0.0f;
                     self->destroy();
@@ -188,6 +217,23 @@ namespace MicroNinja {
 
             }
 
+            // Wall slide
+
+            sliding = false;
+            if (on_wall)
+            {
+                if (!on_ground && velocity[1] >= 0 && horizontal_input.value() != 0)
+                {
+                    sliding = true;
+                    current_gravity = slide_gravity_multiplier * gravity;
+                    velocity[1] = std::min(velocity[1], max_slide_speed);
+                    
+                    jump_counter = 1;
+                }
+            }
+
+
+
             // Vertical movement
             
             velocity[1] += current_gravity * GameProperties::delta_time();
@@ -234,6 +280,11 @@ namespace MicroNinja {
             {
                 animator->is_visible = true;
                 trails.clear();
+            }
+
+            if (sliding)
+            {
+                animator->play("slide");
             }
         }
     

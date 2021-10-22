@@ -99,7 +99,13 @@ bool Actor::on_ground(int offset) {
     return false;
 }
 
+bool Actor::on_wall(int dir) {
+    if (collider) {
+        return collider->check_first({ dir, 0 });
+    }
 
+    return false;
+}
 
 void Actor::update() {
 

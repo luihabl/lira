@@ -30,6 +30,7 @@ namespace MicroNinja {
         std::function<void(Actor*)> on_collide_y = nullptr;
 
         bool on_ground(int offset = 1);
+        bool on_wall(int dir = 1);
     
         void update() override;
     

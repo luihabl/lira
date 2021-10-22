@@ -73,16 +73,6 @@ void Level::update() {
     const auto* player = get_first<Player>();
     if(player)
     {
-        if (current_room_bbox.w > room_default_width)
-        {
-            camera_offset[0] = player->entity->position[0] - room_default_width / 2;
-        }
-
-        if (current_room_bbox.h > room_default_height)
-        {
-            camera_offset[1] = player->entity->position[1] - room_default_height / 2;
-        }
-
         if(!current_room_bbox.contains(player->entity->position))
         {           
             const auto& pos = player->entity->position;
@@ -99,6 +89,16 @@ void Level::update() {
                     camera_offset = { current_room_bbox.x, current_room_bbox.y };
                 }
             }
+        }
+
+        if (current_room_bbox.w > room_default_width)
+        {
+            camera_offset[0] = player->entity->position[0] - room_default_width / 2;
+        }
+
+        if (current_room_bbox.h > room_default_height)
+        {
+            camera_offset[1] = player->entity->position[1] - room_default_height / 2;
         }
     }
 }
