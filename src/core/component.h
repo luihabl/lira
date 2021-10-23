@@ -31,7 +31,7 @@ namespace MicroNinja {
 
         virtual void begin() {};
         virtual void update() {};
-        virtual void render(TinySDL::BatchRenderer & renderer) {};
+        virtual void render([[maybe_unused]] TinySDL::BatchRenderer & renderer) {};
 
         int get_layer();
         

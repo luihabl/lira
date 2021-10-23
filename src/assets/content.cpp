@@ -21,15 +21,15 @@ void Content::set_folder_name(const std::string & name) {
 // on the location where the executable is being run.
 fs::path Content::find_path() {
 	auto exe_path = fs::current_path();
-	auto content_path = fs::path(folder_name);
+	auto new_content_path = fs::path(folder_name);
 
 	for (int i = 0; i < 10; i++) {
 
-		if (std::filesystem::is_directory(exe_path / content_path)) {
-			return (exe_path / content_path);
+		if (std::filesystem::is_directory(exe_path / new_content_path)) {
+			return (exe_path / new_content_path);
 		}
 
-		content_path = ".." / content_path;
+		new_content_path = ".." / new_content_path;
 	}
 	Log::warn("Content folder '%s' was not found.", folder_name.c_str());
 

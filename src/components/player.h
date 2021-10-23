@@ -280,7 +280,7 @@ namespace MicroNinja {
                 animator->is_visible = false;
                 trails.push_back({entity->position, 5.0f, false});
 
-                for (int i = trails.size() - 1; i >= 0; i--)
+                for (int i = (int)trails.size() - 1; i >= 0; i--)
                 {
                     if (trails[i].remove)
                     {

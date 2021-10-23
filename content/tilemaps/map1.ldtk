@@ -377,7 +377,7 @@
 			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "MoveLastOne",
-			"pivotX": 0,
+			"pivotX": 0.5,
 			"pivotY": 0,
 			"fieldDefs": []
 		},
@@ -1521,6 +1521,17 @@
 							"defUid": 59,
 							"px": [296,16],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "Player",
+							"__grid": [14,14],
+							"__pivot": [0.5,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 50,
+							"px": [112,112],
+							"fieldInstances": []
 						}
 					]
 				},
@@ -2532,7 +2543,7 @@
 						{
 							"__identifier": "Player",
 							"__grid": [22,13],
-							"__pivot": [0,0],
+							"__pivot": [0.5,0],
 							"__tile": null,
 							"width": 16,
 							"height": 16,

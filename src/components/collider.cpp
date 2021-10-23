@@ -8,8 +8,8 @@ using namespace MicroNinja;
 using namespace TinySDL;
 
 bool Collider::check(Collider & other, const IVec2 & offset) {
-    auto& a = rect + entity->position + offset;
-    auto& b = other.rect + other.entity->position;
+    const auto& a = rect + entity->position + offset;
+    const auto& b = other.rect + other.entity->position;
     return a.overlaps(b);
 }
 
@@ -72,5 +72,5 @@ IntRect Collider::scene_rect() {
 }
 
 void Collider::render(BatchRenderer & renderer) {
-    renderer.draw_rect_line(scene_rect().cast_to<float>(), Color::red, 1);
+    renderer.draw_rect_line(scene_rect().cast<float>(), Color::red, 1);
 }

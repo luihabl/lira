@@ -53,18 +53,18 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
     for (int i = (int)level_layers.size() - 1; i >= 0; i--)
     {
-        auto& layer = level_layers[i];
+        auto& level_layer = level_layers[i];
 
-        if (layer.type == "Tiles" || layer.type == "IntGrid")
+        if (level_layer.type == "Tiles" || level_layer.type == "IntGrid")
         {
-            int uid = (int) *layer.tileset_def_uid.get();
+            int uid = (int) *level_layer.tileset_def_uid.get();
             
-            std::filesystem::path filepath = Content::file_folder<LDTk::File>(name) / *(layer.tileset_rel_path.get());
+            std::filesystem::path filepath = Content::file_folder<LDTk::File>(name) / *(level_layer.tileset_rel_path.get());
             std::filesystem::path key = filepath.parent_path().stem() / filepath.stem();
             
             TileSet tileset((int) tilesets[uid].def.tile_grid_size, (int) tilesets[uid].def.tile_grid_size, Content::find<Texture>(key.generic_string().c_str()));
 
-            int grid_size = (int)layer.grid_size;
+            int grid_size = (int)level_layer.grid_size;
             int level_w = (int)(level.px_wid % grid_size == 0 ? level.px_wid / grid_size : level.px_wid / grid_size + 1);
             int level_h = (int)(level.px_hei % grid_size == 0 ? level.px_hei / grid_size : level.px_hei / grid_size + 1);
 
@@ -86,20 +86,20 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
             std::vector<LDTk::TileInstance> tiles;
 
-            if(layer.type == "Tiles")
-                tiles = layer.grid_tiles;
-            if(layer.type == "IntGrid")
-                tiles = layer.auto_layer_tiles;
+            if(level_layer.type == "Tiles")
+                tiles = level_layer.grid_tiles;
+            if(level_layer.type == "IntGrid")
+                tiles = level_layer.auto_layer_tiles;
 
             for (const auto& gtiles : tiles) {
-                cx.push_back((int)(gtiles.px[0] / layer.grid_size));
-                cy.push_back((int)(gtiles.px[1] / layer.grid_size));
+                cx.push_back((int)(gtiles.px[0] / level_layer.grid_size));
+                cy.push_back((int)(gtiles.px[1] / level_layer.grid_size));
                 t.push_back((int)gtiles.t);
                 f.push_back((int)gtiles.f);             
                    
                 if(solid_tiles)
                     if (std::find(solid_tiles->begin(), solid_tiles->end(), (int)gtiles.t) != solid_tiles->end())
-                        collider->set_cell((int)(gtiles.px[0] / layer.grid_size), (int)(gtiles.px[1] / layer.grid_size), true);
+                        collider->set_cell((int)(gtiles.px[0] / level_layer.grid_size), (int)(gtiles.px[1] / level_layer.grid_size), true);
             }
             
             tilemap->set_cells(tileset, cx, cy, t, f);
@@ -107,19 +107,19 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
 
 
-        if (layer.type == "Entities")
+        if (level_layer.type == "Entities")
         {
-            for (auto& entity : layer.entity_instances)
+            for (auto& layer_entity : level_layer.entity_instances)
             {
-                if (entity.identifier == "Turret")
+                if (layer_entity.identifier == "Turret")
                 {
-                    create_turret(scene, { (int) entity.px[0] + level_pos[0], (int) entity.px[1] + level_pos[1]});
+                    create_turret(scene, { (int) layer_entity.px[0] + level_pos[0], (int) layer_entity.px[1] + level_pos[1]});
                 }
 
-                if (entity.identifier == "Player")
+                if (layer_entity.identifier == "Player")
                 {
                     if(!scene->get_first<Player>())
-                        create_player(scene, { (int) entity.px[0] + level_pos[0], (int) entity.px[1] + level_pos[1]}, 1);
+                        create_player(scene, { (int) layer_entity.px[0] + level_pos[0], (int) layer_entity.px[1] + level_pos[1]}, 1);
                 }
                 
             }
@@ -171,12 +171,12 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
             {animator->get("closing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("idle");
             }},
-            {2.0f, [](MultiTimer* self) {}}
+            {2.0f, []([[maybe_unused]] MultiTimer* self) {}}
     }));
 
     timer->loop = true;
 
-    auto* collider = entity->add_component(Collider({ 0, 0, 16, 16 }));
+    entity->add_component(Collider({ 0, 0, 16, 16 }));
 
     return entity;
 }
