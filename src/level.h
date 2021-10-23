@@ -16,24 +16,29 @@ namespace MicroNinja {
 		bool render_colliders = false;
 		bool render_minimap = false; // Move to component later
 
+		IVec2 camera = IVec2::zeros;
 
-		IVec2 camera_offset = IVec2::zeros;
+		std::string map_name;
+		struct Room 
+		{
+			size_t id;
+			IntRect bbox;
+		};
 
-		std::string current_map_name;
-		size_t current_room_id;
+		Room current_room;
 
-		IntRect current_room_bbox;
+		//size_t current_room_id;
+		//IntRect current_room_bbox;
 
-
-		std::vector<IntRect> bbox_rooms;
+		std::vector<Room> rooms;
 
 		int room_default_width = 320;
 		int room_default_height = 184;
 
 		void set_map_info(const std::string& map_name);
+		int find_in_map(const std::string& name);
 		void load_room(size_t id);
 		void unload_room();
-
 
 	};
 }

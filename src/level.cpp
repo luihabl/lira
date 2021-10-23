@@ -21,31 +21,61 @@ void Level::begin() {
 
     set_map_info("tilemaps/map1");
 
+    //Find first instance of player in LDtk map.
+    //Not sure this is the best way to start since
+    //You cannot switch rooms during debug
+    int player_room_id = find_in_map("Player");
+    player_room_id = player_room_id < 0 ? 0 : player_room_id;
 
-    current_room_id = 1;
-    
-    load_room(current_room_id);
-    current_room_bbox = bbox_rooms[current_room_id];
-    camera_offset = {current_room_bbox.x, current_room_bbox.y};
 
+    current_room = rooms[player_room_id];
+    camera = { current_room.bbox.x, current_room.bbox.y };
+
+    load_room(current_room.id);
+ 
     Scene::begin();
 }
 
 void Level::set_map_info(const std::string& _map_name)
 {
-    current_map_name = _map_name;
-
-    const auto map = Content::find<LDTk::File>(current_map_name);
+    map_name = _map_name;
+    const auto map = Content::find<LDTk::File>(map_name);
     
+    size_t id = 0;
     for(const auto& level : map->levels)
     {
-        bbox_rooms.push_back({(int)level.world_x, (int)level.world_y, (int)level.px_wid, (int)level.px_hei});
+        rooms.push_back(Room({ id++, { (int)level.world_x, (int)level.world_y, (int)level.px_wid, (int)level.px_hei } }));
     }
+}
+
+// This finds the player "entity" in the loaded map
+// However maybe we want to change this in the future to be able to select rooms
+int Level::find_in_map(const std::string& name)
+{
+    const auto map = Content::find<LDTk::File>(map_name);
+    for (int id = 0; id < map->levels.size(); id++)
+    {
+        auto layer = map->levels[id].layer_instances.get();
+        if (!layer) continue;
+
+        for (const auto& layer : *layer)
+        {
+            if (layer.identifier == "Entities")
+            {
+                for (const auto& en : layer.entity_instances)
+                {
+                    if (en.identifier == name)
+                        return id;
+                }
+            }
+        }
+    }
+    return -1;
 }
 
 void Level::load_room(size_t id)
 {
-    auto* room = Composer::create_level(this, current_map_name, id, {0, 0}, -1);
+    auto* room = Composer::create_level(this, map_name, id, {0, 0}, -1);
 }
 
 void Level::unload_room()
@@ -73,33 +103,31 @@ void Level::update() {
     const auto* player = get_first<Player>();
     if(player)
     {
-        if(!current_room_bbox.contains(player->entity->position))
+        if(!current_room.bbox.contains(player->entity->position))
         {           
             const auto& pos = player->entity->position;
-            for(size_t i = 0; i < bbox_rooms.size(); i++)
+            for(size_t i = 0; i < rooms.size(); i++)
             {
-                if(bbox_rooms[i].contains(pos))
+                if(rooms[i].bbox.contains(pos))
                 {
                     unload_room();
 
-                    current_room_id = i;
+                    current_room = rooms[i];
 
-                    load_room(current_room_id);
-                    current_room_bbox = bbox_rooms[current_room_id];
-                    camera_offset = { current_room_bbox.x, current_room_bbox.y };
+                    load_room(current_room.id);
+                    camera = { current_room.bbox.x, current_room.bbox.y };
                 }
             }
         }
 
-        if (current_room_bbox.w > room_default_width)
+        if (current_room.bbox.w > room_default_width)
         {
-
-            camera_offset[0] = Mathf::clamp(player->entity->position[0] - room_default_width / 2, current_room_bbox.x, current_room_bbox.x + current_room_bbox.w - room_default_width);
+            camera[0] = Mathf::clamp(player->entity->position[0] - room_default_width / 2, current_room.bbox.x, current_room.bbox.x + current_room.bbox.w - room_default_width);
         }
 
-        if (current_room_bbox.h > room_default_height)
+        if (current_room.bbox.h > room_default_height)
         {
-            camera_offset[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room_bbox.y, current_room_bbox.y + current_room_bbox.h - room_default_height);
+            camera[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room.bbox.y, current_room.bbox.y + current_room.bbox.h - room_default_height);
         }
     }
 }
@@ -108,7 +136,7 @@ void Level::render(TinySDL::BatchRenderer& renderer)
 {
     Graphics::clear(Color::black);
 
-    renderer.push_transform(LinAlg2D::gen_translation((float) -camera_offset[0], (float) -camera_offset[1]));
+    renderer.push_transform(LinAlg2D::gen_translation((float) -camera[0], (float) -camera[1]));
 
     Scene::render(renderer);
     
@@ -131,7 +159,7 @@ void Level::render(TinySDL::BatchRenderer& renderer)
     */
     if (render_minimap)
     {
-        renderer.push_transform(LinAlg2D::gen_translation((float)camera_offset[0], (float)camera_offset[1]));
+        renderer.push_transform(LinAlg2D::gen_translation((float)camera[0], (float)camera[1]));
 
         renderer.draw_rect_fill(Rect({ 0.0f, 0.0f, (float)room_default_width, (float)room_default_height }), {0, 0, 50, 150});
         
@@ -139,16 +167,16 @@ void Level::render(TinySDL::BatchRenderer& renderer)
 
         renderer.push_transform(LinAlg2D::gen_translation((float)room_default_width * 0.25f, (float)room_default_height * 0.5f));
 
-        for (size_t i = 0; i < bbox_rooms.size(); i++)
+        for (size_t i = 0; i < rooms.size(); i++)
         {
             
-            auto bbox = bbox_rooms[i].cast_to<float>();
+            auto bbox = rooms[i].bbox.cast_to<float>();
             bbox = Rect{ bbox.x * scale, bbox.y * scale, bbox.w * scale, bbox.h * scale };
 
             renderer.draw_rect_line(bbox, {42, 53, 99, 255}, 1);            
         }
 
-        renderer.draw_rect_line(Rect({ (float)current_room_bbox.x * scale, (float)current_room_bbox.y * scale, (float)current_room_bbox.w * scale, (float)current_room_bbox.h * scale }), { 48, 145, 54 }, 1);
+        renderer.draw_rect_line(Rect({ (float)current_room.bbox.x * scale, (float)current_room.bbox.y * scale, (float)current_room.bbox.w * scale, (float)current_room.bbox.h * scale }), { 48, 145, 54 }, 1);
 
         const auto* player = get_first<Player>();
         const auto& pos = player->entity->position.cast_to<float>();
@@ -157,8 +185,6 @@ void Level::render(TinySDL::BatchRenderer& renderer)
         renderer.pop_transform();
         renderer.pop_transform();
     }
-
-
 
 
     renderer.pop_transform();
