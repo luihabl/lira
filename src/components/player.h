@@ -235,7 +235,8 @@ namespace MicroNinja {
                     //velocity[1] = std::min(velocity[1], max_slide_speed);
                     // Change friction!
                     
-                    jump_counter = 1;
+                    jump_counter = jump_counter > 1 ? 1 : jump_counter;
+                    // jump_counter = 1;
                 }
             }
 
