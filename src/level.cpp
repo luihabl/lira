@@ -164,7 +164,7 @@ void Level::render(TinySDL::BatchRenderer& renderer)
     */
     if (render_minimap)
     {
-        renderer.draw_rect_fill(Rect({ 0.0f, 0.0f, (float)room_default_width, (float)room_default_height }), {0, 0, 50, 150});
+        renderer.draw_rect_fill(Rect( 0.0f, 0.0f, (float)room_default_width, (float)room_default_height ), Color(0, 0, 50, 150));
 
         renderer.push_transform(LinAlg2D::gen_transform({ (float)room_default_width * 0.25f, (float)room_default_height * 0.5f }, { 0.1f, 0.1f }, {0.0f, 0.0f}, 0.0f));
 
@@ -177,7 +177,7 @@ void Level::render(TinySDL::BatchRenderer& renderer)
 
         const auto* player = get_first<Player>();
         const auto& pos = player->entity->position.cast_to<float>();
-        renderer.draw_rect_fill(Rect({ pos[0], pos[1], 10.0f, 20.0f }), { 161, 80, 53 });
+        renderer.draw_rect_fill(Rect( pos[0], pos[1], 10.0f, 20.0f ), Color( 161, 80, 53 ));
         
         renderer.pop_transform();
 
