@@ -24,6 +24,8 @@ namespace MicroNinja {
 		static std::filesystem::path file_folder(const std::string& name);
 
 		static std::filesystem::path get_content_path();
+
+		static std::string normalize_key(const std::string& key);
 	
 	private:
 		template <typename T>
@@ -44,6 +46,12 @@ namespace MicroNinja {
 
 	inline std::filesystem::path Content::get_content_path() {
 		return content_path;
+	}
+
+	inline std::string Content::normalize_key(const std::string& key) {
+		std::filesystem::path new_key = get_content_path() / key;
+		new_key = std::filesystem::absolute(new_key);
+		return std::filesystem::relative(new_key, get_content_path()).generic_string();	
 	}
 
 	template <typename T>

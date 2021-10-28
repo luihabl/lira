@@ -3,6 +3,7 @@
 #include <tinysdl.h>
 
 #include "ldtk.h"
+#include "map.h"
 #include "spritesheet.h"
 
 #include <unordered_map>
@@ -55,12 +56,6 @@ void Content::load_all() {
 			{
 				add_asset<Texture>(key_name, item.path().filename(), item.path().parent_path(), Texture::from_file(item.path().generic_string().c_str()));
 			}
-
-			if (extension == ".ldtk") 
-			{
-				add_asset<LDTk::File>(key_name, item.path().filename(), item.path().parent_path(), nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())));
-			}			
-
 		}
 	}
 
@@ -72,6 +67,12 @@ void Content::load_all() {
 
 			std::string key_name = file_path.generic_string();
 			std::replace(key_name.begin(), key_name.end(), '\\', '/');
+
+			if (extension == ".ldtk") 
+			{
+				add_asset<LDTk::File>(key_name, item.path().filename(), item.path().parent_path(), nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())));
+				add_asset<Map>(key_name, item.path().filename(), item.path().parent_path(), { nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())), key_name });
+			}	
 
 			if (extension == ".json")
 			{
