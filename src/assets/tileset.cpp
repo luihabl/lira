@@ -4,12 +4,14 @@
 using namespace MicroNinja;
 using namespace TinySDL;
 
-TileSet::TileSet(int tile_w, int tile_h, Texture * tex) {
+TileSet::TileSet(int _tile_w, int _tile_h, Texture * _tex) {
     
-    ASSERT_MSG(tex, "Empty texture");
+    ASSERT_MSG(_tex, "Empty texture");
 
-    tile_w = tile_w;
-    tile_h = tile_h;
+    tex = _tex;
+
+    tile_w = _tile_w;
+    tile_h = _tile_h;
 
     columns = tex->w % tile_w == 0 ? tex->w / tile_w : tex->w / tile_w + 1;
     rows = tex->h % tile_h == 0 ? tex->h / tile_h : tex->h / tile_h + 1;

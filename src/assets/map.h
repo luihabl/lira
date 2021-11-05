@@ -22,6 +22,7 @@ namespace MicroNinja
 
         enum CollisionType
         {
+            NONE,
             SOLID,
             ONE_WAY,
             DANGER
@@ -30,11 +31,16 @@ namespace MicroNinja
         struct Layer
         {
             TileSet* tileset; 
-            std::vector<int> tiles; 
-            std::vector<int> x, y, flip; 
+            struct Tile
+            {
+                int tile;
+                int x, y;
+                bool fx, fy;
 
-            //Optional
-            std::vector<CollisionType> coll;
+                CollisionType coll = NONE; //optional
+            };
+
+            std::vector<Tile> tiles;
         };
 
         struct Object
@@ -46,7 +52,6 @@ namespace MicroNinja
 
         struct Room
         {
-            // TinySDL::IVec2 pos;
             TinySDL::IntRect bbox;
             std::vector<Layer> layers;
             std::vector<Object> objects;

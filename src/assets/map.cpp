@@ -47,7 +47,54 @@ Map::Map(const nlohmann::json& json, const std::string& key)
         {
             std::string layer_type = layer["__type"].get<std::string>();
             
+             // Layer types
             if(layer_type == "Tiles")
+            {
+                Layer l;
+                l.tileset = &tilesets[tileset_uid[layer["__tilesetDefUid"].get<int>()]];
+
+                for(const auto& tile : layer["gridTiles"])
+                {
+                    Layer::Tile t;
+                    
+                    t.tile = tile["t"].get<int>();
+
+                    t.x = tile["px"][0] / l.tileset->tw();
+                    t.y = tile["px"][1] / l.tileset->th();
+
+                    auto flip = tile["f"].get<int>();
+                    t.fx = flip & 0x1;
+                    t.fy = flip & 0x3;
+
+                    l.tiles.push_back(t);
+                }
+
+                room.layers.push_back(l);
+            }
+            else if(layer_type == "IntGrid")
+            {
+                Layer l;
+                l.tileset = &tilesets[tileset_uid[layer["__tilesetDefUid"].get<int>()]];
+
+                for(const auto& tile : layer["autoLayerTiles"])
+                {
+                    Layer::Tile t;
+                    
+                    t.tile = tile["t"].get<int>();
+
+                    t.x = tile["px"][0] / l.tileset->tw();
+                    t.y = tile["px"][1] / l.tileset->th();
+
+                    auto flip = tile["f"].get<int>();
+                    t.fx = flip & 0x1;
+                    t.fy = flip & 0x3;
+
+                    l.tiles.push_back(t);
+                }
+
+                room.layers.push_back(l);
+            }
+            else if(layer_type == "AutoLayer")
             {
 
             }
@@ -55,15 +102,6 @@ Map::Map(const nlohmann::json& json, const std::string& key)
             {
 
             }
-            else if(layer_type == "IntGrid")
-            {
-
-            }
-            else if(layer_type == "AutoLayer")
-            {
-
-            }
-
 
 
         }

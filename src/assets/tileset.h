@@ -12,6 +12,9 @@ namespace MicroNinja {
         TileSet(int tile_w, int tile_h, TinySDL::Texture * tex);
 
         TinySDL::TexRegion operator [](size_t i) const {return tiles[i];}
+        
+        int tw() const { return tile_w; }
+        int th() const { return tile_h; }
 
     private:
         TinySDL::Texture * tex;
