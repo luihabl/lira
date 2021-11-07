@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 //Don't expose json.hpp out of this class
 namespace MicroNinja
@@ -20,7 +21,7 @@ namespace MicroNinja
         Map() = default;
         Map(const nlohmann::json& json, const std::string& key);
 
-        enum CollisionType
+        enum class TileFlag
         {
             NONE,
             SOLID,
@@ -30,17 +31,20 @@ namespace MicroNinja
 
         struct Layer
         {
-            TileSet* tileset; 
+            TileSet* tileset = nullptr; 
             struct Tile
             {
-                int tile;
-                int x, y;
-                bool fx, fy;
+                int tile = 0;
+                int x = 0, y = 0;
+                bool fx = false, fy = false;
 
-                CollisionType coll = NONE; //optional
+                TileFlag flag = TileFlag::NONE; //optional
             };
 
             std::vector<Tile> tiles;
+
+            int dx, dy;
+            int columns, rows;
         };
 
         struct Object
@@ -55,12 +59,9 @@ namespace MicroNinja
             TinySDL::IntRect bbox;
             std::vector<Layer> layers;
             std::vector<Object> objects;
-
-            int columns;
-            int rows;
         };
 
-        std::vector<TileSet> tilesets;
+        std::vector<std::shared_ptr<TileSet>> tilesets;
         std::vector<Room> rooms;
     };
 }

@@ -4,6 +4,7 @@
 
 #include <tinysdl.h>
 #include "../assets/tileset.h"
+#include "../assets/map.h"
 #include "../core/component.h"
 
 namespace MicroNinja {
@@ -14,7 +15,7 @@ namespace MicroNinja {
         TileMap() = default;
         TileMap(int columns, int rows, int tile_w, int tile_h);
 
-        void set_cells(const TileSet & tileset, const std::vector<int> & cx_list,  const std::vector<int> & cy_list, const std::vector<int> & tile_ids, const std::vector<int> & flip);
+        bool set_cells(const Map::Layer& layer);
         void set_cell(int cell_x, int cell_y, const TinySDL::TexRegion & reg);
 
         void render(TinySDL::BatchRenderer & renderer) override;

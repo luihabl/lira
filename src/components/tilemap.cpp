@@ -34,22 +34,26 @@ void TileMap::render(TinySDL::BatchRenderer & renderer) {
     renderer.pop_transform();
 }
 
-void TileMap::set_cells(const TileSet & tileset, const std::vector<int> & cx_list,  const std::vector<int> & cy_list, const std::vector<int> & tile_ids, const std::vector<int> & flip) {
-    for(int i = 0; i <  cx_list.size(); i++) 
+bool TileMap::set_cells(const Map::Layer& layer) {
+
+    bool has_flag = false;
+    
+    const auto& tileset = *layer.tileset;
+
+    for(const auto& tile: layer.tiles)
     {
-        cells[cx_list[i] + cy_list[i] * nx] = tileset[tile_ids[i]];
+        cells[tile.x + tile.y * nx] = tileset[tile.tile];
 
-        if(flip[i] & 0x1)
-        {
-            cells[cx_list[i] + cy_list[i] * nx].flip_x();
-        }
-
-        if(flip[i] & 0x3)
-        {
-            cells[cx_list[i] + cy_list[i] * nx].flip_y();
-        }
-
-    }
+        if(tile.fx)
+            cells[tile.x + tile.y * nx].flip_x();
         
+        if(tile.fy)
+            cells[tile.x + tile.y * nx].flip_x();
+
+        if(tile.flag != Map::TileFlag::NONE)
+            has_flag = true;
+    }
+
+    return has_flag;
 }
 

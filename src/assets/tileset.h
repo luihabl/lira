@@ -15,6 +15,8 @@ namespace MicroNinja {
         
         int tw() const { return tile_w; }
         int th() const { return tile_h; }
+        int c() const { return columns; }
+        int r() const { return rows; }
 
     private:
         TinySDL::Texture * tex;
