@@ -85,7 +85,7 @@ Map::Map(const nlohmann::json& json, const std::string& key)
 
                     const auto flip = tile["f"].get<int>();
                     t.fx = flip & 0x1;
-                    t.fy = flip & 0x3;
+                    t.fy = flip & 0x2;
 
                     for(const auto& tag : tags)
                     {
