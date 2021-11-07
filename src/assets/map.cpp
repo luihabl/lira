@@ -46,7 +46,7 @@ Map::Map(const nlohmann::json& json, const std::string& key)
     for(const auto& level : json["levels"])
     {
         Room room;
-        room.bbox = IntRect(level["worldX"].get<int>(), level["worldY"].get<int>(), level["pxHei"].get<int>(), level["pxWid"].get<int>());
+        room.bbox = IntRect(level["worldX"].get<int>(), level["worldY"].get<int>(), level["pxWid"].get<int>(), level["pxHei"].get<int>());
     
         for(const auto& layer : level["layerInstances"])
         {
@@ -133,6 +133,7 @@ Map::Map(const nlohmann::json& json, const std::string& key)
             }
         }
 
+        std::reverse(room.layers.begin(), room.layers.end()); // this is needed because ldtk use reversed ordered layers.
         rooms.push_back(room);
     }
 }

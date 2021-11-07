@@ -67,7 +67,6 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
             if(!scene->get_first<Player>())
                 create_player(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y}, 1);
-
         }
     }
 

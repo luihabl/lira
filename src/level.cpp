@@ -6,7 +6,8 @@
 #include "modules/game.h"
 #include "input/input.h"
 
-#include "assets/ldtk.h"
+// #include "assets/ldtk.h"
+#include "assets/map.h"
 #include "assets/content.h"
 
 #include "components/collider.h"
@@ -19,7 +20,7 @@ using namespace TinySDL;
 
 void Level::begin() {
 
-    set_map_info("tilemaps/map1");
+    set_map("tilemaps/map1");
 
     //Find first instance of player in LDtk map.
     //Not sure this is the best way to start since
@@ -36,15 +37,15 @@ void Level::begin() {
     Scene::begin();
 }
 
-void Level::set_map_info(const std::string& _map_name)
+void Level::set_map(const std::string& _map_name)
 {
     map_name = _map_name;
-    const auto map = Content::find<LDTk::File>(map_name);
+    current_map = Content::find<Map>(map_name);
     
     size_t id = 0;
-    for(const auto& level : map->levels)
+    for(const auto& room : current_map->rooms)
     {
-        rooms.push_back(Room({ id++, { (int)level.world_x, (int)level.world_y, (int)level.px_wid, (int)level.px_hei } }));
+        rooms.push_back(Room({ id++, room.bbox }));
     }
 }
 
@@ -52,21 +53,13 @@ void Level::set_map_info(const std::string& _map_name)
 // However maybe we want to change this in the future to be able to select rooms
 int Level::find_in_map(const std::string& name)
 {
-    const auto map = Content::find<LDTk::File>(map_name);
-    for (int id = 0; id < map->levels.size(); id++)
+    for (int id = 0; id < current_map->rooms.size(); id++)
     {
-        auto layers = map->levels[id].layer_instances.get();
-        if (!layers) continue;
-
-        for (const auto& layer : *layers)
+        for(const auto& o : current_map->rooms[id].objects)
         {
-            if (layer.identifier == "Entities")
+            if(o.name == name)
             {
-                for (const auto& en : layer.entity_instances)
-                {
-                    if (en.identifier == name)
-                        return id;
-                }
+                return id;
             }
         }
     }

@@ -44,11 +44,13 @@ bool TileMap::set_cells(const Map::Layer& layer) {
     {
         cells[tile.x + tile.y * nx] = tileset[tile.tile];
 
+        if(tile.fy)
+            cells[tile.x + tile.y * nx].flip_y();
+            
         if(tile.fx)
             cells[tile.x + tile.y * nx].flip_x();
         
-        if(tile.fy)
-            cells[tile.x + tile.y * nx].flip_x();
+
 
         if(tile.flag != Map::TileFlag::NONE)
             has_flag = true;

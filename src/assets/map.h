@@ -36,7 +36,7 @@ namespace MicroNinja
             {
                 int tile = 0;
                 int x = 0, y = 0;
-                bool fx = false, fy = false;
+                bool fx, fy;
 
                 TileFlag flag = TileFlag::NONE; //optional
             };

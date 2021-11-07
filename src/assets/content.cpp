@@ -70,7 +70,6 @@ void Content::load_all() {
 
 			if (extension == ".ldtk") 
 			{
-				add_asset<LDTk::File>(key_name, item.path().filename(), item.path().parent_path(), nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())));
 				add_asset<Map>(key_name, item.path().filename(), item.path().parent_path(), { nlohmann::json::parse(File::load_txt(item.path().generic_string().c_str())), key_name });
 			}	
 

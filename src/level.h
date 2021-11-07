@@ -2,6 +2,7 @@
 
 #include <tinysdl.h>
 #include "core/scene.h"
+#include "assets/map.h"
 
 using namespace TinySDL;
 
@@ -18,6 +19,7 @@ namespace MicroNinja {
 
 		IVec2 camera = IVec2::zeros;
 
+		Map* current_map;
 		std::string map_name;
 		struct Room 
 		{
@@ -35,7 +37,7 @@ namespace MicroNinja {
 		int room_default_width = 320;
 		int room_default_height = 184;
 
-		void set_map_info(const std::string& map_name);
+		void set_map(const std::string& map_name);
 		int find_in_map(const std::string& name);
 		void load_room(size_t id);
 		void unload_room();
