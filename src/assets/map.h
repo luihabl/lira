@@ -21,7 +21,7 @@ namespace MicroNinja
         Map() = default;
         Map(const nlohmann::json& json, const std::string& key);
 
-        enum class TileFlag
+        enum class TileFlag // Change this to bit flag where you can combine more than one flag wit or-ing.
         {
             NONE,
             SOLID,
@@ -36,7 +36,7 @@ namespace MicroNinja
             {
                 int tile = 0;
                 int x = 0, y = 0;
-                bool fx, fy;
+                bool fx = false, fy = false;
 
                 TileFlag flag = TileFlag::NONE; //optional
             };

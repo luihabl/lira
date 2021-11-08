@@ -13,8 +13,8 @@ namespace MicroNinja {
 
         TinySDL::TexRegion operator [](size_t i) const {return tiles[i];}
         
-        int tw() const { return tile_w; }
-        int th() const { return tile_h; }
+        int dx() const { return tile_w; }
+        int dy() const { return tile_h; }
         int c() const { return columns; }
         int r() const { return rows; }
 

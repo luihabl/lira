@@ -60,8 +60,8 @@ Map::Map(const nlohmann::json& json, const std::string& key)
                 int tuid = layer["__tilesetDefUid"].get<int>();
                 l.tileset = tilesets[tileset_uid[tuid]].get();
 
-                l.dx = l.tileset->tw();
-                l.dy = l.tileset->th();
+                l.dx = layer["__gridSize"];
+                l.dy = layer["__gridSize"];
 
                 l.columns = (room.bbox.w % l.dx == 0 ? room.bbox.w / l.dx : room.bbox.w / l.dx + 1);
                 l.rows = (room.bbox.h % l.dy == 0 ? room.bbox.h / l.dy : room.bbox.h / l.dy + 1);
