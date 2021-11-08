@@ -6,7 +6,6 @@
 #include "modules/game.h"
 #include "input/input.h"
 
-// #include "assets/ldtk.h"
 #include "assets/map.h"
 #include "assets/content.h"
 

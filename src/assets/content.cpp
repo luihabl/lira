@@ -2,7 +2,6 @@
 
 #include <tinysdl.h>
 
-#include "ldtk.h"
 #include "map.h"
 #include "spritesheet.h"
 
