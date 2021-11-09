@@ -1,0 +1,305 @@
+{ "frames": [
+   {
+    "filename": "liraanimacoescropjson 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 1.aseprite",
+    "frame": { "x": 21, "y": 0, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 2.aseprite",
+    "frame": { "x": 42, "y": 0, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 3.aseprite",
+    "frame": { "x": 63, "y": 0, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 4.aseprite",
+    "frame": { "x": 84, "y": 0, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 5.aseprite",
+    "frame": { "x": 105, "y": 0, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 6.aseprite",
+    "frame": { "x": 0, "y": 18, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 7.aseprite",
+    "frame": { "x": 21, "y": 18, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 8.aseprite",
+    "frame": { "x": 42, "y": 18, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 9.aseprite",
+    "frame": { "x": 63, "y": 18, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 10.aseprite",
+    "frame": { "x": 84, "y": 18, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 11.aseprite",
+    "frame": { "x": 105, "y": 18, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 12.aseprite",
+    "frame": { "x": 0, "y": 36, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 13.aseprite",
+    "frame": { "x": 21, "y": 36, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 14.aseprite",
+    "frame": { "x": 42, "y": 36, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 15.aseprite",
+    "frame": { "x": 63, "y": 36, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 16.aseprite",
+    "frame": { "x": 84, "y": 36, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 17.aseprite",
+    "frame": { "x": 105, "y": 36, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 18.aseprite",
+    "frame": { "x": 0, "y": 54, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 19.aseprite",
+    "frame": { "x": 21, "y": 54, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 20.aseprite",
+    "frame": { "x": 42, "y": 54, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 21.aseprite",
+    "frame": { "x": 0, "y": 36, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 22.aseprite",
+    "frame": { "x": 63, "y": 54, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 23.aseprite",
+    "frame": { "x": 84, "y": 54, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 24.aseprite",
+    "frame": { "x": 105, "y": 54, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 25.aseprite",
+    "frame": { "x": 0, "y": 72, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 26.aseprite",
+    "frame": { "x": 21, "y": 72, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 27.aseprite",
+    "frame": { "x": 42, "y": 72, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 28.aseprite",
+    "frame": { "x": 63, "y": 72, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 29.aseprite",
+    "frame": { "x": 84, "y": 72, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   },
+   {
+    "filename": "liraanimacoescropjson 30.aseprite",
+    "frame": { "x": 105, "y": 72, "w": 21, "h": 18 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 21, "h": 18 },
+    "sourceSize": { "w": 21, "h": 18 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.29-x64",
+  "image": "liraanimacoescropjson.png",
+  "format": "RGBA8888",
+  "size": { "w": 126, "h": 90 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 5, "direction": "forward" },
+   { "name": "walk", "from": 6, "to": 11, "direction": "forward" },
+   { "name": "intojump", "from": 12, "to": 12, "direction": "forward" },
+   { "name": "jump loop", "from": 13, "to": 16, "direction": "forward" },
+   { "name": "intofall", "from": 17, "to": 17, "direction": "forward" },
+   { "name": "fall loop", "from": 18, "to": 20, "direction": "forward" },
+   { "name": "landing", "from": 21, "to": 21, "direction": "forward" },
+   { "name": "cling loop", "from": 22, "to": 24, "direction": "forward" },
+   { "name": "wall jump", "from": 25, "to": 25, "direction": "forward" },
+   { "name": "into dash", "from": 26, "to": 27, "direction": "forward" },
+   { "name": "dash loop", "from": 28, "to": 30, "direction": "forward" }
+  ],
+  "slices": [
+  ]
+ }
+}

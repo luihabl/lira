@@ -44,15 +44,48 @@ namespace MicroNinja
             std::vector<Frame> frames;
             for (auto& frame : json["frames"])
             {
-                auto& slice = json["meta"]["slices"][0]["keys"][0];
-                Rect rect = Rect((float) frame["frame"]["x"] + (float) slice["bounds"]["x"], 
-                                 (float) frame["frame"]["y"] + (float) slice["bounds"]["y"],
-                                  slice["bounds"]["w"], slice["bounds"]["h"]);
+                Rect frame_rect;
+                Vec2 pivot;
+                
+                if(json["meta"]["slices"].size() < 1)
+                {
+                    pivot = Vec2::zeros;
+
+                    frame_rect.x = frame["frame"]["x"];
+                    frame_rect.y = frame["frame"]["y"];
+                    frame_rect.w = frame["frame"]["w"];
+                    frame_rect.h = frame["frame"]["h"];
+                }
+                else
+                {
+                    auto& slice = json["meta"]["slices"][0]["keys"][0];
+
+                    pivot = {(float) slice["pivot"]["x"], (float) slice["pivot"]["y"]};
+
+                    frame_rect.x = frame["frame"]["x"] + (float) slice["bounds"]["x"];
+                    frame_rect.y = frame["frame"]["y"] + (float) slice["bounds"]["y"];
+                    frame_rect.w = slice["bounds"]["w"];
+                    frame_rect.h = slice["bounds"]["h"];
+                }
 
 
-                frames.push_back({ TexRegion(Content::find<Texture>(key), rect),
-                                   {slice["pivot"]["x"], slice["pivot"]["y"]},
-                                   frame["duration"]});
+
+                    // slice[0] = slice[1] = 0.0f;
+                // else
+                //     slice = {(float) json["meta"]["slices"][0]["keys"][0]["bounds"]["x"], (float) json["meta"]["slices"][0]["keys"][0]["bounds"]["y"]};
+                //     Vec2 slice_pivot = {(float) json["meta"]["slices"][0]["keys"][0]["pivot"]["x"], (float) json["meta"]["slices"][0]["keys"][0]["pivot"]["y"]};
+
+                // Rect rect = Rect((float) frame["frame"]["x"] + slice[0], 
+                //                  (float) frame["frame"]["y"] + slice[1],
+                //                   (float) frame["frame"]["w"], (float) frame["frame"]["h"]);
+
+                // Rect rect = Rect((float) frame["frame"]["x"] + slice[0], 
+                //                 (float) frame["frame"]["y"] + slice[1],
+                //                 slice["bounds"]["w"], slice["bounds"]["h"]);
+
+
+                frames.push_back({ TexRegion(Content::find<Texture>(key), frame_rect),
+                                   pivot.cast_to<int>(), frame["duration"]});
             }
 
             for (auto& tag : json["meta"]["frameTags"])

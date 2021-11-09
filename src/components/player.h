@@ -263,7 +263,7 @@ namespace MicroNinja {
                 animator->scale = { Mathf::sign(horizontal_input.value()), 1.0f };
 
             if (horizontal_input.value() != 0) {
-                animator->play("run");
+                animator->play("walk");
             }
             else {
                 animator->play("idle");
@@ -271,9 +271,9 @@ namespace MicroNinja {
 
             if (!on_ground) {
                 if (actor->velocity[1] <= 0)
-                    animator->play("jump_up");
+                    animator->play("jump loop");
                 else
-                    animator->play("jump_down");
+                    animator->play("fall loop");
             }
 
             if (is_dashing)
@@ -297,7 +297,7 @@ namespace MicroNinja {
 
             if (sliding)
             {
-                animator->play("slide");
+                animator->play("cling loop");
             }
         }
     

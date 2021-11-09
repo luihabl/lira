@@ -78,7 +78,7 @@ Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position,
     entity->add_component(Player());
 
     
-    auto * animator = entity->add_component(AnimatedSprite("sprites/player"));
+    auto * animator = entity->add_component(AnimatedSprite("sprites/liraanimacoescropjson"));
     animator->play("idle");
 
     auto * collider = entity->add_component(Collider({-4, 0, 8, 16}));
