@@ -68,22 +68,6 @@ namespace MicroNinja
                     frame_rect.h = slice["bounds"]["h"];
                 }
 
-
-
-                    // slice[0] = slice[1] = 0.0f;
-                // else
-                //     slice = {(float) json["meta"]["slices"][0]["keys"][0]["bounds"]["x"], (float) json["meta"]["slices"][0]["keys"][0]["bounds"]["y"]};
-                //     Vec2 slice_pivot = {(float) json["meta"]["slices"][0]["keys"][0]["pivot"]["x"], (float) json["meta"]["slices"][0]["keys"][0]["pivot"]["y"]};
-
-                // Rect rect = Rect((float) frame["frame"]["x"] + slice[0], 
-                //                  (float) frame["frame"]["y"] + slice[1],
-                //                   (float) frame["frame"]["w"], (float) frame["frame"]["h"]);
-
-                // Rect rect = Rect((float) frame["frame"]["x"] + slice[0], 
-                //                 (float) frame["frame"]["y"] + slice[1],
-                //                 slice["bounds"]["w"], slice["bounds"]["h"]);
-
-
                 frames.push_back({ TexRegion(Content::find<Texture>(key), frame_rect),
                                    pivot.cast_to<int>(), frame["duration"]});
             }
