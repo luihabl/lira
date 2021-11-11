@@ -37,3 +37,4 @@ out
 .vscode
 .vs
 CMakeSettings.json
+CMakePresets.json
