@@ -9,7 +9,7 @@ if ( CMAKE_COMPILER_IS_GNUCC )
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall") #-Wextra
 endif()
 if ( MSVC )
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /W3")
 endif()
 
 add_subdirectory(lib/tinysdl)
@@ -42,7 +42,7 @@ src/components/timer.cpp
 src/components/multitimer.h
 src/components/multitimer.cpp
 
- # ${IMGUI_SRC}
+# ${IMGUI_SRC}
 
 src/composer.cpp
 src/microninja.cpp 
@@ -50,7 +50,7 @@ src/microninja.h
 src/level.h
 src/level.cpp
 src/main.cpp
-)
+  )
 
 
 #find_package(SDL2 REQUIRED)

@@ -9,8 +9,6 @@
 #include <vector>
 #include <string>
 
-
-
 namespace MicroNinja
 {
 	class SpriteSheet
@@ -62,8 +60,8 @@ namespace MicroNinja
 
                     pivot = {(float) slice["pivot"]["x"], (float) slice["pivot"]["y"]};
 
-                    frame_rect.x = frame["frame"]["x"] + (float) slice["bounds"]["x"];
-                    frame_rect.y = frame["frame"]["y"] + (float) slice["bounds"]["y"];
+                    frame_rect.x = frame["frame"]["x"].get<float>() + slice["bounds"]["x"].get<float>();
+                    frame_rect.y = frame["frame"]["y"].get<float>() + slice["bounds"]["y"].get<float>();
                     frame_rect.w = slice["bounds"]["w"];
                     frame_rect.h = slice["bounds"]["h"];
                 }
