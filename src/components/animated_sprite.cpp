@@ -78,8 +78,6 @@ void AnimatedSprite::play(const std::string & id, bool restart) {
 
     if (id != current_id || restart) {
 
-        Log::debug("%s", id.c_str());
-
         current_id = id;
         current_animation = &(animations[current_id]);
     

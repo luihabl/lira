@@ -4,11 +4,14 @@
 #include "../core/component.h"
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
+#include "../util/state_machine.h"
 #include "../modules/game.h"
 
 #include "animated_sprite.h"
 #include "actor.h"
 #include "timer.h"
+
+//#include <array>
 
 
 using namespace TinySDL;
@@ -76,7 +79,14 @@ namespace MicroNinja {
         };
         
         std::vector<Trail> trails;
-        
+
+        StateMachine<AnimatedSprite, 12> animation_states;
+        static constexpr size_t anim_jump = 0;
+        static constexpr size_t anim_walk = 1;
+        static constexpr size_t anim_slide = 2;
+        static constexpr size_t anim_fall = 3;
+        static constexpr size_t anim_idle = 4;
+               
         void begin() override {
             
             jump.add(Key::Z)
@@ -105,9 +115,16 @@ namespace MicroNinja {
             animator = get_sibling<AnimatedSprite>();
 
             animator->connect("intojump", "jump loop");
+            animator->connect("intofall", "fall loop");
 
             actor = get_sibling<Actor>();
 
+            animation_states.add(anim_jump, [](AnimatedSprite* a) {a->play("intojump"); });
+            animation_states.add(anim_walk, [](AnimatedSprite* a) {a->play("walk"); });
+            animation_states.add(anim_slide, [](AnimatedSprite* a) {a->play("cling loop"); });
+            animation_states.add(anim_fall, [](AnimatedSprite* a) {a->play("intofall"); });
+            animation_states.add(anim_idle, [](AnimatedSprite* a) {a->play("idle"); });
+            animation_states.set(anim_idle, animator);
         }
 
 
@@ -156,7 +173,7 @@ namespace MicroNinja {
                     velocity[1] = jump_speed;
                 }
 
-                animator->play("intojump");
+                // animator->play("intojump");
                 jump_counter++;
             }
 
@@ -264,18 +281,18 @@ namespace MicroNinja {
                 animator->scale = { Mathf::sign(horizontal_input.value()), 1.0f };
 
             if (horizontal_input.value() != 0 && on_ground && actor->velocity[1] >= 0) {
-                animator->play("walk");
+                animation_states.set(anim_walk, animator);
             }
             else if (on_ground && actor->velocity[1] >= 0) {
-                animator->play("idle");
+                animation_states.set(anim_idle, animator);
             }
 
             if (!on_ground) {
                 if (actor->velocity[1] <= 0) {
-                    //animator->play("jump loop");
+                    animation_states.set(anim_jump, animator);
                 }
                 else if(!sliding) {
-                    animator->play("fall loop");
+                    animation_states.set(anim_fall, animator);
                 }
                     
             }
@@ -302,7 +319,7 @@ namespace MicroNinja {
             if (sliding)
             {
                 animator->flip_x = true;
-                animator->play("cling loop");
+                animation_states.set(anim_slide, animator);
             }
             else
             {
