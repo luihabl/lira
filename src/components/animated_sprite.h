@@ -15,6 +15,7 @@ namespace MicroNinja {
     
     private:
         std::string current_id = "";
+
         std::unordered_map<std::string, SpriteSheet::Animation> animations;
         
         SpriteSheet::Animation * current_animation = nullptr;
@@ -33,6 +34,8 @@ namespace MicroNinja {
 
         void update () override;
         void render(TinySDL::BatchRenderer & renderer) override;
+
+        void connect(const std::string& id, const std::string& next_id);
 
         void play(const std::string & id, bool restart = false);
         void stop();

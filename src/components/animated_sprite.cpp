@@ -42,7 +42,11 @@ void AnimatedSprite::update() {
 
             if (current_frame_index >= animation_lenght()) {
                 
-                if (current_animation->loop) {
+                if (current_animation->next_id != "")
+                {
+                    play(current_animation->next_id);
+                }
+                else if (current_animation->loop) {
                     current_frame_index = 0;
                     set_frame(&(current_animation->frames[current_frame_index]));
                 }
@@ -65,9 +69,17 @@ void AnimatedSprite::render(BatchRenderer & renderer) {
     }
 }
 
+void AnimatedSprite::connect(const std::string& id, const std::string& next_id)
+{
+    get(id)->next_id = next_id;
+}
+
 void AnimatedSprite::play(const std::string & id, bool restart) {
 
     if (id != current_id || restart) {
+
+        Log::debug("%s", id.c_str());
+
         current_id = id;
         current_animation = &(animations[current_id]);
     

@@ -23,6 +23,7 @@ namespace MicroNinja
         struct Animation {
             std::vector<Frame> frames;
             bool loop = true;
+            std::string next_id = "";
 
             size_t size() { return frames.size(); }
             float lenght()

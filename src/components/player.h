@@ -60,7 +60,6 @@ namespace MicroNinja {
         bool is_recharging_dash = false;
         float dash_counter = 0.0f;
 
-
         struct Trail
         {
             IVec2 pos;
@@ -104,6 +103,9 @@ namespace MicroNinja {
                             .register_input();
 
             animator = get_sibling<AnimatedSprite>();
+
+            animator->connect("intojump", "jump loop");
+
             actor = get_sibling<Actor>();
 
         }
@@ -134,8 +136,6 @@ namespace MicroNinja {
 
             if (jump.just_pressed() && jump_counter < n_jumps) 
             {
-                
-
                 bool on_wall_margin_r = actor->on_wall(wall_jump_margin);
                 bool on_wall_margin_l = actor->on_wall(-wall_jump_margin);
                 if ((on_wall_margin_r || on_wall_margin_l) && !on_ground)
@@ -156,6 +156,7 @@ namespace MicroNinja {
                     velocity[1] = jump_speed;
                 }
 
+                animator->play("intojump");
                 jump_counter++;
             }
 
@@ -262,18 +263,21 @@ namespace MicroNinja {
             if (Mathf::sign(horizontal_input.value()) != 0)
                 animator->scale = { Mathf::sign(horizontal_input.value()), 1.0f };
 
-            if (horizontal_input.value() != 0) {
+            if (horizontal_input.value() != 0 && on_ground && actor->velocity[1] >= 0) {
                 animator->play("walk");
             }
-            else {
+            else if (on_ground && actor->velocity[1] >= 0) {
                 animator->play("idle");
             }
 
             if (!on_ground) {
-                if (actor->velocity[1] <= 0)
-                    animator->play("jump loop");
-                else
+                if (actor->velocity[1] <= 0) {
+                    //animator->play("jump loop");
+                }
+                else if(!sliding) {
                     animator->play("fall loop");
+                }
+                    
             }
 
             if (is_dashing)
@@ -297,8 +301,14 @@ namespace MicroNinja {
 
             if (sliding)
             {
+                animator->flip_x = true;
                 animator->play("cling loop");
             }
+            else
+            {
+                animator->flip_x = false;
+            }
+        
         }
     
 
