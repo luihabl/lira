@@ -51,6 +51,7 @@ namespace MicroNinja {
         int n_jumps = 2;
         int wall_jump_margin = 3;
 
+        int facing = 1;
         
         bool on_ground = true;
         bool on_wall = false;
@@ -150,6 +151,9 @@ namespace MicroNinja {
 
             current_gravity = gravity;
 
+            if (Mathf::sign(horizontal_input.value()) != 0)
+                facing = Mathf::sign(horizontal_input.value());
+
             // Jump
 
             if (on_ground) 
@@ -180,6 +184,9 @@ namespace MicroNinja {
                 }
 
                 // animator->play("intojump");
+                animator->scale = {0.8f, 1.4f};
+
+
                 jump_counter++;
             }
 
@@ -283,9 +290,6 @@ namespace MicroNinja {
 
         void set_animations()
         {
-            if (Mathf::sign(horizontal_input.value()) != 0)
-                animator->scale = { Mathf::sign(horizontal_input.value()), 1.0f };
-
             if (horizontal_input.value() != 0 && on_ground && actor->velocity[1] >= 0) {
                 animation_states.set(anim_walk, animator);
             }
@@ -331,7 +335,12 @@ namespace MicroNinja {
             {
                 animator->flip_x = false;
             }
-        
+
+
+
+
+            animator->scale = Mathf::approach(animator->scale, {(float)facing, 1.0f}, GameProperties::delta_time() * 4.0f);
+            animator->scale[0] = std::abs(animator->scale[0]) * facing;
         }
     
 
