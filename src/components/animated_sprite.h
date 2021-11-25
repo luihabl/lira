@@ -26,7 +26,7 @@ namespace MicroNinja {
         bool playing = false;
 
         size_t animation_lenght(){ return current_animation->size(); }
-        void set_frame(SpriteSheet::Frame * frame) { current_frame = frame; }
+        void set_frame(SpriteSheet::Frame* frame) { current_frame = frame; }
 
     public:
         AnimatedSprite() = default;

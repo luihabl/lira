@@ -80,7 +80,7 @@ namespace MicroNinja {
         
         std::vector<Trail> trails;
 
-        StateMachine<AnimatedSprite, 12> animation_states;
+        StateMachine<AnimatedSprite> animation_states;
         static constexpr size_t anim_jump = 0;
         static constexpr size_t anim_walk = 1;
         static constexpr size_t anim_slide = 2;
@@ -116,15 +116,21 @@ namespace MicroNinja {
 
             animator->connect("intojump", "jump loop");
             animator->connect("intofall", "fall loop");
+            animator->connect("landing", "idle");
 
             actor = get_sibling<Actor>();
 
-            animation_states.add(anim_jump, [](AnimatedSprite* a) {a->play("intojump"); });
-            animation_states.add(anim_walk, [](AnimatedSprite* a) {a->play("walk"); });
-            animation_states.add(anim_slide, [](AnimatedSprite* a) {a->play("cling loop"); });
-            animation_states.add(anim_fall, [](AnimatedSprite* a) {a->play("intofall"); });
-            animation_states.add(anim_idle, [](AnimatedSprite* a) {a->play("idle"); });
-            animation_states.set(anim_idle, animator);
+            animation_states.add(anim_jump, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("intojump"); });
+            animation_states.add(anim_walk, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("walk"); });
+            animation_states.add(anim_slide, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("cling loop"); });
+            animation_states.add(anim_fall, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("intofall"); });
+            animation_states.add(anim_idle, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s)
+                {
+                    if (s->get_last() == anim_fall || s->get_last() == anim_jump)
+                        a->play("landing");
+                    else
+                        a->play("idle");
+                });
         }
 
 
