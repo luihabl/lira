@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <unordered_map>
+#include <iostream>
 
 namespace MicroNinja
 {
@@ -35,21 +36,21 @@ namespace MicroNinja
         {
             if (id != state)
             {
-                if (states[id].end)
-                    states[id].end(e, this);
-
                 last = state;
                 state = id;
 
-                if (states[id].begin)
-                    states[id].begin(e, this);
+                if (states[last].end)
+                    states[last].end(e, this);
+
+                if (states[state].begin)
+                    states[state].begin(e, this);
             }
         }
 
         void update(T* e)
         {
-            if (states[id].update)
-                states[id].update(e, this);
+            if (states[state].update)
+                states[state].update(e, this);
         }
 
         size_t get_state() { return state; }

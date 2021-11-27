@@ -25,6 +25,14 @@ void Actor::move_y(float amount) {
     }
 }
 
+void Actor::move_x() {
+    move_x(velocity[0] * GameProperties::delta_time());
+}
+
+void Actor::move_y() {
+    move_y(velocity[1] * GameProperties::delta_time());
+}
+
 void Actor::move_exact_x(int amount) {
     
     if(collider) {
@@ -108,8 +116,9 @@ bool Actor::on_wall(int dir) {
 }
 
 void Actor::update() {
-
-    move_x(velocity[0] * GameProperties::delta_time());
-    move_y(velocity[1] * GameProperties::delta_time());
-
+    if (auto_update)
+    {
+        move_x(velocity[0] * GameProperties::delta_time());
+        move_y(velocity[1] * GameProperties::delta_time());
+    }
 }

@@ -300,7 +300,7 @@
    { "name": "dash loop", "from": 28, "to": 30, "direction": "forward" }
   ],
   "slices": [
-    { "name": "origin", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 0, "w": 21, "h": 18 }, "pivot": {"x": 11, "y": 2 } }] }
+    { "name": "origin", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 0, "w": 21, "h": 18 }, "pivot": {"x": 11, "y": 18 } }] }
   ]
  }
 }

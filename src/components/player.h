@@ -52,8 +52,9 @@ namespace MicroNinja {
         int wall_jump_margin = 3;
 
         int facing = 1;
-        
+
         bool on_ground = true;
+        bool was_on_ground = true;
         bool on_wall = false;
         bool was_on_wall = false;
 
@@ -72,7 +73,7 @@ namespace MicroNinja {
 
             void render(BatchRenderer& renderer)
             {
-                renderer.draw_circle_fill(pos.cast_to<float>() + Vec2({0.0f, 6.0f}), radius, Color::white);
+                renderer.draw_circle_fill(pos.cast_to<float>() + Vec2({0.0f, -6.0f}), radius, Color::white);
                 radius -= 0.75f;
                 if (radius <= 0)
                     remove = true;
@@ -87,6 +88,7 @@ namespace MicroNinja {
         static constexpr size_t anim_slide = 2;
         static constexpr size_t anim_fall = 3;
         static constexpr size_t anim_idle = 4;
+        static constexpr size_t anim_dash = 5;
                
         void begin() override {
             
@@ -116,24 +118,51 @@ namespace MicroNinja {
             animator = get_sibling<AnimatedSprite>();
 
             animator->connect("intojump", "jump loop");
+            animator->connect("wall jump", "jump loop");
             animator->connect("intofall", "fall loop");
             animator->connect("landing", "idle");
+            animator->connect("into dash", "dash loop");
 
             actor = get_sibling<Actor>();
+            actor->auto_update = false;
 
-            animation_states.add(anim_jump, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("intojump"); });
-            animation_states.add(anim_walk, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("walk"); });
+            animation_states.add(anim_jump, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) 
+                {
+                    if (s->get_last() == anim_slide)
+                        a->play("wall jump");
+                    else
+                        a->play("intojump");
+                });
+            animation_states.add(anim_walk, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) { a->play("walk");});
             animation_states.add(anim_slide, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("cling loop"); });
-            animation_states.add(anim_fall, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("intofall"); });
+            animation_states.add(anim_fall, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {a->play("intofall"); }, nullptr,
+                [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s)
+                {
+                    if (s->get_state() == anim_walk || s->get_state() == anim_idle)
+                    {
+                        a->scale = { 1.3f, 0.7f }; // make this depend on the impact velocity
+                    }
+                        
+                });
             animation_states.add(anim_idle, [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s)
                 {
                     if (s->get_last() == anim_fall || s->get_last() == anim_jump)
+                    {
                         a->play("landing");
+                    } 
                     else
                         a->play("idle");
                 });
+            animation_states.add(anim_dash, 
+            [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s) {
+                a->is_visible = false;
+                a->play("into dash"); 
+            }, 
+            nullptr,
+            [](AnimatedSprite* a, StateMachine<AnimatedSprite>* s){
+                a->is_visible = true;
+            });
         }
-
 
         void update() {
             set_movement();
@@ -143,7 +172,8 @@ namespace MicroNinja {
         void set_movement()
         {
             Vec2& velocity = actor->velocity;
-
+            
+            was_on_ground = on_ground;
             on_ground = actor->on_ground();
 
             was_on_wall = on_wall;
@@ -183,9 +213,7 @@ namespace MicroNinja {
                     velocity[1] = jump_speed;
                 }
 
-                // animator->play("intojump");
-                animator->scale = {0.8f, 1.4f};
-
+                animator->scale = {0.8f, 1.2f};
 
                 jump_counter++;
             }
@@ -213,6 +241,8 @@ namespace MicroNinja {
             
             if (dash.pressed() && dash_counter < dash_length)
             {
+                
+
                 is_dashing = true;
                 dash_counter += 1.0f;
                 current_gravity = 0.0f;
@@ -286,6 +316,8 @@ namespace MicroNinja {
                 velocity[1] = Mathf::approach(velocity[1], max_slide_speed, 1000 * GameProperties::delta_time());
             }
 
+            actor->move_x();
+            actor->move_y();
         }
 
         void set_animations()
@@ -297,11 +329,11 @@ namespace MicroNinja {
                 animation_states.set(anim_idle, animator);
             }
 
-            if (!on_ground) {
-                if (actor->velocity[1] <= 0) {
+            if (!on_ground && !is_dashing && !sliding) {
+                if (actor->velocity[1] < 0) {
                     animation_states.set(anim_jump, animator);
                 }
-                else if(!sliding) {
+                else if (actor->velocity[1] > 0) {
                     animation_states.set(anim_fall, animator);
                 }
                     
@@ -309,7 +341,8 @@ namespace MicroNinja {
 
             if (is_dashing)
             {
-                animator->is_visible = false;
+                animation_states.set(anim_dash, animator);
+ 
                 trails.push_back({entity->position, 5.0f, false});
 
                 for (int i = (int)trails.size() - 1; i >= 0; i--)
@@ -322,7 +355,7 @@ namespace MicroNinja {
             }
             else
             {
-                animator->is_visible = true;
+
                 trails.clear();
             }
 
