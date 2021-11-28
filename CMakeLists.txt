@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-project(micro_ninja)
+project(lira)
 
 # C++ version
 set(CMAKE_CXX_STANDARD 17)
@@ -16,7 +16,7 @@ add_subdirectory(lib/tinysdl)
 add_subdirectory(lib/json)
 # add_subdirectory(lib/imgui)
 
-add_executable(micro_ninja 
+add_executable(lira 
 
 src/modules/game.cpp
 
@@ -57,7 +57,7 @@ src/main.cpp
 #include_directories(${SDL2_INCLUDE_DIRS} lib/imgui)
 include_directories(${SDL2_INCLUDE_DIRS})
 
-target_link_libraries(micro_ninja 
+target_link_libraries(lira 
 tinysdl
 nlohmann_json::nlohmann_json
 )
@@ -66,6 +66,6 @@ nlohmann_json::nlohmann_json
 set(SDL2_DLL "" CACHE FILEPATH "SDL2 DLL Path")
 if (EXISTS ${SDL2_DLL})
     add_custom_command(
-        TARGET micro_ninja POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${SDL2_DLL} $<TARGET_FILE_DIR:micro_ninja>)
+        TARGET lira POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${SDL2_DLL} $<TARGET_FILE_DIR:lira>)
 endif()
