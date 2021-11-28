@@ -35,6 +35,10 @@ namespace MicroNinja {
 			std::filesystem::path folder;
 		};
 
+		//The solution of using a template map is not is not ideal, 
+		//since it's hard to clear the map afterwards. Perhaps it's better to
+		//change it to a std::unordered_map<Type, std::unordered_map<std::string, Asset*>>.
+		//But in that case all the asset classes should inherit from Asset.
 		template <typename T>
 		static inline std::unordered_map<std::string, Asset<T>> assets = {};
 

@@ -19,7 +19,7 @@ using namespace TinySDL;
 
 void Level::begin() {
 
-    set_map("tilemaps/map1");
+    set_map("tilemaps/LIRA_CG_C1");
 
     //Find first instance of player in LDtk map.
     //Not sure this is the best way to start since
