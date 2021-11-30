@@ -140,7 +140,7 @@ namespace MicroNinja {
                 {
                     if (s->get_state() == anim_walk || s->get_state() == anim_idle)
                     {
-                        a->scale = { 1.3f, 0.7f }; // make this depend on the impact velocity
+                        a->scale = { 1.35f, 0.65f }; // make this depend on the impact velocity
                     }
                         
                 });
@@ -213,7 +213,7 @@ namespace MicroNinja {
                     velocity[1] = jump_speed;
                 }
 
-                animator->scale = {0.8f, 1.2f};
+                animator->scale = {0.7f, 1.3f};
 
                 jump_counter++;
             }
@@ -369,11 +369,8 @@ namespace MicroNinja {
                 animator->flip_x = false;
             }
 
-
-
-
+            animator->scale[0] = std::abs(animator->scale[0]) * (float)facing;
             animator->scale = Mathf::approach(animator->scale, {(float)facing, 1.0f}, GameProperties::delta_time() * 4.0f);
-            animator->scale[0] = std::abs(animator->scale[0]) * facing;
         }
     
 
@@ -386,8 +383,5 @@ namespace MicroNinja {
                 }
         }
     };
-
-
-
 
 }
