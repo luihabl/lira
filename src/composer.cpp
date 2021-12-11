@@ -45,15 +45,31 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
         // Optimize flag assignment
         if(has_flags)
         {
-            ColliderGrid* collider = nullptr;
+            ColliderGrid* collider_solid = nullptr;
+            ColliderGrid* collider_danger = nullptr;
+
             for(const auto& tile : layer.tiles)
             {
                 if(tile.flag == Map::TileFlag::SOLID)
                 {
-                    if(!collider)
-                        collider = entity->add_component(ColliderGrid(layer.columns, layer.rows, layer.dx, layer.dy));
-                    
-                    collider->set_cell(tile.x, tile.y, true);
+                    if (!collider_solid)
+                    {
+                        collider_solid = entity->add_component(ColliderGrid(layer.columns, layer.rows, layer.dx, layer.dy));
+                        collider_solid->layer = CollisionLayer::solid;
+                    }
+                        
+                    collider_solid->set_cell(tile.x, tile.y, true);
+                }
+
+                if (tile.flag == Map::TileFlag::DANGER)
+                {
+                    if (!collider_danger)
+                    {
+                        collider_danger = entity->add_component(ColliderGrid(layer.columns, layer.rows, layer.dx, layer.dy));
+                        collider_danger->layer = CollisionLayer::danger;
+                    }
+
+                    collider_danger->set_cell(tile.x, tile.y, true);
                 }
             }
         }
@@ -85,6 +101,7 @@ Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position,
 
     auto * actor = entity->add_component(Actor());
     actor->collider = collider;
+    actor->collision_mask = CollisionLayer::solid;
 
     return entity;
 }

@@ -27,6 +27,8 @@ namespace MicroNinja {
 
         void render(TinySDL::BatchRenderer & renderer) override;
 
+        uint32_t layer = -1;
+
     private:
         
         VirtualMap<bool> grid;

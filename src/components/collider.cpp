@@ -36,36 +36,28 @@ bool Collider::check(ColliderGrid & other, const IVec2 & offset) {
 }
 
 
-bool Collider::check_first(const IVec2 & offset) {
+// Add the bitmask support. check first can have two versions 
+// check_first(uint32_t layer, const IVec2 & offset) and 
+// check_first(const IVec2 & offset). The second one will compare
+// with its own layer. For damage is it better to use two different colliders
+// or specify the specific layer for each process (move compares to solid, 
+// damage compares to enemy, etc)?
+bool Collider::check_first(const IVec2 & offset, uint32_t mask) {
 
-    auto& colliders = scene()->get_components<Collider>();
-
-    for(const auto* c: colliders) {
-	   if (c->is_active && (Collider*)c != this) {
-			Collider & coll = (Collider&) *c;
-            if (check(coll, offset)) 
-            {
-                if (on_collide) on_collide(coll);
-                return true;
-            } 
-       }
-    }
-
-    auto& grid_colliders = scene()->get_components<ColliderGrid>();
-
-    for (const auto* c : grid_colliders) {
-        if (c->is_active) {
-            ColliderGrid& coll = (ColliderGrid&) *c;
-            if (check(coll, offset)) 
-            {
-                if (on_collide) on_collide(coll);
-                return true;
-            } 
-        }
+    if (
+            check_first_t<Collider>(offset, mask) || 
+            check_first_t<ColliderGrid>(offset, mask)
+        )
+    {
+        return true;
     }
 
     return false;
 }
+
+
+
+
 
 IntRect Collider::scene_rect() {
     return rect + entity->position;

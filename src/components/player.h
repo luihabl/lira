@@ -301,8 +301,6 @@ namespace MicroNinja {
                 }
             }
 
-
-
             // Vertical movement
             
             velocity[1] += current_gravity * GameProperties::delta_time();
@@ -314,6 +312,12 @@ namespace MicroNinja {
             else if (sliding)
             {
                 velocity[1] = Mathf::approach(velocity[1], max_slide_speed, 1000 * GameProperties::delta_time());
+            }
+
+            bool hit = actor->collider->check_first(IVec2::zeros, 2);
+            if (hit)
+            {
+                Log::debug("Hit spike!");
             }
 
             actor->move_x();

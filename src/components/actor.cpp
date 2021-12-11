@@ -41,7 +41,7 @@ void Actor::move_exact_x(int amount) {
 
         while (remaining != 0) {
 
-            if(!(collider->check_first({step, 0}))){
+            if(!(collider->check_first({step, 0}, collision_mask))){
                 entity->position[0] += step;
                 remaining -= step;
             }
@@ -68,7 +68,7 @@ void Actor::move_exact_y(int amount) {
 
         while (remaining != 0) {
 
-            if(!(collider->check_first({0, step}))){
+            if(!(collider->check_first({0, step}, collision_mask))){
                 entity->position[1] += step;
                 remaining -= step;
             }
@@ -101,7 +101,7 @@ void Actor::stop_y()
 
 bool Actor::on_ground(int offset) {
     if(collider) {
-        return collider->check_first({0, offset});
+        return collider->check_first({0, offset}, collision_mask);
     }
 
     return false;
@@ -109,7 +109,7 @@ bool Actor::on_ground(int offset) {
 
 bool Actor::on_wall(int dir) {
     if (collider) {
-        return collider->check_first({ dir, 0 });
+        return collider->check_first({ dir, 0 }, collision_mask);
     }
 
     return false;

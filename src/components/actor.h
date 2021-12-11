@@ -13,6 +13,7 @@ namespace MicroNinja {
 
     public:
         Collider* collider = nullptr;
+        uint32_t collision_mask = -1;
 
         TinySDL::Vec2 velocity = {0, 0};
         TinySDL::Vec2 move_remainder = {0, 0};
