@@ -8,7 +8,7 @@
 #include <string>
 
 // This namespace is an object factory for game entities
-namespace MicroNinja::Composer { 
+namespace Lira::Composer { 
     
     namespace CollisionLayer
     {

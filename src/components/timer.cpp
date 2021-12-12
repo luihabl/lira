@@ -1,6 +1,6 @@
 #include "timer.h"
 
-using namespace MicroNinja;
+using namespace Lira;
 
 Timer::Timer(float _duration, std::function<void(Timer*)> _timeout)
 {

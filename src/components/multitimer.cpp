@@ -1,7 +1,7 @@
 #include "multitimer.h"
 #include "../modules/game.h"
 
-MicroNinja::MultiTimer::MultiTimer(const std::vector<SingleTimer>& _timers)
+Lira::MultiTimer::MultiTimer(const std::vector<SingleTimer>& _timers)
 {
 	timers = _timers;
 
@@ -11,7 +11,7 @@ MicroNinja::MultiTimer::MultiTimer(const std::vector<SingleTimer>& _timers)
 	restart();
 }
 
-void MicroNinja::MultiTimer::update()
+void Lira::MultiTimer::update()
 {
 	if (counter >= 0.0f)
 	{
@@ -29,7 +29,7 @@ void MicroNinja::MultiTimer::update()
 	}
 }
 
-void MicroNinja::MultiTimer::restart(size_t index)
+void Lira::MultiTimer::restart(size_t index)
 {
 	current_timer = index;
 	counter = timers[current_timer].duration;

@@ -10,7 +10,7 @@
 #include <iostream>
 #include <algorithm>
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 Map::Map(const nlohmann::json& json, const std::string& key)

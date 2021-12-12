@@ -6,7 +6,7 @@
 #include <tinysdl.h>
 #include <array>
 
-namespace MicroNinja {
+namespace Lira {
 
     class ColliderGrid : public Component {
     

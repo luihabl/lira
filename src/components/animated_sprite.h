@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <string>
 
-namespace MicroNinja {
+namespace Lira {
 
     class AnimatedSprite : public Component {
     

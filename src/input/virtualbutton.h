@@ -5,7 +5,7 @@
 #include <tinysdl.h>
 #include <vector>
 
-namespace MicroNinja {
+namespace Lira {
 
     class VirtualButton : public VirtualInput {
         

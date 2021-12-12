@@ -1,7 +1,7 @@
 #include <tinysdl.h>
 #include "tileset.h"
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 TileSet::TileSet(int _tile_w, int _tile_h, Texture * _tex) {

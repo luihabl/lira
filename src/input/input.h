@@ -6,7 +6,7 @@
 
 #include <functional>
 
-namespace MicroNinja
+namespace Lira
 {
     struct InputHandler {
 

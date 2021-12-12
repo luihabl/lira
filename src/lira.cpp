@@ -1,11 +1,11 @@
-#include "microninja.h"
+#include "lira.h"
 #include "core/scene.h"
 
 #include "level.h"
 #include "input/input.h"
 
 
-void MicroNinjaGame::begin() {
+void LiraGame::begin() {
 
     content.set_folder_name("content");
     content.load_all();
@@ -18,7 +18,7 @@ void MicroNinjaGame::begin() {
     Game::begin();
 }
 
-void MicroNinjaGame::render() {
+void LiraGame::render() {
 
     target.begin();
 

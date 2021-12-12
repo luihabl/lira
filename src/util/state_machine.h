@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <iostream>
 
-namespace MicroNinja
+namespace Lira
 {
     template<typename T>
     class StateMachine 

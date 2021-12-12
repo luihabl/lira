@@ -8,7 +8,7 @@
 #include "game.h"
 
 namespace chr = std::chrono;
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL; 
 
 constexpr float default_fps = 60.0f;

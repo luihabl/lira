@@ -6,7 +6,7 @@
 
 #include <unordered_map>
 
-namespace MicroNinja {
+namespace Lira {
 
 	class Content {
 

@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 Scene::~Scene()

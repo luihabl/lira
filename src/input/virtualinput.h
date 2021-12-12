@@ -1,6 +1,6 @@
 #pragma once 
 
-namespace MicroNinja {
+namespace Lira {
 
     class VirtualInput {
 

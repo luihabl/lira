@@ -6,7 +6,7 @@
 
 using namespace TinySDL;
 
-namespace MicroNinja {
+namespace Lira {
 
 	class Level : public Scene {
 

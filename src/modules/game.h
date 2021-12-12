@@ -10,7 +10,7 @@
 
 namespace chr = std::chrono;
 
-namespace MicroNinja {
+namespace Lira {
 
     class Scene;
     

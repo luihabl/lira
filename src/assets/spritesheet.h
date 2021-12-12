@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 
-namespace MicroNinja
+namespace Lira
 {
 	class SpriteSheet
 	{

@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 bool Collider::check(Collider & other, const IVec2 & offset) {
@@ -54,10 +54,6 @@ bool Collider::check_first(const IVec2 & offset, uint32_t mask) {
 
     return false;
 }
-
-
-
-
 
 IntRect Collider::scene_rect() {
     return rect + entity->position;

@@ -6,7 +6,7 @@
 
 using namespace TinySDL;
 
-using namespace MicroNinja;
+using namespace Lira;
 
 VirtualButton::~VirtualButton(){
     if(registered) Input::unregister_button(this);

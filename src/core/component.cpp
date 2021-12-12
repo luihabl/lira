@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "component.h"
 
-using namespace MicroNinja;
+using namespace Lira;
 
 int Component::get_layer() { 
     return entity->get_layer(); 

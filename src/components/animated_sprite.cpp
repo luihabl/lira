@@ -6,7 +6,7 @@
 
 #include <string>
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 AnimatedSprite::AnimatedSprite(std::string key)
@@ -24,7 +24,7 @@ SpriteSheet::Animation * AnimatedSprite::add(const std::string & id) {
     return &(animations[id]);
 }
 
-SpriteSheet::Animation* MicroNinja::AnimatedSprite::get(const std::string& id)
+SpriteSheet::Animation* Lira::AnimatedSprite::get(const std::string& id)
 {
     return &(animations[id]);
 }

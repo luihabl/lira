@@ -6,7 +6,7 @@
 
 #include <tinysdl.h>
 
-namespace MicroNinja
+namespace Lira
 {
     class Scene;
     class Component;

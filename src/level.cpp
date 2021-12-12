@@ -13,7 +13,7 @@
 #include "components/collider_grid.h"
 #include "components/player.h"
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 

@@ -7,7 +7,7 @@
 #include "../assets/map.h"
 #include "../core/component.h"
 
-namespace MicroNinja {
+namespace Lira {
 
     class TileMap : public Component {
 

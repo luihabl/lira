@@ -2,7 +2,7 @@
 
 #include <tinysdl.h>
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 ColliderGrid::ColliderGrid(int columns, int rows, int cell_w, int cell_h) {

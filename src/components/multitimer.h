@@ -5,7 +5,7 @@
 #include <functional>
 #include <vector>
 
-namespace MicroNinja
+namespace Lira
 {
 	class MultiTimer : public Component
 	{

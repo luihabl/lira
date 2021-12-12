@@ -7,7 +7,7 @@
 
 #include <functional>
 
-namespace MicroNinja {
+namespace Lira {
 
     class Actor : public Component {
 

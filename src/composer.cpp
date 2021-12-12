@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n, const IVec2 & position, const int render_layer) {

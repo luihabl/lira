@@ -4,7 +4,7 @@
 #include "input.h"
 
 
-using namespace MicroNinja;
+using namespace Lira;
 
 VirtualAxis::~VirtualAxis(){
     if(registered) Input::unregister_button(this);

@@ -5,7 +5,7 @@
 
 #include <functional>
 
-namespace MicroNinja {
+namespace Lira {
 
     class ColliderGrid;
 

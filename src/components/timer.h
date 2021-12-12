@@ -4,7 +4,7 @@
 #include "../core/component.h"
 #include <functional>
 
-namespace MicroNinja
+namespace Lira
 {
     class Timer : public Component
     {

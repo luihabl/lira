@@ -45,8 +45,8 @@ src/components/multitimer.cpp
 # ${IMGUI_SRC}
 
 src/composer.cpp
-src/microninja.cpp 
-src/microninja.h
+"src/lira.cpp" 
+"src/lira.h"
 src/level.h
 src/level.cpp
 src/main.cpp

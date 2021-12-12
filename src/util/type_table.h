@@ -1,6 +1,6 @@
 #include <tinysdl.h>
 
-namespace MicroNinja
+namespace Lira
 {
     
     template <typename T>

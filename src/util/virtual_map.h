@@ -1,7 +1,7 @@
 #pragma once 
 #include <vector>
 
-namespace MicroNinja {
+namespace Lira {
 
     template <typename T>
     struct VirtualMap

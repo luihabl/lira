@@ -9,7 +9,7 @@
 #include <filesystem> 
 
 using namespace TinySDL;
-using namespace MicroNinja;
+using namespace Lira;
 
 namespace fs = std::filesystem;
 

@@ -2,7 +2,7 @@
 #include "actor.h"
 #include "../modules/game.h"
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 void Actor::move_x(float amount) {

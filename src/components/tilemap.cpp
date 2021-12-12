@@ -6,7 +6,7 @@
 #include <algorithm>
 
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 TileMap::TileMap(int columns, int rows, int tile_w, int tile_h) {

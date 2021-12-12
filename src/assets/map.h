@@ -11,7 +11,7 @@
 #include <memory>
 
 //Don't expose json.hpp out of this class
-namespace MicroNinja
+namespace Lira
 {
     class Map
     {

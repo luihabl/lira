@@ -12,7 +12,7 @@
 #include <vector>
 #include <list>
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
 namespace {

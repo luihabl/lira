@@ -9,7 +9,7 @@
 #include "component.h"
 #include "../util/type_table.h"
 
-namespace MicroNinja {
+namespace Lira {
 
     class Game;
     class Entity;

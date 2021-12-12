@@ -2,12 +2,12 @@
 
 #include "modules/game.h"
 
-using namespace MicroNinja;
+using namespace Lira;
 using namespace TinySDL;
 
-namespace MicroNinja  {
+namespace Lira  {
 
-    class MicroNinjaGame : public Game {
+    class LiraGame : public Game {
 
         using Game::Game;
 

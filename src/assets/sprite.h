@@ -2,7 +2,7 @@
 
 #include <tinysdl.h>
 
-namespace MicroNinja {
+namespace Lira {
 
     struct Sprite {
         TinySDL::TexRegion tex;
