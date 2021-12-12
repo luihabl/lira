@@ -65,6 +65,9 @@ namespace Lira {
         bool is_recharging_dash = false;
         float dash_counter = 0.0f;
 
+        bool invincible = false;
+        int invincible_counter = 0;
+
         struct Trail
         {
             IVec2 pos;
@@ -182,7 +185,7 @@ namespace Lira {
             current_gravity = gravity;
 
             if (Mathf::sign(horizontal_input.value()) != 0)
-                facing = Mathf::sign(horizontal_input.value());
+                facing = (int) Mathf::sign(horizontal_input.value());
 
             // Jump
 
@@ -317,7 +320,19 @@ namespace Lira {
             bool hit = actor->collider->check_first(IVec2::zeros, 2);
             if (hit)
             {
-                Log::debug("Hit spike!");
+                if(!invincible)
+                {
+                    invincible_counter = 0;
+                    invincible = true;
+
+                    velocity = Vec2({- ((float) facing) * 150.0f, -120.0f});
+
+                    entity->add_component(Timer(1.0f , [this](Timer* self) {
+                        invincible = false;
+                        animator->is_visible = true;
+                        self->destroy();
+                    }));
+                }
             }
 
             actor->move_x();
@@ -372,6 +387,15 @@ namespace Lira {
             {
                 animator->flip_x = false;
             }
+
+            if (invincible)
+            {
+                if (invincible_counter % 4 == 0)
+                    animator->is_visible = !animator->is_visible;
+
+                invincible_counter++;
+            }
+
 
             animator->scale[0] = std::abs(animator->scale[0]) * (float)facing;
             animator->scale = Mathf::approach(animator->scale, {(float)facing, 1.0f}, GameProperties::delta_time() * 4.0f);
