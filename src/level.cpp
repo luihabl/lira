@@ -27,12 +27,7 @@ void Level::begin() {
     int player_room_id = find_in_map("Player");
     player_room_id = player_room_id < 0 ? 0 : player_room_id;
 
-
-    current_room = rooms[player_room_id];
-    camera = { current_room.bbox.x, current_room.bbox.y };
-
-    load_room(current_room.id);
- 
+    move_to_room(player_room_id); 
     Scene::begin();
 }
 
@@ -81,6 +76,17 @@ void Level::unload_room()
     }
 }
 
+void Level::move_to_room(size_t id)
+{
+    unload_room();
+
+    current_room = rooms[id];
+
+    load_room(current_room.id);
+    camera = { current_room.bbox.x, current_room.bbox.y };
+}
+
+
 void Level::update() {
     
     Scene::update();
@@ -102,12 +108,7 @@ void Level::update() {
             {
                 if(rooms[i].bbox.contains(pos))
                 {
-                    unload_room();
-
-                    current_room = rooms[i];
-
-                    load_room(current_room.id);
-                    camera = { current_room.bbox.x, current_room.bbox.y };
+                    move_to_room(i);
                 }
             }
         }
@@ -121,7 +122,18 @@ void Level::update() {
         {
             camera[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room.bbox.y, current_room.bbox.y + current_room.bbox.h - room_default_height);
         }
+
+        if (player->hp <= 0)
+        {
+            player->entity->destroy();
+        }
     }
+    else
+    {
+        move_to_room(0);
+    }
+
+
 }
 
 void Level::render(TinySDL::BatchRenderer& renderer)

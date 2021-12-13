@@ -50,7 +50,7 @@ src/composer.cpp
 src/level.h
 src/level.cpp
 src/main.cpp
-  )
+   "src/collision_layers.h")
 
 
 #find_package(SDL2 REQUIRED)

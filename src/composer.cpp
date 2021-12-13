@@ -13,6 +13,8 @@
 #include "components/timer.h"
 #include "components/multitimer.h"
 
+#include "collision_layers.h"
+
 #include <filesystem>
 #include <algorithm>
 #include <unordered_map>

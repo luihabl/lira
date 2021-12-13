@@ -7,6 +7,8 @@
 #include "../util/state_machine.h"
 #include "../modules/game.h"
 
+#include "collision_layers.h"
+
 #include "animated_sprite.h"
 #include "actor.h"
 #include "timer.h"
@@ -53,6 +55,9 @@ namespace Lira {
 
         int facing = 1;
 
+        int hp_max = 2;
+        int hp = hp_max;
+
         bool on_ground = true;
         bool was_on_ground = true;
         bool on_wall = false;
@@ -92,6 +97,7 @@ namespace Lira {
         static constexpr size_t anim_fall = 3;
         static constexpr size_t anim_idle = 4;
         static constexpr size_t anim_dash = 5;
+        static constexpr size_t anim_hurt = 6;
                
         void begin() override {
             
@@ -242,7 +248,7 @@ namespace Lira {
                 }));
             }
             
-            if (dash.pressed() && dash_counter < dash_length)
+            if (dash.pressed() && dash_counter < dash_length && !invincible)
             {
                 
 
@@ -317,11 +323,13 @@ namespace Lira {
                 velocity[1] = Mathf::approach(velocity[1], max_slide_speed, 1000 * GameProperties::delta_time());
             }
 
-            bool hit = actor->collider->check_first(IVec2::zeros, 2);
+            bool hit = actor->collider->check_first(IVec2::zeros, CollisionLayer::danger);
             if (hit)
             {
                 if(!invincible)
                 {
+                    hp--;
+
                     invincible_counter = 0;
                     invincible = true;
 

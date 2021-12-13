@@ -41,6 +41,7 @@ namespace Lira {
 		int find_in_map(const std::string& name);
 		void load_room(size_t id);
 		void unload_room();
+		void move_to_room(size_t id);
 
 	};
 }
