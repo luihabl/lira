@@ -29,6 +29,7 @@ namespace Lira
         
         void register_button(VirtualInput * button);
         void unregister_button(VirtualInput * button);
+        size_t reg_size();
 
         void update(InputHandler & handler);
     }

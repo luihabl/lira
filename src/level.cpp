@@ -28,6 +28,7 @@ void Level::begin() {
     player_room_id = player_room_id < 0 ? 0 : player_room_id;
 
     move_to_room(player_room_id); 
+
     Scene::begin();
 }
 
@@ -97,6 +98,19 @@ void Level::update() {
     if (Input::just_pressed(Key::Q)) // Move to component later
         render_minimap = !render_minimap;
 
+    if (Input::just_pressed(Key::F2))
+    {
+        const auto* player = get_first<Player>();
+        
+        if(player)
+            player->entity->destroy();
+    }
+
+    if (Input::just_pressed(Key::F3))
+    {
+        Composer::create_player(this, { 125, 125 });
+    }
+
 
     const auto* player = get_first<Player>();
     if(player)
@@ -123,16 +137,15 @@ void Level::update() {
             camera[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room.bbox.y, current_room.bbox.y + current_room.bbox.h - room_default_height);
         }
 
-        if (player->hp <= 0)
-        {
-            player->entity->destroy();
-        }
+        //if (player->hp <= 0)
+        //{
+        //    player->entity->destroy();
+        //}
     }
     else
     {
-        move_to_room(0);
+        //move_to_room(0);
     }
-
 
 }
 

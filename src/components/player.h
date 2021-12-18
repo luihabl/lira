@@ -195,6 +195,7 @@ namespace Lira {
 
             // Jump
 
+
             if (on_ground) 
             {
                 jump_counter = 0;

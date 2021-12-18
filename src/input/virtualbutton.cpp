@@ -8,19 +8,6 @@ using namespace TinySDL;
 
 using namespace Lira;
 
-VirtualButton::~VirtualButton(){
-    if(registered) Input::unregister_button(this);
-}
-
-VirtualButton & VirtualButton::register_input() {
-
-    if(!registered) {
-        registered = true;
-        Input::register_button(this);
-    }
-
-    return *this;
-}
 
 VirtualButton & VirtualButton::set_repeat(float first_delay, float multi_delay) {
     can_repeat = true;

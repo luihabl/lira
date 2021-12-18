@@ -12,9 +12,7 @@ namespace Lira {
         public:
             VirtualButton() = default;
             VirtualButton & add(Key key);
-            VirtualButton & register_input();
             VirtualButton & set_repeat(float first_delay, float multi_delay);
-            ~VirtualButton();
 
             void update() override;
 
@@ -45,8 +43,5 @@ namespace Lira {
             bool btn_pressed = false;
             bool btn_just_pressed = false;
             bool btn_released = false;
-
-            bool registered = false;
-    
     };
 }

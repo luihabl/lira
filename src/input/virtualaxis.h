@@ -12,8 +12,6 @@ namespace Lira {
         public:
             VirtualAxis() = default;
             VirtualAxis & add(Key negative, Key positive);
-            VirtualAxis & register_input();
-            ~VirtualAxis();
 
             void update() override;
 
@@ -34,7 +32,6 @@ namespace Lira {
             std::vector <KeyAxisNode> nodes;
 
             float val = 0.0f;
-            bool registered = false;
     
     };
 }

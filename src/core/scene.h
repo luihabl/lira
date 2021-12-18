@@ -63,11 +63,17 @@ namespace Lira {
             std::vector<Component*> components_to_remove;
             std::vector<Entity*> entities_to_remove;
 
+            std::vector<Component*> components_to_add;
+
             //Immediately destroys entity
             void destroy_entity(Entity* entity);
 
             //Immediately destroys component
             void destroy_component(Component* component, Entity* entity);
+
+            //Immediately adds component
+            template <typename T>
+            void insert_component(T* component);
 
     };
 
@@ -114,9 +120,17 @@ namespace Lira {
         c->entity = entity;
         c->type = TinySDL::Type::type_of<T>();
 
-        components.add(c);
-        entity->components.push_back(c);
-        
+        components_to_add.push_back(c);
+
         return c;
+    }
+
+    template <typename T>
+    inline void Scene::insert_component(T* c)
+    {
+        components.add(c);
+        c->entity->components.push_back(c);
+        
+        c->begin();
     }
 }

@@ -58,6 +58,11 @@ void Input::update(InputHandler & handler) {
     }
 }
 
+size_t Input::reg_size()
+{
+    return registered_buttons.size();
+}
+
 bool Input::pressed(Key k) {
     return current_keyboard_state[(int) k];
 }
@@ -84,4 +89,6 @@ void Input::register_button(VirtualInput * button) {
 
 void Input::unregister_button(VirtualInput * button) {
     registered_buttons.remove(button);
+
+    Log::debug("unregistering!");
 }

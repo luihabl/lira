@@ -93,17 +93,18 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
 Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position, const int layer) {
     auto* entity = scene->add_entity(position, layer);
-    entity->add_component(Player());
 
-    
     auto * animator = entity->add_component(AnimatedSprite("sprites/player_lira"));
     animator->play("idle");
 
     auto * collider = entity->add_component(Collider({-6, -16, 12, 16}));
+    collider->layer = CollisionLayer::player;
 
     auto * actor = entity->add_component(Actor());
     actor->collider = collider;
     actor->collision_mask = CollisionLayer::solid;
+
+    entity->add_component(Player());
 
     return entity;
 }

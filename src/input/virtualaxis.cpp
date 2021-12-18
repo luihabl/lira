@@ -6,20 +6,6 @@
 
 using namespace Lira;
 
-VirtualAxis::~VirtualAxis(){
-    if(registered) Input::unregister_button(this);
-}
-
-VirtualAxis & VirtualAxis::register_input() {
-
-    if(!registered) {
-        registered = true;
-        Input::register_button(this);
-    }
-
-    return *this;
-}
-
 VirtualAxis & VirtualAxis::add(Key negative, Key positive) {
     nodes.push_back({negative, positive});
     return *this;
