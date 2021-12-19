@@ -43,10 +43,10 @@ void Scene::update() {
    components_to_remove.clear();
    entities_to_remove.clear();
 
-   for (auto& c : components_to_add)
-	   insert_component(c);
+   //for (auto& c : components_to_add)
+	  // insert_component(c);
 
-   components_to_add.clear();
+   //components_to_add.clear();
 }
 
 void Scene::render(BatchRenderer & renderer) {
