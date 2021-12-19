@@ -45,12 +45,14 @@ src/components/multitimer.cpp
 # ${IMGUI_SRC}
 
 src/composer.cpp
-"src/lira.cpp" 
-"src/lira.h"
+src/lira.cpp
+src/lira.h
 src/level.h
 src/level.cpp
 src/main.cpp
-   "src/collision_layers.h")
+src/collision_layers.h
+src/util/svector.h
+)
 
 
 #find_package(SDL2 REQUIRED)
