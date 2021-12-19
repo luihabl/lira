@@ -1,7 +1,6 @@
 #include "virtualaxis.h"
-
 #include "keys.h"
-#include "input.h"
+
 
 
 using namespace Lira;
@@ -27,16 +26,16 @@ void VirtualAxis::update() {
 
 void VirtualAxis::KeyAxisNode::update() {
 
-    if (Input::pressed(positive)) {
+    if (key_pressed(positive)) {
 
-        if (Input::pressed(negative)) {
+        if (key_pressed(negative)) {
             val = 0.0f;
         }
         else {
             val = 1.0f;
         }
     }
-    else if (Input::pressed(negative)) {
+    else if (key_pressed(negative)) {
         val = -1.0f;
     }
     else {

@@ -1,6 +1,5 @@
 #include "virtualbutton.h"
 #include "keys.h"
-#include "input.h"
 
 #include <tinysdl.h>
 
@@ -74,5 +73,5 @@ void VirtualButton::update() {
 }
 
 bool VirtualButton::KeyNode::check() {
-    return Input::pressed(key);
+    return key_pressed(key);
 }

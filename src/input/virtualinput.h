@@ -2,6 +2,8 @@
 
 #include "input.h"
 #include "tinysdl.h"
+#include "input.h"
+#include "keys.h"
 
 namespace Lira {
 
@@ -36,6 +38,11 @@ namespace Lira {
             
     protected:
         bool registered = false;
+
+        static bool key_pressed(Key key)
+        {
+            return Input::pressed(key);
+        }
         
     };
 }
