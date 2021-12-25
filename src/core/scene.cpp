@@ -42,32 +42,20 @@ void Scene::update() {
  
    components_to_remove.clear();
    entities_to_remove.clear();
-
-   //for (auto& c : components_to_add)
-	  // insert_component(c);
-
-   //components_to_add.clear();
 }
 
 void Scene::render(BatchRenderer & renderer) {
 
-	std::vector<Component*> render_list;
-	
-	for (const auto& [id, items] : components)
-	   for (auto* component : items)
-	   {
-		   if (component->is_visible && component->entity->is_visible)
-			   render_list.push_back(component);
-	   }
+	for (const auto& [id, layer] : render_layers)
+	{
+		renderer.push_transform(layer.transform);
 
-
-	std::sort(render_list.begin(), render_list.end(), [](Component* a, Component* b)->bool {
-		return a->get_layer() < b->get_layer();
-	});
-
-	for (auto* item : render_list)
-		item->render(renderer);
-
+		for (auto* component : layer.components)
+			if (component->is_visible && component->entity->is_visible)
+				component->render(renderer);
+		
+		renderer.pop_transform();	
+	}
 }
 
 void Scene::queue_remove(Component* component) {
@@ -137,6 +125,7 @@ void Scene::destroy_component(Component * component, Entity * entity) {
 			c_list.pop_back();
 
 			components.release(component);
+			render_layers[entity->layer].remove(component);
 
 			if (components_cache.count(component) < N_MAX_CACHE)
 			{
@@ -155,5 +144,10 @@ void Scene::destroy_component(Component * component, Entity * entity) {
 const std::vector<Entity*>& Scene::get_entities()
 { 
 	return entities; 
+}
+
+void Scene::layer_transform(int layer, const TinySDL::Mat3x2& transform)
+{
+	render_layers[layer].transform = transform;
 }
 

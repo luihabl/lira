@@ -2,6 +2,7 @@
 
 #include <set>
 #include <memory>
+#include <map>
 
 #include <tinysdl.h>
 
@@ -50,6 +51,7 @@ namespace Lira {
 
             const std::vector<Entity*>& get_entities();
 
+            void layer_transform(int layer, const TinySDL::Mat3x2& transform);
             
         private:
             Game* game;
@@ -62,6 +64,27 @@ namespace Lira {
 
             std::vector<Component*> components_to_remove;
             std::vector<Entity*> entities_to_remove;
+
+            struct RenderLayer
+            {
+                std::vector<Component*> components;
+                TinySDL::Mat3x2 transform = TinySDL::Mat3x2::identity;
+                
+                void add(Component* c) { components.push_back(c); }
+
+                void remove(Component* c)
+                {
+                    for (size_t i = 0; i < components.size(); i++)
+                        if (components[i] == c)
+                        {
+                            components[i] = components.back();
+                            components.pop_back();
+                            break;
+                        }
+                }
+            };
+
+            std::unordered_map<int, RenderLayer> render_layers;
 
             //Immediately destroys entity
             void destroy_entity(Entity* entity);
@@ -115,6 +138,7 @@ namespace Lira {
         
         components.add(c);
         c->entity->components.push_back(c);
+        render_layers[entity->layer].add(c);
 
         c->begin();
 

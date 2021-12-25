@@ -149,14 +149,17 @@ void Level::update() {
 
         move_to_room(player_room_id);
     }
-
+    
+    layer_transform(1, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+    layer_transform(0, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+    layer_transform(-1, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
 }
 
 void Level::render(TinySDL::BatchRenderer& renderer)
 {
     Graphics::clear(Color::black);
 
-    renderer.push_transform(LinAlg2D::gen_translation((float) -camera[0], (float) -camera[1]));
+    //renderer.push_transform(LinAlg2D::gen_translation((float) -camera[0], (float) -camera[1]));
 
     Scene::render(renderer);
     
@@ -172,7 +175,7 @@ void Level::render(TinySDL::BatchRenderer& renderer)
             c->render(renderer);
     }
 
-    renderer.pop_transform();
+    //renderer.pop_transform();
 
 
     // vvvv camera-independent items vvvv
