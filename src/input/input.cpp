@@ -89,6 +89,4 @@ void Input::register_button(VirtualInput * button) {
 
 void Input::unregister_button(VirtualInput * button) {
     registered_buttons.remove(button);
-
-    Log::debug("unregistering!");
 }
