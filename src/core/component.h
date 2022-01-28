@@ -1,45 +1,47 @@
 #pragma once
 
-#include "entity.h"
+#include "ecs.h"
 
-#include <unordered_map>
-#include <algorithm>
+// #include "entity.h"
 
-#include <tinysdl.h>
+// #include <unordered_map>
+// #include <algorithm>
+
+// #include <tinysdl.h>
 
 
-namespace Lira {
+// namespace Lira {
 
-    class Scene;
-    class Entity;
+//     class Scene;
+//     class Entity;
 
-    class Component {
+//     class Component {
 
-        friend class Scene;
-        friend class Entity;
+//         friend class Scene;
+//         friend class Entity;
 
-    public:
-        virtual ~Component() {};
+//     public:
+//         virtual ~Component() {};
 
-        bool is_active = true;
-        bool is_visible = true;
+//         bool is_active = true;
+//         bool is_visible = true;
 
-        Entity* entity;
-        Scene* scene() { return entity->get_scene(); }
+//         Entity* entity;
+//         Scene* scene() { return entity->get_scene(); }
 
-        TinySDL::Type type;
+//         TinySDL::Type type;
 
-        virtual void begin() {};
-        virtual void update() {};
-        virtual void render([[maybe_unused]] TinySDL::BatchRenderer & renderer) {};
+//         virtual void begin() {};
+//         virtual void update() {};
+//         virtual void render([[maybe_unused]] TinySDL::BatchRenderer & renderer) {};
 
-        int get_layer();
+//         int get_layer();
         
-        template <typename T>
-        T* get_sibling() {
-            return entity->get_component<T>();
-        }
+//         template <typename T>
+//         T* get_sibling() {
+//             return entity->get_component<T>();
+//         }
 
-        void destroy();
-    };
-}
+//         void destroy();
+//     };
+// }

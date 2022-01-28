@@ -17,7 +17,7 @@ namespace Lira {
             return *this;
         }
 
-        virtual VirtualInput& VirtualInput::register_input() 
+        virtual VirtualInput& register_input() 
         {
 
             if (!registered) {

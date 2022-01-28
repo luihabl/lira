@@ -7,7 +7,7 @@
 #include "../util/state_machine.h"
 #include "../modules/game.h"
 
-#include "collision_layers.h"
+#include "../collision_layers.h"
 
 #include "animated_sprite.h"
 #include "actor.h"
