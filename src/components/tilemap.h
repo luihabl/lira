@@ -5,7 +5,7 @@
 #include <tinysdl.h>
 #include "../assets/tileset.h"
 #include "../assets/map.h"
-#include "../core/component.h"
+#include "../core/ecs.h"
 
 namespace Lira {
 

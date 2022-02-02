@@ -1,6 +1,6 @@
 #include "collider.h"
 #include "collider_grid.h"
-#include "../core/scene.h"
+#include "../core/ecs.h"
 
 #include <cmath>
 

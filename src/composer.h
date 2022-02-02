@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/entity.h"
-#include "core/scene.h"
+#include "core/ecs.h"
+#include "core/ecs.h"
 
 #include <tinysdl.h>
 

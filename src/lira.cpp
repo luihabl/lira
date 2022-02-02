@@ -1,5 +1,5 @@
 #include "lira.h"
-#include "core/scene.h"
+#include "core/ecs.h"
 
 #include "level.h"
 #include "input/input.h"

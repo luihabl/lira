@@ -157,9 +157,8 @@ namespace Lira
         void destroy();
     };
 
-
     typedef std::unique_ptr<Scene> SceneRef;
-
+    typedef std::unique_ptr<Entity> EntityRef;
 
     template <typename T>
     const std::vector<Component*>& Scene::get_components()
@@ -210,12 +209,6 @@ namespace Lira
         return c;
     }
 
-
-
-
-    typedef std::unique_ptr<Entity> EntityRef;
-
-
     template <typename T>
     T* Entity::add_component(T&& component) {
         return scene->add_component(std::forward<T>(component), this);
@@ -230,8 +223,5 @@ namespace Lira
         }
         
         return nullptr;
-    }
-
-
-  
+    } 
 }

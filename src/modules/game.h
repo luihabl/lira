@@ -5,7 +5,7 @@
 #include <tinysdl.h>
 
 #include "../input/input.h"
-#include "../core/scene.h"
+#include "../core/ecs.h"
 #include "../assets/content.h"
 
 namespace chr = std::chrono;

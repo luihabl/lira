@@ -1,5 +1,4 @@
-#include "entity.h"
-#include "scene.h"
+#include "ecs.h"
 
 using namespace Lira;
 

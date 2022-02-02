@@ -1,7 +1,7 @@
 #pragma once
 
 #include <tinysdl.h>
-#include "core/scene.h"
+#include "core/ecs.h"
 #include "assets/map.h"
 
 using namespace TinySDL;

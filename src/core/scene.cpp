@@ -1,9 +1,7 @@
 
 #include <tinysdl.h>
 
-#include "scene.h"
-#include "entity.h"
-#include "component.h"
+#include "ecs.h"
 
 #include <algorithm>
 

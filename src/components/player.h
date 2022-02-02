@@ -1,7 +1,7 @@
 #pragma once
 
 #include <tinysdl.h>
-#include "../core/component.h"
+#include "../core/ecs.h"
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
 #include "../util/state_machine.h"

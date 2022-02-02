@@ -1,6 +1,6 @@
 #include "tilemap.h"
 
-#include "../core/entity.h"
+#include "../core/ecs.h"
 #include <tinysdl.h>
 
 #include <algorithm>

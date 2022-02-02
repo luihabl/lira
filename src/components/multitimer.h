@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/component.h"
+#include "../core/ecs.h"
 
 #include <functional>
 #include <vector>
