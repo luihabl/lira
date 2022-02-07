@@ -3,7 +3,6 @@
 #include <memory>
 #include <utility>
 #include <vector>
-#include <unordered_map>
 #include <algorithm>
 #include <set>
 #include <map>
@@ -88,7 +87,7 @@ namespace Lira
                 }
             };
 
-            std::unordered_map<int, RenderLayer> render_layers;
+            std::map<int, RenderLayer> render_layers;
 
             //Immediately destroys entity
             void destroy_entity(Entity* entity);

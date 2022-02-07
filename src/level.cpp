@@ -159,9 +159,9 @@ void Level::render(TinySDL::BatchRenderer& renderer)
 {
     Graphics::clear(Color::black);
 
-    //renderer.push_transform(LinAlg2D::gen_translation((float) -camera[0], (float) -camera[1]));
-
     Scene::render(renderer);
+
+    renderer.push_transform(LinAlg2D::gen_translation((float) -camera[0], (float) -camera[1]));
     
     if (render_colliders)
     {
@@ -175,7 +175,7 @@ void Level::render(TinySDL::BatchRenderer& renderer)
             c->render(renderer);
     }
 
-    //renderer.pop_transform();
+    renderer.pop_transform();
 
 
     // vvvv camera-independent items vvvv

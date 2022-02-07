@@ -1,4 +1,5 @@
 #include <tinysdl.h>
+#include <unordered_map>
 
 namespace Lira
 {
