@@ -173,7 +173,7 @@ namespace Lira {
             });
         }
 
-        void update() {
+        void update() override {
             set_movement();
             set_animations();
         }
@@ -315,7 +315,7 @@ namespace Lira {
             
             velocity[1] += current_gravity * GameProperties::delta_time();
 
-            if (abs(velocity[1] > 4 * floor_max_speed) && !sliding)
+            if (abs(velocity[1]) > 4 * floor_max_speed && !sliding)
             {
                 velocity[1] = Mathf::approach(velocity[1], vertical_max_speed * Mathf::sign(velocity[1]), 1000 * GameProperties::delta_time());
             }
@@ -411,7 +411,7 @@ namespace Lira {
         }
     
 
-        void render(BatchRenderer& renderer)
+        void render(BatchRenderer& renderer) override
         {
             if (is_dashing)
                 for (auto& trail : trails)
