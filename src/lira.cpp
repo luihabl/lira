@@ -3,7 +3,7 @@
 
 #include "level.h"
 #include "input/input.h"
-
+#include "sound/sound.h"
 
 void LiraGame::begin() {
 
@@ -15,6 +15,7 @@ void LiraGame::begin() {
     move_to_scene(SceneRef(new Level()));
 
     Graphics::set_blend_mode();
+    Sound::init();
     Game::begin();
 }
 
@@ -43,4 +44,8 @@ void LiraGame::render() {
     renderer.render();
 }
 
-
+void LiraGame::end() 
+{
+    Game::end();
+    Sound::terminate();
+}

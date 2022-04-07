@@ -56,6 +56,12 @@ void Scene::render(BatchRenderer & renderer) {
 	}
 }
 
+void Scene::end() {
+	for (const auto& [id, items] : components)
+		for (auto* component : items)
+			component->end();
+}
+
 void Scene::queue_remove(Component* component) {
 	components_to_remove.push_back(component);
 }
@@ -118,6 +124,8 @@ void Scene::destroy_component(Component * component, Entity * entity) {
 	
 	for (int i = (int)c_list.size() - 1; i >= 0; i--) {
 		if (c_list[i] == component) {
+
+			component->end();
 
 			c_list[i] = c_list.back();
 			c_list.pop_back();

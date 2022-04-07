@@ -83,6 +83,8 @@ void Game::run() {
         last_frame = next_frame;
         next_frame += frame_duration;
     }
+
+    end();
 }
 
 void Game::begin() {
@@ -95,6 +97,10 @@ void Game::update() {
 
 void Game::render() {
     if(current_scene) current_scene->render(renderer);
+}
+
+void Game::end() {
+    if(current_scene) current_scene->end();
 }
 
 void Game::quit() {

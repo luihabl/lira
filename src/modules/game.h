@@ -55,6 +55,9 @@ namespace Lira {
             //Called every frame for rendering scene
             virtual void render();
 
+            //Called when game ends
+            virtual void end();
+
             //Called every frame to handle SDL events
             InputHandler input_handler;
 

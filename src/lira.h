@@ -13,6 +13,7 @@ namespace Lira  {
 
         void begin() override;
         void render() override;
+        void end() override;
 
     public:
         RenderTarget target;

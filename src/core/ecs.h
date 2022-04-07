@@ -29,6 +29,7 @@ namespace Lira
             virtual void begin();
             virtual void update();
             virtual void render(TinySDL::BatchRenderer & renderer);
+            virtual void end();
 
             virtual ~Scene();
             
@@ -145,6 +146,7 @@ namespace Lira
         virtual void begin() {};
         virtual void update() {};
         virtual void render([[maybe_unused]] TinySDL::BatchRenderer & renderer) {};
+        virtual void end() {};
 
         int get_layer();
         

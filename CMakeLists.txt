@@ -71,6 +71,7 @@ if(USE_WWISE)
     
     target_sources(lira PRIVATE
         ${WWISE_SRC}
+        src/sound/sound_wwise.cpp
     )
 
     target_include_directories(lira PUBLIC
@@ -91,6 +92,10 @@ if(USE_WWISE)
     )
 
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${WWISE_LINKER_FLAGS}" )
+else()
+    target_sources(lira PRIVATE
+        src/sound/sound_dummy.cpp
+    )
 endif()
 
 # copy SDL2.dll to the build directory
