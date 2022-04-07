@@ -64,6 +64,35 @@ tinysdl
 nlohmann_json::nlohmann_json
 )
 
+# Find and include WWise files and configuration
+option(USE_WWISE "Should compile with WWise" OFF)
+if(USE_WWISE)
+    find_package(WWISE REQUIRED PATHS ./cmake)
+    
+    target_sources(lira PRIVATE
+        ${WWISE_SRC}
+    )
+
+    target_include_directories(lira PUBLIC
+        ${WWISE_INCLUDE_DIRS}
+    )
+
+    target_link_directories(lira PUBLIC 
+        ${WWISE_LIBRARY_DIRS}
+    )
+
+    target_link_libraries(lira
+        ${WWISE_LIBS}
+    )
+
+    add_definitions(
+        ${WWISE_DEFS}
+        -DLIRA_SOUND_WWISE
+    )
+
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${WWISE_LINKER_FLAGS}" )
+endif()
+
 # copy SDL2.dll to the build directory
 set(SDL2_DLL "" CACHE FILEPATH "SDL2 DLL Path")
 if (EXISTS ${SDL2_DLL})
