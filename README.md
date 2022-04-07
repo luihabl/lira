@@ -1,2 +1,2 @@
-# micro_ninja
-A small NES-style ninja platfomer
+# Lira
+Main repository of 2D platformer game "Lira". 
