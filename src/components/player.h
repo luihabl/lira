@@ -6,6 +6,7 @@
 #include "../input/virtualaxis.h"
 #include "../util/state_machine.h"
 #include "../modules/game.h"
+#include "../sound/sound.h"
 
 #include "../collision_layers.h"
 
@@ -224,6 +225,8 @@ namespace Lira {
                 }
 
                 animator->scale = {0.7f, 1.3f};
+
+                Sound::play("Jump");
 
                 jump_counter++;
             }
