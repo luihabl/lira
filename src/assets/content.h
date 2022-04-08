@@ -9,6 +9,13 @@
 namespace Lira {
 
 	class Content {
+		
+		template <typename T>
+		struct Asset {
+			T data;
+			std::filesystem::path file_name;
+			std::filesystem::path folder;
+		};
 
 		std::string folder_name;
 		std::filesystem::path find_path();
@@ -19,6 +26,9 @@ namespace Lira {
 		
 		template <typename T>
 		static T* find(const std::string& name);
+
+		template <typename T>
+		static const std::unordered_map<std::string, Asset<T>>& find_all();
 		
 		template <typename T>
 		static std::filesystem::path file_folder(const std::string& name);
@@ -28,12 +38,6 @@ namespace Lira {
 		static std::string normalize_key(const std::string& key);
 	
 	private:
-		template <typename T>
-		struct Asset {
-			T data;
-			std::filesystem::path file_name;
-			std::filesystem::path folder;
-		};
 
 		//The solution of using a template map is not is not ideal, 
 		//since it's hard to clear the map afterwards. Perhaps it's better to
@@ -61,6 +65,11 @@ namespace Lira {
 	template <typename T>
 	inline T* Content::find(const std::string& name) {
 		return &(assets<T>[name].data);
+	}
+
+	template <typename T>
+	inline const std::unordered_map<std::string, Content::Asset<T>>& Content::find_all() {
+		return assets<T>;
 	}
 
 	template <typename T>

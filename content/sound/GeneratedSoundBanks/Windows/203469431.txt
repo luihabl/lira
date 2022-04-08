@@ -1,0 +1,10 @@
+Event	ID	Name			Wwise Object Path	Notes
+	417627684	PlayMusic			\Default Work Unit\PlayMusic	
+	1582394523	sfx_Click			\Default Work Unit\sfx_Click	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	122883468	sfx_clickB	G:\.shortcut-targets-by-id\1DMxdmoJQwcWO1Fiq4DUvuhYayk8AylI6\Lira Game\Wwise Lira\.cache\Windows\SFX\sfx_clickB_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\UI\sfx_click\sfx_clickB		26771
+	422280361	EmBuscaDaLira_L1_105bpm_4,4_2M	G:\.shortcut-targets-by-id\1DMxdmoJQwcWO1Fiq4DUvuhYayk8AylI6\Lira Game\Wwise Lira\.cache\Windows\SFX\EmBuscaDaLira_L1_105bpm_4,4_2M_9EDFC787.wem		\Interactive Music Hierarchy\Default Work Unit\Music\EmBuscaDaLira\EmBuscaDaLira_L1_105bpm_4,4_2M\EmBuscaDaLira_L1_105bpm_4,4_2M		2050864
+	554715499	sfx_clickA	G:\.shortcut-targets-by-id\1DMxdmoJQwcWO1Fiq4DUvuhYayk8AylI6\Lira Game\Wwise Lira\.cache\Windows\SFX\sfx_clickA_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\UI\sfx_click\sfx_clickA		27046
+	735527818	sfx_clickC	G:\.shortcut-targets-by-id\1DMxdmoJQwcWO1Fiq4DUvuhYayk8AylI6\Lira Game\Wwise Lira\.cache\Windows\SFX\sfx_clickC_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\UI\sfx_click\sfx_clickC		27179
+

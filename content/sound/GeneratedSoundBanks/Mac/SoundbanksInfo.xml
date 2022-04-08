@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Mac" BasePlatform="Mac" SchemaVersion="12" SoundbankVersion="140">
+	<RootPaths>
+		<ProjectRoot>G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\</ProjectRoot>
+		<SourceFilesRoot>G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\</SourceFilesRoot>
+		<SoundBanksRoot>G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\GeneratedSoundBanks\Mac\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\GeneratedSoundBanks\Mac</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="203469431" Language="SFX" Hash="3480923393">
+			<ObjectPath>\SoundBanks\Default Work Unit\Lira</ObjectPath>
+			<ShortName>Lira</ShortName>
+			<Path>Lira.bnk</Path>
+			<IncludedEvents>
+				<Event Id="1584507803" Name="Click" ObjectPath="\Events\Default Work Unit\UI\Click">
+					<IncludedMemoryFiles>
+						<File Id="122883468" Language="SFX">
+							<ShortName>sfx_clickB.wav</ShortName>
+							<Path>SFX\sfx_clickB_3F75BDB9.wem</Path>
+						</File>
+						<File Id="554715499" Language="SFX">
+							<ShortName>sfx_clickA.wav</ShortName>
+							<Path>SFX\sfx_clickA_3F75BDB9.wem</Path>
+						</File>
+						<File Id="735527818" Language="SFX">
+							<ShortName>sfx_clickC.wav</ShortName>
+							<Path>SFX\sfx_clickC_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3833651337" Name="Jump" ObjectPath="\Events\Default Work Unit\SFX\Jump">
+					<IncludedMemoryFiles>
+						<File Id="579344991" Language="SFX">
+							<ShortName>sfx_PlayerJumping.wav</ShortName>
+							<Path>SFX\sfx_PlayerJumping_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2308335515" Name="JumpImpact" ObjectPath="\Events\Default Work Unit\SFX\JumpImpact">
+					<IncludedMemoryFiles>
+						<File Id="391646260" Language="SFX">
+							<ShortName>sfx_JumpImpact.wav</ShortName>
+							<Path>SFX\sfx_JumpImpact_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2521436688" Name="NoteHit" ObjectPath="\Events\Default Work Unit\SFX\NoteHit">
+					<IncludedMemoryFiles>
+						<File Id="141988112" Language="SFX">
+							<ShortName>NoteHit_A.wav</ShortName>
+							<Path>SFX\NoteHit_A_10C4C929.wem</Path>
+						</File>
+						<File Id="291578608" Language="SFX">
+							<ShortName>NoteHit_D.wav</ShortName>
+							<Path>SFX\NoteHit_D_10C4C929.wem</Path>
+						</File>
+						<File Id="629287881" Language="SFX">
+							<ShortName>NoteHit_B.wav</ShortName>
+							<Path>SFX\NoteHit_B_10C4C929.wem</Path>
+						</File>
+						<File Id="761109841" Language="SFX">
+							<ShortName>NoteHit_C.wav</ShortName>
+							<Path>SFX\NoteHit_C_10C4C929.wem</Path>
+						</File>
+						<File Id="766708168" Language="SFX">
+							<ShortName>NoteHit_E.wav</ShortName>
+							<Path>SFX\NoteHit_E_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="417627684" Name="PlayMusic" ObjectPath="\Events\Default Work Unit\MUSIC\PlayMusic">
+					<IncludedMemoryFiles>
+						<File Id="422280361" Language="SFX">
+							<ShortName>EmBuscaDaLira_L1_105bpm_4,4_2M.wav</ShortName>
+							<Path>SFX\EmBuscaDaLira_L1_105bpm_4,4_2M_9EDFC787.wem</Path>
+						</File>
+						<File Id="873651687" Language="SFX">
+							<ShortName>IdadeMedia_L1_95bpm_4,4_2M.wav</ShortName>
+							<Path>SFX\IdadeMedia_L1_95bpm_4,4_2M_9EDFC787.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+					<SwitchContainers>
+						<SwitchContainer SwitchValue="{FE537329-1F56-4BFA-971E-0BFFBE5F47E7}">
+							<Media>
+								<File Id="422280361"/>
+							</Media>
+						</SwitchContainer>
+						<SwitchContainer SwitchValue="{A7F59918-FDBC-4469-B0FA-869114847297}">
+							<Media>
+								<File Id="873651687"/>
+							</Media>
+						</SwitchContainer>
+					</SwitchContainers>
+					<ActionSetState>
+						<ActionSetStateEntry Id="861167783" Name="Music01" ObjectPath="\States\Default Work Unit\Music\Music01"/>
+					</ActionSetState>
+				</Event>
+				<Event Id="2175297742" Name="Set_Music01" ObjectPath="\Events\Default Work Unit\MUSIC\Set_Music01">
+					<ActionSetState>
+						<ActionSetStateEntry Id="861167783" Name="Music01" ObjectPath="\States\Default Work Unit\Music\Music01"/>
+					</ActionSetState>
+				</Event>
+				<Event Id="2175297741" Name="Set_Music02" ObjectPath="\Events\Default Work Unit\MUSIC\Set_Music02">
+					<ActionSetState>
+						<ActionSetStateEntry Id="861167780" Name="Music02" ObjectPath="\States\Default Work Unit\Music\Music02"/>
+					</ActionSetState>
+				</Event>
+			</IncludedEvents>
+			<StateGroups>
+				<StateGroup Id="861167780" Name="Music02" ObjectPath="\States\Default Work Unit\Music\Music02">
+					<States/>
+				</StateGroup>
+				<StateGroup Id="861167783" Name="Music01" ObjectPath="\States\Default Work Unit\Music\Music01">
+					<States/>
+				</StateGroup>
+				<StateGroup Id="3991942870" Name="Music" ObjectPath="\States\Default Work Unit\Music">
+					<States>
+						<State Id="748895195" Name="None" ObjectPath="\States\Default Work Unit\Music\None"/>
+						<State Id="861167783" Name="Music01" ObjectPath="\States\Default Work Unit\Music\Music01"/>
+						<State Id="861167780" Name="Music02" ObjectPath="\States\Default Work Unit\Music\Music02"/>
+					</States>
+				</StateGroup>
+			</StateGroups>
+		</SoundBank>
+		<SoundBank Id="1355168291" Language="SFX" Hash="3017090543">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="4072029455" Language="SFX" Hash="3355021290">
+			<ObjectPath>\SoundBanks\Default Work Unit\New_SoundBank</ObjectPath>
+			<ShortName>New_SoundBank</ShortName>
+			<Path>New_SoundBank.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

@@ -2,6 +2,8 @@
 
 #include "sound.h"
 #include "tinysdl.h"
+#include "../assets/content.h"
+#include "../assets/sound_bank.h"
 
 #include <AK/Plugin/AllPluginsFactories.h> //<--------------- include this!!!
 #include <AK/SoundEngine/Common/AkTypes.h>
@@ -20,6 +22,10 @@
 
 #include "AkFilePackageLowLevelIOBlocking.h"
 
+#include <vector>
+#include <filesystem>
+using fspath = std::filesystem::path;
+
 using namespace Lira;
 using namespace TinySDL;
 
@@ -33,6 +39,8 @@ namespace
     AkInitSettings initSettings;
     AkPlatformInitSettings platformInitSettings;
     AkSpatialAudioInitSettings settings; // The constructor fills AkSpatialAudioInitSettings with the recommended default settings. 
+
+    std::vector<std::string> loaded_banks;
 }
 
 bool init_sound_engine()
@@ -86,7 +94,7 @@ bool init_sound_engine()
         return false;
     }
 
-    Log::info("WWise initialized");
+    Log::info("Wwise SDK %d.%d.%d.%d", AK_WWISESDK_VERSION_MAJOR, AK_WWISESDK_VERSION_MINOR, AK_WWISESDK_VERSION_SUBMINOR, AK_WWISESDK_VERSION_BUILD);
     return true;
 }
 
@@ -100,8 +108,30 @@ void terminate_sound_engine()
         AK::IAkStreamMgr::Get()->Destroy();
 
     AK::MemoryMgr::Term();
+}
 
-    Log::info("WWise closed");
+bool load_bank(const char* name)
+{
+    AkBankID bankID;
+    AKRESULT eResult = AK::SoundEngine::LoadBank( name, bankID );
+    if(eResult != AK_Success) 
+    {
+        Log::error("Error %d in loading bank %s", eResult, name);
+        return false;
+    }
+    loaded_banks.push_back(std::string(name));
+    return true;
+}
+
+void set_base_path(const char* path)
+{
+    g_lowLevelIO.SetBasePath( path );
+}
+
+void unload_all_banks()
+{
+    for(const auto& bank : loaded_banks)
+        AK::SoundEngine::UnloadBank(bank.c_str(), NULL);
 }
 
 void Sound::init()
@@ -111,12 +141,34 @@ void Sound::init()
 
     init_sound_engine();
 
+    AK::StreamMgr::SetCurrentLanguage( AKTEXT("English(US)") );
+
+    fspath platform;
+    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+        patform = "Windows";
+    #elif __APPLE__
+        platform = "Mac";
+    #endif
     
+    const auto& sound_banks = Content::find_all<SoundBank>();
+    for(const auto& [k, bank] : sound_banks)
+        if(bank.data.platform == platform && bank.data.name == "Init")
+        {
+            set_base_path(bank.folder.c_str());
+            load_bank("Init.bnk");
+            break;
+        }
+    
+    for(const auto& [k, bank] : sound_banks)
+        if(bank.data.platform == platform && bank.data.name != "Init")
+            load_bank(bank.file_name.c_str());
+        
 }
 
 
 void Sound::terminate()
 {
+    unload_all_banks();
     terminate_sound_engine();
 }
 

@@ -1,0 +1,31 @@
+Event	ID	Name			Wwise Object Path	Notes
+	417627684	PlayMusic			\Default Work Unit\MUSIC\PlayMusic	
+	1584507803	Click			\Default Work Unit\UI\Click	
+	2175297741	Set_Music02			\Default Work Unit\MUSIC\Set_Music02	
+	2175297742	Set_Music01			\Default Work Unit\MUSIC\Set_Music01	
+	2308335515	JumpImpact			\Default Work Unit\SFX\JumpImpact	
+	2521436688	NoteHit			\Default Work Unit\SFX\NoteHit	
+	3833651337	Jump			\Default Work Unit\SFX\Jump	
+
+State Group	ID	Name			Wwise Object Path	Notes
+	3991942870	Music			\Default Work Unit\Music	
+
+State	ID	Name	State Group			Notes
+	748895195	None	Music			
+	861167780	Music02	Music			
+	861167783	Music01	Music			
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	122883468	sfx_clickB	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\sfx_clickB_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\UI\sfx_click\sfx_clickB		26771
+	141988112	NoteHit_A	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\NoteHit_A_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\sfx\NoteHit\NoteHit_A		384064
+	291578608	NoteHit_D	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\NoteHit_D_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\sfx\NoteHit\NoteHit_D		384064
+	391646260	sfx_JumpImpact	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\sfx_JumpImpact_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\sfx\sfx_JumpImpact		192064
+	422280361	EmBuscaDaLira_L1_105bpm_4,4_2M	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\EmBuscaDaLira_L1_105bpm_4,4_2M_9EDFC787.wem		\Interactive Music Hierarchy\Default Work Unit\Music\EmBuscaDaLira\EmBuscaDaLira_L1_105bpm_4,4_2M\EmBuscaDaLira_L1_105bpm_4,4_2M		2050864
+	554715499	sfx_clickA	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\sfx_clickA_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\UI\sfx_click\sfx_clickA		27046
+	579344991	sfx_PlayerJumping	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\sfx_PlayerJumping_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\sfx\sfx_PlayerJumping		192064
+	629287881	NoteHit_B	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\NoteHit_B_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\sfx\NoteHit\NoteHit_B		384064
+	735527818	sfx_clickC	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\sfx_clickC_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\UI\sfx_click\sfx_clickC		27179
+	761109841	NoteHit_C	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\NoteHit_C_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\sfx\NoteHit\NoteHit_C		384064
+	766708168	NoteHit_E	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\NoteHit_E_10C4C929.wem		\Actor-Mixer Hierarchy\Default Work Unit\sfx\NoteHit\NoteHit_E		384064
+	873651687	IdadeMedia_L1_95bpm_4,4_2M	G:\Meu Drive\BRASBRAVEL STUDIO\Compartilhado\Lira Game\Wwise Lira\.cache\Mac\SFX\IdadeMedia_L1_95bpm_4,4_2M_9EDFC787.wem		\Interactive Music Hierarchy\Default Work Unit\Music\IdadeMedia\IdadeMedia_L1_95bpm_4,4_2M\IdadeMedia_L1_95bpm_4,4_2M		1279559
+

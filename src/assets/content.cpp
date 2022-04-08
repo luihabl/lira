@@ -4,6 +4,7 @@
 
 #include "map.h"
 #include "spritesheet.h"
+#include "sound_bank.h"
 
 #include <unordered_map>
 #include <filesystem> 
@@ -55,6 +56,12 @@ void Content::load_all() {
 			{
 				add_asset<Texture>(key_name, item.path().filename(), item.path().parent_path(), Texture::from_file(item.path().generic_string().c_str()));
 			}
+
+			if (extension == ".bnk")
+			{
+				add_asset<SoundBank>(key_name, item.path().filename(), item.path().parent_path(), { item.path().stem(), item.path().parent_path().stem()}); 
+			}
+
 		}
 	}
 
