@@ -13,6 +13,7 @@ namespace Lira {
 		void begin() override;
 		void update() override;
 		void render(TinySDL::BatchRenderer& renderer) override;
+		void end() override;
 
 		bool render_colliders = false;
 		bool render_minimap = false; // Move to component later

@@ -19,6 +19,13 @@ void LiraGame::begin() {
     Game::begin();
 }
 
+
+void LiraGame::update() 
+{
+    Game::update();
+    Sound::update();
+}
+
 void LiraGame::render() {
 
     target.begin();

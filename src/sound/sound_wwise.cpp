@@ -18,16 +18,48 @@
 #include <AK/SoundEngine/Common/AkStreamMgrModule.h>	// AkStreamMgrModule
 #include <AK/SpatialAudio/Common/AkSpatialAudio.h>	// Spatial Audio module
 #include <AK/SoundEngine/Common/AkCallback.h>    // Callback
+#include <AK/SoundEngine/Common/AkQueryParameters.h>
 #include <AK/IBytes.h>
 
 #include "AkFilePackageLowLevelIOBlocking.h"
 
+#include <unordered_map>
+#include <string>
 #include <vector>
 #include <filesystem>
 using fspath = std::filesystem::path;
 
 using namespace Lira;
 using namespace TinySDL;
+
+#define N_MAX_QUERY 50
+
+
+struct WwiseGameObject
+{
+    AkGameObjectID id;
+    std::string name;
+
+    WwiseGameObject() = default;
+    WwiseGameObject(const char* _name, AkGameObjectID _id)
+    {
+        name = std::string(_name);
+        id = _id;
+    }
+
+    void register_object()
+    {
+        AK::SoundEngine::RegisterGameObj( id, name.c_str() );
+    }
+
+    void unregister_object()
+    {
+        AK::SoundEngine::UnregisterGameObj(id);
+    }
+};
+
+
+
 
 namespace
 {
@@ -41,6 +73,11 @@ namespace
     AkSpatialAudioInitSettings settings; // The constructor fills AkSpatialAudioInitSettings with the recommended default settings. 
 
     std::vector<std::string> loaded_banks;
+    WwiseGameObject default_obj;
+    WwiseGameObject default_listener;
+
+    constexpr AkGameObjectID DEFAULT_GAME_OBJECT = 100;
+    constexpr AkGameObjectID DEFAULT_LISTENER = 1000;
 }
 
 bool init_sound_engine()
@@ -132,7 +169,48 @@ void unload_all_banks()
 {
     for(const auto& bank : loaded_banks)
         AK::SoundEngine::UnloadBank(bank.c_str(), NULL);
+    loaded_banks.clear();
 }
+
+bool is_event_playing(const std::string& event_name, AkGameObjectID object)
+{
+    AkUInt32 test_event_id = AK::SoundEngine::GetIDFromString(event_name.c_str());
+    
+    AkUInt32 count = N_MAX_QUERY;
+    AkUInt32 playing_ids[N_MAX_QUERY];
+
+    AKRESULT result = AK::SoundEngine::Query::GetPlayingIDsFromGameObject(object, count, playing_ids);
+
+    for (int i = 0; i < count; i++)
+    {
+        AkUInt32 playing_id = playing_ids[i];
+        AkUInt32 event_id = AK::SoundEngine::Query::GetEventIDFromPlayingID(playing_id);
+
+        if (event_id == test_event_id)
+            return true;
+    }
+    return false;
+}
+
+void stop_event(const std::string& event_name, AkGameObjectID object)
+{
+    AkUInt32 test_event_id = AK::SoundEngine::GetIDFromString(event_name.c_str());
+
+    AkUInt32 count = N_MAX_QUERY;
+    AkUInt32 playing_ids[N_MAX_QUERY];
+
+    AKRESULT result = AK::SoundEngine::Query::GetPlayingIDsFromGameObject(object, count, playing_ids);
+
+    for (int i = 0; i < count; i++)
+    {
+        AkUInt32 playing_id = playing_ids[i];
+        AkUInt32 event_id = AK::SoundEngine::Query::GetEventIDFromPlayingID(playing_id);
+
+        if (event_id == test_event_id)
+            AK::SoundEngine::StopPlayingID(playing_id);
+    }
+}
+
 
 void Sound::init()
 {
@@ -155,26 +233,57 @@ void Sound::init()
         if(bank.data.platform == platform && bank.data.name == "Init")
         {
             set_base_path(bank.folder.c_str());
-            load_bank("Init.bnk");
+            load_bank(bank.file_name.c_str());
             break;
         }
     
     for(const auto& [k, bank] : sound_banks)
-        if(bank.data.platform == platform && bank.data.name != "Init")
+        if(bank.data.platform == platform && bank.data.name == "Lira")
             load_bank(bank.file_name.c_str());
-        
+
+    // For now we use only one Game Object and one Listener.
+    // Aftewards we need to create a way to make several objects and change
+    // their positions.
+    default_obj = WwiseGameObject("DEFAULT_GAME_OBJECT", DEFAULT_GAME_OBJECT);
+    default_obj.register_object();
+
+    default_listener = WwiseGameObject("DEFAULT_LISTENER", DEFAULT_LISTENER);
+    default_listener.register_object();
+    AK::SoundEngine::SetDefaultListeners(&default_listener.id, 1);    
 }
 
+void Sound::play(const char* name)
+{
+    AK::SoundEngine::PostEvent(name, default_obj.id);
+}
+
+void Sound::update()
+{
+    if (AK::SoundEngine::IsInitialized())
+        AK::SoundEngine::RenderAudio();
+}
+
+void Sound::stop(const char* name)
+{
+    stop_event(name, default_obj.id);
+}
+
+void Sound::stop_all()
+{
+    AK::SoundEngine::StopAll(default_obj.id);
+}
 
 void Sound::terminate()
 {
-    unload_all_banks();
-    terminate_sound_engine();
+    if(initialiazed)
+    {
+        stop_all();
+        AK::SoundEngine::UnregisterAllGameObj();
+        unload_all_banks();
+        terminate_sound_engine();
+        initialiazed = false;
+    }
 }
-
-
-
-
 
 
 

@@ -13,6 +13,8 @@
 #include "components/collider_grid.h"
 #include "components/player.h"
 
+#include "sound/sound.h"
+
 using namespace Lira;
 using namespace TinySDL;
 
@@ -30,6 +32,14 @@ void Level::begin() {
     move_to_room(player_room_id); 
 
     Scene::begin();
+
+    Sound::play("PlayMusic");
+}
+
+void Level::end()
+{
+    Scene::end();
+    Sound::stop_all();
 }
 
 void Level::set_map(const std::string& _map_name)

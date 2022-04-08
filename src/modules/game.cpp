@@ -65,6 +65,10 @@ void Game::run() {
 
         // Changing scenes
         if(next_scene != nullptr && next_scene != current_scene) {
+            
+            if(current_scene)
+                current_scene->end();
+
             current_scene.reset();
             set_current_scene(next_scene);
             current_scene->begin();

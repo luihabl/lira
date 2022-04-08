@@ -12,6 +12,7 @@ namespace Lira  {
         using Game::Game;
 
         void begin() override;
+        void update() override;
         void render() override;
         void end() override;
 

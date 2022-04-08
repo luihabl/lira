@@ -6,7 +6,8 @@ namespace Lira
     {
         void init();
         void play(const char* name);
-        void stop();
+        void stop(const char* name);
+        void update();
         void stop_all();
         void terminate();
     }
