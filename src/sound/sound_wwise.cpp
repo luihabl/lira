@@ -8,8 +8,12 @@
 #include <AK/Plugin/AllPluginsFactories.h> //<--------------- include this!!!
 #include <AK/SoundEngine/Common/AkTypes.h>
 #include <AK/Tools/Common/AkPlatformFuncs.h>
-// #include <AK/SoundEngine/Common/AkTypes.h>
+#include <AK/SoundEngine/Common/AkTypes.h>
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#include <AK/SoundEngine/Platforms/Windows/AkTypes.h>
+#elif __APPLE__
 #include <AK/SoundEngine/Platforms/Mac/AkTypes.h>
+#endif
 #include <AK/SoundEngine/Common/AkMemoryMgr.h>		// Memory Manager
 #include <AK/SoundEngine/Common/AkModule.h>			// Default memory and stream managers
 #include <AK/SoundEngine/Common/IAkStreamMgr.h>		// Streaming Manager
@@ -147,22 +151,33 @@ void terminate_sound_engine()
     AK::MemoryMgr::Term();
 }
 
-bool load_bank(const char* name)
+bool load_bank(const std::string& name)
 {
     AkBankID bankID;
-    AKRESULT eResult = AK::SoundEngine::LoadBank( name, bankID );
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    AKRESULT eResult = AK::SoundEngine::LoadBank(std::wstring(name.begin(), name.end()).c_str(), bankID);
+#elif __APPLE__
+    AKRESULT eResult = AK::SoundEngine::LoadBank(name.c_str(), bankID);
+#endif
+    
     if(eResult != AK_Success) 
     {
-        Log::error("Error %d in loading bank %s", eResult, name);
+        Log::error("Error %d in loading bank %s", eResult, name.c_str());
         return false;
     }
-    loaded_banks.push_back(std::string(name));
+    loaded_banks.push_back(name);
     return true;
 }
 
-void set_base_path(const char* path)
+void set_base_path(const std::string& path)
 {
-    g_lowLevelIO.SetBasePath( path );
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    g_lowLevelIO.SetBasePath(std::wstring(path.begin(), path.end()).c_str());
+#elif __APPLE__
+    AKRESULT eResult = AK::SoundEngine::LoadBank(name.c_str(), bankID);
+    g_lowLevelIO.SetBasePath(path.c_str());
+#endif
 }
 
 void unload_all_banks()
@@ -223,7 +238,7 @@ void Sound::init()
 
     fspath platform;
     #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-        patform = "Windows";
+        platform = "Windows";
     #elif __APPLE__
         platform = "Mac";
     #endif
@@ -232,14 +247,14 @@ void Sound::init()
     for(const auto& [k, bank] : sound_banks)
         if(bank.data.platform == platform && bank.data.name == "Init")
         {
-            set_base_path(bank.folder.c_str());
-            load_bank(bank.file_name.c_str());
+            set_base_path(bank.folder.generic_string());
+            load_bank(bank.file_name.generic_string());
             break;
         }
     
     for(const auto& [k, bank] : sound_banks)
         if(bank.data.platform == platform && bank.data.name == "Lira")
-            load_bank(bank.file_name.c_str());
+            load_bank(bank.file_name.generic_string());
 
     // For now we use only one Game Object and one Listener.
     // Aftewards we need to create a way to make several objects and change

@@ -40,3 +40,4 @@ CMakeSettings.json
 CMakePresets.json
 
 .DS_Store
+.clangd

@@ -10,6 +10,9 @@ namespace Lira {
     {
         std::string name = "";
         std::string platform = "";
+        
+        SoundBank() = default;
+        SoundBank(const std::string& _name, const std::string& _platform) : name(_name), platform(_platform) {}
     };
 
 }

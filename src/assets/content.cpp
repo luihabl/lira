@@ -59,7 +59,7 @@ void Content::load_all() {
 
 			if (extension == ".bnk")
 			{
-				add_asset<SoundBank>(key_name, item.path().filename(), item.path().parent_path(), { item.path().stem(), item.path().parent_path().stem()}); 
+				add_asset<SoundBank>(key_name, item.path().filename(), item.path().parent_path(), SoundBank(item.path().stem().generic_string(), item.path().parent_path().stem().generic_string())); 
 			}
 
 		}
