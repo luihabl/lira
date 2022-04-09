@@ -175,7 +175,6 @@ void set_base_path(const std::string& path)
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     g_lowLevelIO.SetBasePath(std::wstring(path.begin(), path.end()).c_str());
 #elif __APPLE__
-    AKRESULT eResult = AK::SoundEngine::LoadBank(name.c_str(), bankID);
     g_lowLevelIO.SetBasePath(path.c_str());
 #endif
 }
