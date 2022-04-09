@@ -55,7 +55,7 @@ src/util/svector.h
 )
 
 
-#find_package(SDL2 REQUIRED)
+find_package(SDL2 REQUIRED)
 #include_directories(${SDL2_INCLUDE_DIRS} lib/imgui)
 include_directories(${SDL2_INCLUDE_DIRS})
 
@@ -99,7 +99,6 @@ else()
 endif()
 
 # copy SDL2.dll to the build directory
-set(SDL2_DLL "" CACHE FILEPATH "SDL2 DLL Path")
 if (EXISTS ${SDL2_DLL})
     add_custom_command(
         TARGET lira POST_BUILD
