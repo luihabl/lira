@@ -71,7 +71,7 @@ namespace Lira {
 		}
 		catch (const std::out_of_range&)
 		{
-			Log::error("Content key \"%s\" not found", name.c_str());
+			TinySDL::Log::error("Content key \"%s\" not found", name.c_str());
 		}
 		return data;
 	}
