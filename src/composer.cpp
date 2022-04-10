@@ -12,6 +12,7 @@
 #include "components/collider_grid.h"
 #include "components/timer.h"
 #include "components/multitimer.h"
+#include "components/hittable.h"
 
 #include "collision_layers.h"
 
@@ -85,6 +86,11 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
             if(!scene->get_first<Player>())
                 create_player(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y}, 1);
         }
+
+        if (object.name == "Heart")
+        {
+            create_heart(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, 1);
+        }
     }
 
     return entity;
@@ -102,7 +108,7 @@ Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position,
 
     auto * actor = entity->add_component(Actor());
     actor->collider = collider;
-    actor->collision_mask = CollisionLayer::solid;
+    actor->solid_mask = CollisionLayer::solid;
 
     entity->add_component(Player());
 
@@ -169,6 +175,31 @@ Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const TinyS
         }));
 
     };
+
+    return entity;
+}
+
+Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, const int layer)
+{
+    auto* entity = scene->add_entity(position, layer);
+    auto* spr = entity->add_component(AnimatedSprite());
+    spr->static_sprite(
+        {
+            TexRegion(Content::find<Texture>("sprites/heart"), Rect(0, 0, 8, 8)),
+            {0, 0}
+        });
+
+    auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
+    collider->layer = CollisionLayer::item;
+
+    auto* hittable = entity->add_component(Hittable());
+    hittable->hit_by = CollisionLayer::player;
+    hittable->collider = collider;
+    hittable->on_hit = [](Hittable* self)
+    {
+        self->entity->destroy();
+    };
+
 
     return entity;
 }

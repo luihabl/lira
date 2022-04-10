@@ -52,7 +52,7 @@ src/level.cpp
 src/main.cpp
 src/collision_layers.h
 src/util/svector.h
-)
+ "src/components/hittable.h")
 
 
 find_package(SDL2 REQUIRED)

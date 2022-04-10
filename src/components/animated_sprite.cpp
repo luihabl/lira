@@ -14,6 +14,12 @@ AnimatedSprite::AnimatedSprite(std::string key)
     animations = Content::find<SpriteSheet>(key)->animations;
 }
 
+void AnimatedSprite::static_sprite(const Sprite& sprite)
+{
+    auto* spr = add("spr");
+    spr->frames.push_back({ sprite, 1.0f });
+    play("spr");
+}
 
 SpriteSheet::Animation * AnimatedSprite::add(const std::string & id) {
 

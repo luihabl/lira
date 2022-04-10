@@ -36,12 +36,12 @@ bool Collider::check(ColliderGrid & other, const IVec2 & offset) {
 }
 
 
-bool Collider::check_first(const IVec2 & offset, uint32_t mask) {
+bool Collider::check_first(uint32_t mask, const IVec2& offset) {
 
-    if (check_first_t<Collider>(offset, mask))
+    if (check_first_t<Collider>(mask, offset))
         return true;
 
-    if (check_first_t<ColliderGrid>(offset, mask))
+    if (check_first_t<ColliderGrid>(mask, offset))
         return true;
 
     return false;

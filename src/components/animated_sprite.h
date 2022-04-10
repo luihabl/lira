@@ -42,6 +42,8 @@ namespace Lira {
         void play(const std::string & id, bool restart = false);
         void stop();
 
+        void static_sprite(const Sprite& sprite);
+
         SpriteSheet::Animation* add(const std::string & id);
         SpriteSheet::Animation* get(const std::string& id);
 

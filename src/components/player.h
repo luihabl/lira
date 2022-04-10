@@ -327,7 +327,7 @@ namespace Lira {
                 velocity[1] = Mathf::approach(velocity[1], max_slide_speed, 1000 * GameProperties::delta_time());
             }
 
-            bool hit = actor->collider->check_first(IVec2::zeros, CollisionLayer::danger);
+            bool hit = actor->collider->check_first(CollisionLayer::danger);
             if (hit)
             {
                 if(!invincible)

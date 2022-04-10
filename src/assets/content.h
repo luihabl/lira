@@ -64,7 +64,16 @@ namespace Lira {
 
 	template <typename T>
 	inline T* Content::find(const std::string& name) {
-		return &(assets<T>[name].data);
+		T* data = nullptr;
+		try
+		{
+			data = &(assets<T>.at(name).data);
+		}
+		catch (const std::out_of_range&)
+		{
+			Log::error("Content key \"%s\" not found", name.c_str());
+		}
+		return data;
 	}
 
 	template <typename T>
