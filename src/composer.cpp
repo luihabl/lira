@@ -91,6 +91,11 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
         {
             create_heart(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, 1);
         }
+
+        if (object.name == "Crystal")
+        {
+            create_crystal(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, 1);
+        }
     }
 
     return entity;
@@ -206,3 +211,33 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
 
     return entity;
 }
+
+
+Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, const int layer)
+{
+    auto* entity = scene->add_entity(position, layer);
+    auto* spr = entity->add_component(AnimatedSprite());
+    spr->static_sprite(
+        {
+            TexRegion(Content::find<Texture>("sprites/crystal"), Rect(0, 0, 8, 8)),
+            {0, 0}
+        });
+
+    auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
+    collider->layer = CollisionLayer::item;
+
+    auto* hittable = entity->add_component(Hittable());
+    hittable->hit_by = CollisionLayer::player;
+    hittable->collider = collider;
+    hittable->on_hit = [](Hittable* self)
+    {
+        self->entity->destroy();
+        auto* player = self->scene()->get_first<Player>();
+        if(player)
+            player->recharge_dash();
+    };
+
+
+    return entity;
+}
+

@@ -110,6 +110,11 @@ void Player::recover(int amount)
     Log::debug("hp: %d", hp);
 }
 
+void Player::recharge_dash()
+{
+    dash_counter = 0.0f;
+}
+
 void Player::move()
 {
     Vec2& velocity = actor->velocity;

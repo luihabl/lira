@@ -2470,6 +2470,20 @@
 							"defUid": 151,
 							"px": [216,136],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "Crystal",
+							"__grid": [9,12],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#00FF1A",
+							"iid": "c06c7670-b4d0-11ec-923b-edcdbe4691bb",
+							"width": 16,
+							"height": 16,
+							"defUid": 152,
+							"px": [72,96],
+							"fieldInstances": []
 						}
 					]
 				},

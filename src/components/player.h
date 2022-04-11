@@ -30,6 +30,7 @@ namespace Lira {
         int get_hp() const;
         void hit(int amount);
         void recover(int amount);
+        void recharge_dash();
 
     private:
 
