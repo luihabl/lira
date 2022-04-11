@@ -147,7 +147,7 @@ void Level::update() {
             camera[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room.bbox.y, current_room.bbox.y + current_room.bbox.h - room_default_height);
         }
 
-        if (player->hp <= 0)
+        if (player->get_hp() <= 0)
         {
             player->entity->destroy();
         }

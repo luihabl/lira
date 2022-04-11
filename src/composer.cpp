@@ -189,7 +189,7 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
             {0, 0}
         });
 
-    auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
+    auto* collider = entity->add_component(Collider({ 0, 2, 7, 6 }));
     collider->layer = CollisionLayer::item;
 
     auto* hittable = entity->add_component(Hittable());
@@ -198,6 +198,9 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
     hittable->on_hit = [](Hittable* self)
     {
         self->entity->destroy();
+        auto* player = self->scene()->get_first<Player>();
+        if(player)
+            player->recover(1);
     };
 
 

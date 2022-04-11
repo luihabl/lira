@@ -33,6 +33,7 @@ src/assets/tileset.cpp
 src/assets/spritesheet.h
 src/assets/map.cpp
 
+src/components/player.cpp
 src/components/tilemap.cpp
 src/components/animated_sprite.cpp
 src/components/collider.cpp

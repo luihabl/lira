@@ -51,7 +51,7 @@ namespace Lira
             size_t components_count();
 
             template <typename T>
-            const T* get_first();
+            T* get_first();
 
             const std::vector<Entity*>& get_entities();
 
@@ -174,7 +174,7 @@ namespace Lira
     }
 
     template <typename T>
-    const T* Scene::get_first()
+    T* Scene::get_first()
     {
         const auto& group = components.get_group<T>();
         if(group.size() > 0)
