@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.21+)
 project(lira)
 
 # C++ version
@@ -104,4 +104,9 @@ if (EXISTS ${SDL2_DLL})
     add_custom_command(
         TARGET lira POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${SDL2_DLL} $<TARGET_FILE_DIR:lira>)
+    
+    install(FILES ${SDL2_DLL} DESTINATION .)
 endif()
+
+install( TARGETS lira DESTINATION . )
+install( DIRECTORY content DESTINATION . )
