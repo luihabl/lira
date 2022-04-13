@@ -98,6 +98,11 @@ int Player::get_hp() const
     return hp;
 }
 
+int Player::get_max_hp() const
+{
+    return hp_max;
+}
+
 void Player::hit(int amount)
 {
     hp = Mathf::clamp(hp - amount, 0, hp_max);
@@ -261,7 +266,7 @@ void Player::move()
         velocity[1] = Mathf::approach(velocity[1], max_slide_speed, 1000 * GameProperties::delta_time());
     }
 
-    bool was_hit = actor->collider->check_first(CollisionLayer::danger);
+    bool was_hit = actor->collider->check_first(Layer::Collision::danger);
     if (was_hit)
     {
         if(!invincible)

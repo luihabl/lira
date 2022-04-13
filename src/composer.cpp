@@ -14,8 +14,9 @@
 #include "components/multitimer.h"
 #include "components/hittable.h"
 #include "components/animated_drawing.h"
+#include "components/persistance.h"
 
-#include "collision_layers.h"
+#include "layers.h"
 
 #include <filesystem>
 #include <algorithm>
@@ -26,7 +27,7 @@
 using namespace Lira;
 using namespace TinySDL;
 
-Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n, const IVec2 & position, const int render_layer) {
+Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n, const IVec2 & position, const Layer::Draw& render_layer) {
 
     auto* map = Content::find<Map>(name);
     
@@ -35,7 +36,7 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
     auto& room = map->rooms[level_n];
 
-    auto* entity = scene->add_entity(position + room.bbox.pos(), render_layer);
+    auto* entity = scene->add_entity(position + room.bbox.pos(), (int) render_layer);
 
     for (const auto& layer : room.layers)
     {
@@ -59,7 +60,7 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
                     if (!collider_solid)
                     {
                         collider_solid = entity->add_component(ColliderGrid(layer.columns, layer.rows, layer.dx, layer.dy));
-                        collider_solid->layer = CollisionLayer::solid;
+                        collider_solid->layer = Layer::Collision::solid;
                     }
                         
                     collider_solid->set_cell(tile.x, tile.y, true);
@@ -70,7 +71,7 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
                     if (!collider_danger)
                     {
                         collider_danger = entity->add_component(ColliderGrid(layer.columns, layer.rows, layer.dx, layer.dy));
-                        collider_danger->layer = CollisionLayer::danger;
+                        collider_danger->layer = Layer::Collision::danger;
                     }
 
                     collider_danger->set_cell(tile.x, tile.y, true);
@@ -85,17 +86,17 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
         {
 
             if(!scene->get_first<Player>())
-                create_player(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y}, 1);
+                create_player(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y}, Layer::Draw::player);
         }
 
         if (object.name == "Heart")
         {
-            create_heart(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, 1);
+            create_heart(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
         }
 
         if (object.name == "Crystal")
         {
-            create_crystal(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, 1);
+            create_crystal(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
         }
     }
 
@@ -103,27 +104,29 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 }
 
 
-Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position, const int layer) {
-    auto* entity = scene->add_entity(position, layer);
+Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position, const Layer::Draw& layer) {
+    auto* entity = scene->add_entity(position, (int) layer);
 
     auto * animator = entity->add_component(AnimatedSprite("sprites/player_lira"));
     animator->play("idle");
 
     auto * collider = entity->add_component(Collider({-6, -16, 12, 16}));
-    collider->layer = CollisionLayer::player;
+    collider->layer = Layer::Collision::player;
 
     auto * actor = entity->add_component(Actor());
     actor->collider = collider;
-    actor->solid_mask = CollisionLayer::solid;
+    actor->solid_mask = Layer::Collision::solid;
 
     entity->add_component(Player());
+
+    entity->add_component(Persistence());
 
     return entity;
 }
 
-Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, const int layer)
+Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, layer);
+    auto* entity = scene->add_entity(position, (int)layer);
 
     auto* animator = entity->add_component(AnimatedSprite("sprites/turret"));
     animator->play("idle");
@@ -155,9 +158,9 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
     return entity;
 }
 
-Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const TinySDL::IVec2& position, const int layer)
+Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const TinySDL::IVec2& position, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, layer);
+    auto* entity = scene->add_entity(position, (int)layer);
     
     auto* animator = entity->add_component(AnimatedSprite("sprites/turret-bullet"));
     animator->play("drift");
@@ -185,9 +188,9 @@ Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const TinyS
     return entity;
 }
 
-Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, const int layer)
+Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, layer);
+    auto* entity = scene->add_entity(position, (int)layer);
     auto* spr = entity->add_component(AnimatedSprite());
     spr->static_sprite(
         {
@@ -196,10 +199,10 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
         });
 
     auto* collider = entity->add_component(Collider({ 0, 2, 7, 6 }));
-    collider->layer = CollisionLayer::item;
+    collider->layer = Layer::Collision::item;
 
     auto* hittable = entity->add_component(Hittable());
-    hittable->hit_by = CollisionLayer::player;
+    hittable->hit_by = Layer::Collision::player;
     hittable->collider = collider;
     hittable->on_hit = [=](Hittable* self)
     {
@@ -211,15 +214,13 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
         self->entity->destroy();
     };
 
-
-
     return entity;
 }
 
 
-Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, const int layer)
+Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, layer);
+    auto* entity = scene->add_entity(position, (int)layer);
     auto* spr = entity->add_component(AnimatedSprite());
     spr->static_sprite(
         {
@@ -228,10 +229,10 @@ Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, c
         });
 
     auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
-    collider->layer = CollisionLayer::item;
+    collider->layer = Layer::Collision::item;
 
     auto* hittable = entity->add_component(Hittable());
-    hittable->hit_by = CollisionLayer::player;
+    hittable->hit_by = Layer::Collision::player;
     hittable->collider = collider;
     hittable->on_hit = [=](Hittable* self)
     {
@@ -247,9 +248,9 @@ Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, c
 }
 
 
-Entity* Composer::create_collect_effect(Scene* scene, const TinySDL::IVec2& position, const Color& color, const int layer)
+Entity* Composer::create_collect_effect(Scene* scene, const TinySDL::IVec2& position, const Color& color, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, layer);
+    auto* entity = scene->add_entity(position, (int)layer);
 
     float r0 = 4.0f;
     float r_rate = 25.f;
@@ -275,3 +276,39 @@ Entity* Composer::create_collect_effect(Scene* scene, const TinySDL::IVec2& posi
     return entity;
 }
 
+Entity* Composer::create_hp_bar(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+{
+    auto* entity = scene->add_entity(position, (int)layer);
+
+    auto tex = TexRegion(Content::find<Texture>("sprites/heart"), Rect(0, 0, 8, 8));
+    auto tex_empty = TexRegion(Content::find<Texture>("sprites/heart_empty"), Rect(0, 0, 8, 8));
+
+
+    // TODO: Find better solution for HP bar.
+    // Maybe create a HPBar component for further animation
+    // or create another way to flexibly animate the HP bar
+    auto *anim = entity->add_component(AnimatedDrawing());
+    anim->draw = [=](AnimatedDrawing* self, BatchRenderer& renderer, float t)
+    {
+        auto* player = self->scene()->get_first<Player>();
+        if(player)
+        {
+            int hp = player->get_hp();
+            int hp_max = player->get_max_hp();
+
+            for(int i = 0; i < hp; i++)
+            {
+                renderer.draw_tex(tex, position.cast_to<float>() + Vec2({(float)i * 8.0f, 0.0f}));
+            }
+
+            for(int i = hp; i < hp_max; i++)
+            {
+                renderer.draw_tex(tex_empty, position.cast_to<float>() + Vec2({(float)i * 8.0f, 0.0f}));
+            }
+        }
+    };
+
+    entity->add_component(Persistence());
+
+    return entity;
+}

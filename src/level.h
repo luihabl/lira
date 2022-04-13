@@ -3,6 +3,7 @@
 #include <tinysdl.h>
 #include "core/ecs.h"
 #include "assets/map.h"
+#include "layers.h"
 
 using namespace TinySDL;
 
@@ -14,6 +15,8 @@ namespace Lira {
 		void update() override;
 		void render(TinySDL::BatchRenderer& renderer) override;
 		void end() override;
+
+		void layer_transform(Layer::Draw layer, const TinySDL::Mat3x2& transform);
 
 		bool render_colliders = false;
 		bool render_minimap = false; // Move to component later
@@ -29,9 +32,6 @@ namespace Lira {
 		};
 
 		Room current_room;
-
-		//size_t current_room_id;
-		//IntRect current_room_bbox;
 
 		std::vector<Room> rooms;
 

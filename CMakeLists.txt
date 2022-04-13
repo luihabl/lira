@@ -51,7 +51,7 @@ src/lira.h
 src/level.h
 src/level.cpp
 src/main.cpp
-src/collision_layers.h
+src/layers.h
 src/util/svector.h
  "src/components/hittable.h")
 

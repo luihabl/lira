@@ -12,6 +12,7 @@
 #include "components/collider.h"
 #include "components/collider_grid.h"
 #include "components/player.h"
+#include "components/persistance.h"
 
 #include "sound/sound.h"
 
@@ -30,6 +31,7 @@ void Level::begin() {
     player_room_id = player_room_id < 0 ? 0 : player_room_id;
 
     move_to_room(player_room_id); 
+    Composer::create_hp_bar(this, {5, 3}, Layer::Draw::UI);
 
     Scene::begin();
 
@@ -73,14 +75,14 @@ int Level::find_in_map(const std::string& name)
 
 void Level::load_room(size_t id)
 {
-    Composer::create_level(this, map_name, id, {0, 0}, -1);
+    Composer::create_level(this, map_name, id, {0, 0}, Layer::Draw::map);
 }
 
 void Level::unload_room()
 {
     for(Entity* entity : get_entities())
     {
-        if(!entity->get_component<Player>())
+        if(!entity->get_component<Persistence>())
         {
             entity->destroy();
         }
@@ -160,9 +162,15 @@ void Level::update() {
         move_to_room(player_room_id);
     }
     
-    layer_transform(1, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
-    layer_transform(0, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
-    layer_transform(-1, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+    layer_transform(Layer::Draw::map, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+    layer_transform(Layer::Draw::player, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+    layer_transform(Layer::Draw::items, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+}
+
+
+void Level::layer_transform(Layer::Draw layer, const TinySDL::Mat3x2& transform)
+{
+	Scene::layer_transform((int)layer, transform);
 }
 
 void Level::render(TinySDL::BatchRenderer& renderer)

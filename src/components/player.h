@@ -8,7 +8,7 @@
 #include "../modules/game.h"
 #include "../sound/sound.h"
 
-#include "../collision_layers.h"
+#include "../layers.h"
 
 #include "animated_sprite.h"
 #include "actor.h"
@@ -28,6 +28,7 @@ namespace Lira {
         void render(TinySDL::BatchRenderer& renderer) override;
 
         int get_hp() const;
+        int get_max_hp() const;
         void hit(int amount);
         void recover(int amount);
         void recharge_dash();
