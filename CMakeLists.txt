@@ -5,11 +5,10 @@ project(lira)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if ( CMAKE_COMPILER_IS_GNUCC )
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall") #-Wextra
-endif()
 if ( MSVC )
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /W3")
+else()
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -O3")
 endif()
 
 add_subdirectory(lib/tinysdl)

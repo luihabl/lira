@@ -104,7 +104,8 @@ int Player::get_max_hp() const
 }
 
 void Player::hit(int amount)
-{
+{    
+    Game::pause_for(0.1f);
     hp = Mathf::clamp(hp - amount, 0, hp_max);
 }
 
@@ -342,7 +343,7 @@ void Player::animate()
 
     if (invincible)
     {
-        if (invincible_counter % 4 == 0)
+        if (invincible_counter % 4 == 1)
             animator->is_visible = !animator->is_visible;
 
         invincible_counter++;

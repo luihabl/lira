@@ -23,7 +23,7 @@ namespace {
     IVec2 mouse_global_position = IVec2::zeros;
     IVec2 mouse_window_position = IVec2::zeros;
 
-    IVec2 window_size = IVec2::zeros;
+    // IVec2 window_size = IVec2::zeros;
     IVec2 window_position = IVec2::zeros;
 
     std::list<VirtualInput *> registered_buttons;

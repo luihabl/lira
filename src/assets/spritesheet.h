@@ -67,8 +67,8 @@ namespace Lira
                     frame_rect.h = slice["bounds"]["h"];
                 }
 
-                frames.push_back({ TexRegion(Content::find<Texture>(key), frame_rect),
-                                   pivot.cast_to<int>(), frame["duration"]});
+                frames.push_back({{TexRegion(Content::find<Texture>(key), frame_rect),
+                                   pivot.cast_to<int>()}, frame["duration"]});
             }
 
             for (auto& tag : json["meta"]["frameTags"])

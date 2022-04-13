@@ -86,7 +86,11 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
         {
 
             if(!scene->get_first<Player>())
-                create_player(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y}, Layer::Draw::player);
+            {
+                auto* en = create_player(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y}, Layer::Draw::player);
+                en->is_active = false;
+                create_start_sequence(scene, {0, 0}, Layer::Draw::overlay);
+            }
         }
 
         if (object.name == "Heart")
@@ -269,7 +273,7 @@ Entity* Composer::create_collect_effect(Scene* scene, const TinySDL::IVec2& posi
         }
     };
 
-    auto* timer = entity->add_component(Timer(tf, [](Timer* self) {
+    entity->add_component(Timer(tf, [](Timer* self) {
             self->entity->destroy();
     }));
 
@@ -286,7 +290,9 @@ Entity* Composer::create_hp_bar(Scene* scene, const TinySDL::IVec2& position, co
 
     // TODO: Find better solution for HP bar.
     // Maybe create a HPBar component for further animation
-    // or create another way to flexibly animate the HP bar
+    // or create another way to flexibly animate the HP bar.
+    // Not great to have an AnimatedDrawing calling a lambda function 
+    // for redering the HP and making its logic at the same time.
     auto *anim = entity->add_component(AnimatedDrawing());
     anim->draw = [=](AnimatedDrawing* self, BatchRenderer& renderer, float t)
     {
@@ -309,6 +315,67 @@ Entity* Composer::create_hp_bar(Scene* scene, const TinySDL::IVec2& position, co
     };
 
     entity->add_component(Persistence());
+
+    return entity;
+}
+
+
+Entity* Composer::create_end_sequence(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+{
+    auto* entity = scene->add_entity(position, (int)layer);
+
+    float tf = 0.5f;
+    float dx = 50.0f;
+
+    auto *anim = entity->add_component(AnimatedDrawing());
+    anim->draw = [tf, dx](AnimatedDrawing* self, BatchRenderer& renderer, float t)
+    {
+        float x = (320.0f + dx) * t / tf - dx;
+
+        renderer.draw_rect_fill({0, 0, x, 180}, Color::black);
+        renderer.draw_triangle_fill({x, 0.0f}, {x, 180.0f}, {x + dx, 180.0f}, Color::black);
+    };
+    
+    entity->add_component(Timer(tf, [](Timer* self)
+    {
+        self->is_active = false;
+        auto* player = self->scene()->get_first<Player>();
+        if(player)
+            player->entity->destroy();
+
+        self->entity->destroy();
+    }));
+
+    return entity;
+}
+
+Entity* Composer::create_start_sequence(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+{
+    auto* entity = scene->add_entity(position, (int)layer);
+
+    float tf = 0.5f;
+    float dx = 50.0f;
+
+    auto *anim = entity->add_component(AnimatedDrawing());
+    anim->draw = [tf, dx](AnimatedDrawing* self, BatchRenderer& renderer, float t)
+    {
+        // renderer.draw_rect_fill({320.0f * (t / tf), 0, 320.0f, 180}, Color::black);
+
+        float x = (320.0f + dx) * t / tf;
+
+        renderer.draw_rect_fill({x, 0, 320.0f, 180.0f}, Color::black);
+        renderer.draw_triangle_fill({x - dx, 0.0f}, {x, 0.0f}, {x, 180.0f}, Color::black);
+    };
+
+    entity->add_component(Timer(tf, [](Timer* self)
+    {
+        self->is_active = false;
+        auto* player = self->scene()->get_first<Player>();
+        if(player)
+            player->entity->is_active = true;
+
+        self->entity->destroy();
+    }));
 
     return entity;
 }

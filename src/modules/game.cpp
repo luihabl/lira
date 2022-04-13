@@ -13,17 +13,23 @@ using namespace TinySDL;
 
 constexpr float default_fps = 60.0f;
 
-namespace {
+namespace Lira::Time {
     float dt;
     float target_fps;
+    float pause_timer = 0.0f;
 }
 
 float GameProperties::delta_time() {
-    return dt;
+    return Time::dt;
 }
 
 float GameProperties::fps() {
-    return target_fps;
+    return Time::target_fps;
+}
+
+void Game::pause_for(float seconds)
+{
+    Time::pause_timer = seconds;
 }
 
 Game::Game(int res_width, int res_height, int win_width, int win_height, const char * title) {
@@ -61,7 +67,20 @@ void Game::run() {
 
     while(!quit_game) {
 
+        // Frame capping
+        // TODO: Review frame capping and pause timer!
+        std::this_thread::sleep_until(next_frame);
+        last_frame = next_frame;
+        next_frame += frame_duration;
+
         Input::update(input_handler);
+
+        // Process complete game pause
+        if(Time::pause_timer > 0)
+        {
+            Time::pause_timer -= Time::dt;
+            continue;
+        }
 
         // Changing scenes
         if(next_scene != nullptr && next_scene != current_scene) {
@@ -81,11 +100,6 @@ void Game::run() {
         render();
 
         Window::swap_buffers();
-        
-        // Frame capping
-        std::this_thread::sleep_until(next_frame);
-        last_frame = next_frame;
-        next_frame += frame_duration;
     }
 
     end();
@@ -131,7 +145,7 @@ void Game::set_current_scene(SceneRef & scene) {
 }
 
 void Game::set_target_fps(float fps) {
-    target_fps = fps;
-    dt = 1.0f/target_fps;
-    frame_duration = chr::duration_cast<chr::system_clock::duration>(chr::duration<float>{dt});
+    Time::target_fps = fps;
+    Time::dt = 1.0f/Time::target_fps;
+    frame_duration = chr::duration_cast<chr::system_clock::duration>(chr::duration<float>{Time::dt});
 }

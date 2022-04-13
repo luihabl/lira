@@ -36,6 +36,7 @@ void Level::begin() {
     Scene::begin();
 
     Sound::play("PlayMusic");
+    Game::pause_for(0.5f);
 }
 
 void Level::end()
@@ -151,7 +152,8 @@ void Level::update() {
 
         if (player->get_hp() <= 0)
         {
-            player->entity->destroy();
+            player->entity->is_active = false;
+            Composer::create_end_sequence(this, {0, 0}, Layer::Draw::overlay);
         }
     }
     else

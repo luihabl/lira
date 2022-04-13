@@ -102,7 +102,7 @@ namespace Lira
         friend class Scene;
 
     public:
-        Entity(const TinySDL::IVec2& pos, Scene * s, int layer = 0) : position(pos), scene(s), layer(layer) {};
+        Entity(const TinySDL::IVec2& pos, Scene * s, int layer = 0) : position(pos), layer(layer), scene(s) {};
 
         TinySDL::IVec2 position;
 

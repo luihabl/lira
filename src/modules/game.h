@@ -42,7 +42,7 @@ namespace Lira {
             void move_to_scene(SceneRef&& scene);
             void move_to_scene(SceneRef & scene);
             
-
+            static void pause_for(float seconds);
             void set_target_fps(float fps);
         
         protected:
