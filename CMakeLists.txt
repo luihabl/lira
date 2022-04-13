@@ -13,7 +13,6 @@ endif()
 
 add_subdirectory(lib/tinysdl)
 add_subdirectory(lib/json)
-# add_subdirectory(lib/imgui)
 
 add_executable(lira 
 
@@ -52,7 +51,8 @@ src/level.cpp
 src/main.cpp
 src/layers.h
 src/util/svector.h
- "src/components/hittable.h")
+src/components/hittable.h
+)
 
 
 find_package(SDL2 REQUIRED)
@@ -95,6 +95,20 @@ if(USE_WWISE)
 else()
     target_sources(lira PRIVATE
         src/sound/sound_dummy.cpp
+    )
+endif()
+
+# Find and include Dear ImGui files
+option(USE_IMGUI "Should compile with Dear ImGui" ON)
+if(USE_IMGUI)
+    find_package(IMGUI REQUIRED PATHS ./cmake)
+    
+    target_sources(lira PRIVATE
+        ${IMGUI_SRC}
+    )
+
+    target_include_directories(lira PUBLIC
+        ${IMGUI_INCLUDE_DIRS}
     )
 endif()
 
