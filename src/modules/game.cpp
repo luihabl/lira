@@ -79,22 +79,23 @@ void Game::run() {
         if(Time::pause_timer > 0)
         {
             Time::pause_timer -= Time::dt;
-            continue;
         }
+        else
+        {
+            // Changing scenes
+            if(next_scene != nullptr && next_scene != current_scene) {
+                
+                if(current_scene)
+                    current_scene->end();
 
-        // Changing scenes
-        if(next_scene != nullptr && next_scene != current_scene) {
+                current_scene.reset();
+                set_current_scene(next_scene);
+                current_scene->begin();
+            }
             
-            if(current_scene)
-                current_scene->end();
-
-            current_scene.reset();
-            set_current_scene(next_scene);
-            current_scene->begin();
+            // Updating scene
+            update();        
         }
-        
-        // Updating scene
-        update();        
         
         // Rendering scene
         render();
@@ -148,4 +149,9 @@ void Game::set_target_fps(float fps) {
     Time::target_fps = fps;
     Time::dt = 1.0f/Time::target_fps;
     frame_duration = chr::duration_cast<chr::system_clock::duration>(chr::duration<float>{Time::dt});
+}
+
+Scene* Game::get_current_scene()
+{
+    return current_scene.get();
 }

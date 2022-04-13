@@ -44,6 +44,8 @@ namespace Lira {
             
             static void pause_for(float seconds);
             void set_target_fps(float fps);
+
+            Scene* get_current_scene();
         
         protected:
             //Called when game starts

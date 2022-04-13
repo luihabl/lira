@@ -41,8 +41,6 @@ src/components/timer.cpp
 src/components/multitimer.h
 src/components/multitimer.cpp
 
-# ${IMGUI_SRC}
-
 src/composer.cpp
 src/lira.cpp
 src/lira.h
@@ -105,6 +103,7 @@ if(USE_IMGUI)
     
     target_sources(lira PRIVATE
         ${IMGUI_SRC}
+        src/gui/gui.cpp
     )
 
     target_include_directories(lira PUBLIC

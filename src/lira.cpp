@@ -4,6 +4,7 @@
 #include "level.h"
 #include "input/input.h"
 #include "sound/sound.h"
+#include "gui/gui.h"
 
 void LiraGame::begin() {
 
@@ -16,9 +17,10 @@ void LiraGame::begin() {
 
     Graphics::set_blend_mode();
     Sound::init();
+    GUI::init();
+
     Game::begin();
 }
-
 
 void LiraGame::update() 
 {
@@ -49,10 +51,13 @@ void LiraGame::render() {
     renderer.draw_tex(target.tex.full_rect, { (float)window_width / 2.0f, (float)window_height / 2.0f }, { scale, -scale }, 0.0f, true);
 
     renderer.render();
+
+    GUI::render(this);
 }
 
 void LiraGame::end() 
 {
     Game::end();
     Sound::terminate();
+    GUI::end();
 }

@@ -6,6 +6,11 @@ using namespace Lira;
 
 void Player::begin()
 {
+    par = Parameters();
+    st = State();
+    st.current_gravity = par.gravity;
+    st.hp = par.hp_max;
+    
     jump.add(Key::Z)
         .register_input();
 
@@ -86,7 +91,7 @@ void Player::update()
 
 void Player::render(BatchRenderer& renderer)
 {
-    if (is_dashing)
+    if (st.is_dashing)
         for (auto& trail : trails)
         {
             trail.render(renderer);
@@ -95,110 +100,110 @@ void Player::render(BatchRenderer& renderer)
 
 int Player::get_hp() const
 {
-    return hp;
+    return st.hp;
 }
 
 int Player::get_max_hp() const
 {
-    return hp_max;
+    return par.hp_max;
 }
 
 void Player::hit(int amount)
 {    
     Game::pause_for(0.1f);
-    hp = Mathf::clamp(hp - amount, 0, hp_max);
+    st.hp = Mathf::clamp(st.hp - amount, 0, par.hp_max);
 }
 
 void Player::recover(int amount)
 {
-    hp = Mathf::clamp(hp + amount, 0, hp_max);
+    st.hp = Mathf::clamp(st.hp + amount, 0, par.hp_max);
 }
 
 void Player::recharge_dash()
 {
-    dash_counter = 0.0f;
+    st.dash_counter = 0.0f;
 }
 
 void Player::move()
 {
     Vec2& velocity = actor->velocity;
     
-    was_on_ground = on_ground;
-    on_ground = actor->on_ground();
+    st.was_on_ground = st.on_ground;
+    st.on_ground = actor->on_ground();
 
-    was_on_wall = on_wall;
-    on_wall = actor->on_wall(1) || actor->on_wall(-1);
+    st.was_on_wall = st.on_wall;
+    st.on_wall = actor->on_wall(1) || actor->on_wall(-1);
 
-    current_gravity = gravity;
+    st.current_gravity = par.gravity;
 
     if (Mathf::sign(horizontal_input.value()) != 0)
-        facing = (int) Mathf::sign(horizontal_input.value());
+        st.facing = (int) Mathf::sign(horizontal_input.value());
 
     // Jump
 
 
-    if (on_ground) 
+    if (st.on_ground) 
     {
-        jump_counter = 0;
+        st.jump_counter = 0;
     }
 
-    if (jump.just_pressed() && jump_counter < n_jumps) 
+    if (jump.just_pressed() && st.jump_counter < par.n_jumps) 
     {
-        bool on_wall_margin_r = actor->on_wall(wall_jump_margin);
-        bool on_wall_margin_l = actor->on_wall(-wall_jump_margin);
-        if ((on_wall_margin_r || on_wall_margin_l) && !on_ground)
+        bool on_wall_margin_r = actor->on_wall(par.wall_jump_margin);
+        bool on_wall_margin_l = actor->on_wall(-par.wall_jump_margin);
+        if ((on_wall_margin_r || on_wall_margin_l) && !st.on_ground)
         {                    
             if (on_wall_margin_r)
             {
-                velocity[0] = -wall_jump_speed;
-                velocity[1] = 1.1f * jump_speed;
+                velocity[0] = -par.wall_jump_speed;
+                velocity[1] = 1.1f * par.jump_speed;
             }
             else if (on_wall_margin_l)
             {
-                velocity[0] = wall_jump_speed;
-                velocity[1] = 1.1f * jump_speed;
+                velocity[0] = par.wall_jump_speed;
+                velocity[1] = 1.1f * par.jump_speed;
             }   
         }
         else
         {
-            velocity[1] = jump_speed;
+            velocity[1] = par.jump_speed;
         }
 
         animator->scale = {0.7f, 1.3f};
 
         Sound::play("Jump");
 
-        jump_counter++;
+        st.jump_counter++;
     }
 
     // Decrease gravity when holding the jump button
     if (jump.pressed()) 
     {
-        current_gravity *= 0.75f;
+        st.current_gravity *= 0.75f;
     }
     else
     {
-        current_gravity = gravity;
+        st.current_gravity = par.gravity;
     }
 
     // Recharge dash after delay
-    if (on_ground && !is_dashing && dash_counter >= dash_length && !is_recharging_dash) 
+    if (st.on_ground && !st.is_dashing && st.dash_counter >= par.dash_length && !st.is_recharging_dash) 
     {
-        is_recharging_dash = true;
-        entity->add_component(Timer(dash_recharge_delay , [this](Timer* self) {
-            is_recharging_dash = false;
-            dash_counter = 0.0f;
+        st.is_recharging_dash = true;
+        entity->add_component(Timer(par.dash_recharge_delay , [this](Timer* self) {
+            st.is_recharging_dash = false;
+            st.dash_counter = 0.0f;
             self->destroy();
         }));
     }
     
-    if (dash.pressed() && dash_counter < dash_length && !invincible)
+    if (dash.pressed() && st.dash_counter < par.dash_length && !st.invincible)
     {
         
 
-        is_dashing = true;
-        dash_counter += 1.0f;
-        current_gravity = 0.0f;
+        st.is_dashing = true;
+        st.dash_counter += 1.0f;
+        st.current_gravity = 0.0f;
 
         Vec2 dash_direction = { horizontal_input.value(), vertical_input.value() };
         dash_direction = dash_direction.normalized();
@@ -208,79 +213,79 @@ void Player::move()
             dash_direction = velocity.normalized();
         }
 
-        actor->velocity += dash_accel * dash_direction;
+        actor->velocity += par.dash_accel * dash_direction;
 
-        if (velocity.length() > dash_max_speed)
-            velocity = velocity.normalized() * dash_max_speed;
+        if (velocity.length() > par.dash_max_speed)
+            velocity = velocity.normalized() * par.dash_max_speed;
     }
     else
     {
-        is_dashing = false;
+        st.is_dashing = false;
     }
 
     // Horizontal movement
 
-    if (!is_dashing)
+    if (!st.is_dashing)
     {
-        if (on_ground)
-            velocity[0] += horizontal_input.value() * floor_accel * GameProperties::delta_time();
+        if (st.on_ground)
+            velocity[0] += horizontal_input.value() * par.floor_accel * GameProperties::delta_time();
         else
-            velocity[0] += horizontal_input.value() * air_accel * GameProperties::delta_time();
+            velocity[0] += horizontal_input.value() * par.air_accel * GameProperties::delta_time();
 
 
-        if (abs(velocity[0]) > floor_max_speed)
-            velocity[0] = Mathf::approach(velocity[0],  floor_max_speed * Mathf::sign(velocity[0]), 1000.0f * GameProperties::delta_time());
+        if (abs(velocity[0]) > par.floor_max_speed)
+            velocity[0] = Mathf::approach(velocity[0],  par.floor_max_speed * Mathf::sign(velocity[0]), 1000.0f * GameProperties::delta_time());
 
 
-        if (horizontal_input.value() == 0.0f && on_ground)
-            velocity[0] = Mathf::approach(velocity[0], 0.0f, floor_friction * GameProperties::delta_time());
+        if (horizontal_input.value() == 0.0f && st.on_ground)
+            velocity[0] = Mathf::approach(velocity[0], 0.0f, par.floor_friction * GameProperties::delta_time());
 
     }
 
     // Wall slide
 
-    sliding = false;
-    if (on_wall)
+    st.sliding = false;
+    if (st.on_wall)
     {
-        if (!on_ground && velocity[1] >= 0 && horizontal_input.value() != 0)
+        if (!st.on_ground && velocity[1] >= 0 && horizontal_input.value() != 0)
         {
-            sliding = true;
-            current_gravity = slide_gravity_multiplier * gravity;
+            st.sliding = true;
+            st.current_gravity = par.slide_gravity_multiplier * par.gravity;
             //velocity[1] = std::min(velocity[1], max_slide_speed);
             // Change friction!
             
-            jump_counter = jump_counter > 1 ? 1 : jump_counter;
+            st.jump_counter = st.jump_counter > 1 ? 1 : st.jump_counter;
             // jump_counter = 1;
         }
     }
 
     // Vertical movement
     
-    velocity[1] += current_gravity * GameProperties::delta_time();
+    velocity[1] += st.current_gravity * GameProperties::delta_time();
 
-    if (abs(velocity[1]) > 4 * floor_max_speed && !sliding)
+    if (abs(velocity[1]) > 4 * par.floor_max_speed && !st.sliding)
     {
-        velocity[1] = Mathf::approach(velocity[1], vertical_max_speed * Mathf::sign(velocity[1]), 1000 * GameProperties::delta_time());
+        velocity[1] = Mathf::approach(velocity[1], par.vertical_max_speed * Mathf::sign(velocity[1]), 1000 * GameProperties::delta_time());
     }
-    else if (sliding)
+    else if (st.sliding)
     {
-        velocity[1] = Mathf::approach(velocity[1], max_slide_speed, 1000 * GameProperties::delta_time());
+        velocity[1] = Mathf::approach(velocity[1], par.max_slide_speed, 1000 * GameProperties::delta_time());
     }
 
     bool was_hit = actor->collider->check_first(Layer::Collision::danger);
     if (was_hit)
     {
-        if(!invincible)
+        if(!st.invincible)
         {
             hit(1);
 
-            invincible_counter = 0;
-            invincible = true;
+            st.invincible_counter = 0;
+            st.invincible = true;
 
-            velocity = Vec2({- ((float) facing) * 150.0f, -120.0f});
+            velocity = Vec2({- ((float) st.facing) * 150.0f, -120.0f});
 
             entity->add_component(Timer(1.0f , [this](Timer* self) {
-                invincible = false;
+                st.invincible = false;
                 animator->is_visible = true;
                 self->destroy();
             }));
@@ -294,14 +299,14 @@ void Player::move()
 
 void Player::animate()
 {
-    if (horizontal_input.value() != 0 && on_ground && actor->velocity[1] >= 0) {
+    if (horizontal_input.value() != 0 && st.on_ground && actor->velocity[1] >= 0) {
         animation_states.set(anim_walk, animator);
     }
-    else if (on_ground && actor->velocity[1] >= 0) {
+    else if (st.on_ground && actor->velocity[1] >= 0) {
         animation_states.set(anim_idle, animator);
     }
 
-    if (!on_ground && !is_dashing && !sliding) {
+    if (!st.on_ground && !st.is_dashing && !st.sliding) {
         if (actor->velocity[1] < 0) {
             animation_states.set(anim_jump, animator);
         }
@@ -311,7 +316,7 @@ void Player::animate()
             
     }
 
-    if (is_dashing)
+    if (st.is_dashing)
     {
         animation_states.set(anim_dash, animator);
 
@@ -331,7 +336,7 @@ void Player::animate()
         trails.clear();
     }
 
-    if (sliding)
+    if (st.sliding)
     {
         animator->flip_x = true;
         animation_states.set(anim_slide, animator);
@@ -341,15 +346,20 @@ void Player::animate()
         animator->flip_x = false;
     }
 
-    if (invincible)
+    if (st.invincible)
     {
-        if (invincible_counter % 4 == 1)
+        if (st.invincible_counter % 4 == 1)
             animator->is_visible = !animator->is_visible;
 
-        invincible_counter++;
+        st.invincible_counter++;
     }
 
 
-    animator->scale[0] = std::abs(animator->scale[0]) * (float)facing;
-    animator->scale = Mathf::approach(animator->scale, {(float)facing, 1.0f}, GameProperties::delta_time() * 4.0f);
+    animator->scale[0] = std::abs(animator->scale[0]) * (float)st.facing;
+    animator->scale = Mathf::approach(animator->scale, {(float)st.facing, 1.0f}, GameProperties::delta_time() * 4.0f);
+}
+
+const Player::State& Player::state()
+{
+    return st;
 }
