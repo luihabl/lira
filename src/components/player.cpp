@@ -101,13 +101,11 @@ int Player::get_hp() const
 void Player::hit(int amount)
 {
     hp = Mathf::clamp(hp - amount, 0, hp_max);
-    Log::debug("hp: %d", hp);
 }
 
 void Player::recover(int amount)
 {
     hp = Mathf::clamp(hp + amount, 0, hp_max);
-    Log::debug("hp: %d", hp);
 }
 
 void Player::recharge_dash()

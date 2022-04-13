@@ -13,6 +13,7 @@
 #include "components/timer.h"
 #include "components/multitimer.h"
 #include "components/hittable.h"
+#include "components/animated_drawing.h"
 
 #include "collision_layers.h"
 
@@ -200,13 +201,16 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
     auto* hittable = entity->add_component(Hittable());
     hittable->hit_by = CollisionLayer::player;
     hittable->collider = collider;
-    hittable->on_hit = [](Hittable* self)
+    hittable->on_hit = [=](Hittable* self)
     {
-        self->entity->destroy();
         auto* player = self->scene()->get_first<Player>();
         if(player)
             player->recover(1);
+
+        create_collect_effect(scene, position + IVec2({4, 4}), Color::red, layer);
+        self->entity->destroy();
     };
+
 
 
     return entity;
@@ -229,14 +233,44 @@ Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, c
     auto* hittable = entity->add_component(Hittable());
     hittable->hit_by = CollisionLayer::player;
     hittable->collider = collider;
-    hittable->on_hit = [](Hittable* self)
+    hittable->on_hit = [=](Hittable* self)
     {
-        self->entity->destroy();
         auto* player = self->scene()->get_first<Player>();
         if(player)
             player->recharge_dash();
+
+        create_collect_effect(scene, position + IVec2({4, 4}), Color::green, layer);
+        self->entity->destroy();
     };
 
+    return entity;
+}
+
+
+Entity* Composer::create_collect_effect(Scene* scene, const TinySDL::IVec2& position, const Color& color, const int layer)
+{
+    auto* entity = scene->add_entity(position, layer);
+
+    float r0 = 4.0f;
+    float r_rate = 25.f;
+    float tf = r0 / r_rate;
+    float v = 8.0f / tf;
+    int n_drw = 8;
+    float dth = 2.0f * Mathf::pi / (float)n_drw;
+
+    auto* animation = entity->add_component(AnimatedDrawing());
+    animation->draw = [=](AnimatedDrawing* self, BatchRenderer& renderer, float t)
+    {
+        for (int i = 0; i < n_drw; i++)
+        {
+            Vec2 pos = self->entity->position.cast_to<float>() + Vec2({cosf(dth * (float)i) * v, sinf(dth * (float)i) * v}) * t;
+            renderer.draw_circle_fill(pos, r0 - t * r_rate, color, 15);
+        }
+    };
+
+    auto* timer = entity->add_component(Timer(tf, [](Timer* self) {
+            self->entity->destroy();
+    }));
 
     return entity;
 }
