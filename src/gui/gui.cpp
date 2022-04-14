@@ -13,13 +13,7 @@
 using namespace Lira;
 using namespace TinySDL;
 
-namespace
-{
-    void style();
-}
-
-
-
+void style();
 
 void GUI::init()
 {
@@ -108,6 +102,7 @@ void GUI::draw(LiraGame* game)
                 ImGui::Text("in_scene: %s ", player ? "true" : "false");
 
                 IMGUI_STATUS_FLOAT(current_gravity);
+                IMGUI_STATUS_INT(dash_recharge_counter);
                 IMGUI_STATUS_FLOAT(dash_counter);
                 IMGUI_STATUS_INT(jump_counter);
                 IMGUI_STATUS_INT(invincible_counter);
@@ -143,6 +138,7 @@ void GUI::draw(LiraGame* game)
 
                     ImGui::Spacing();
 
+                    IMGUI_ISLIDE(dash_recharge_count, 0, 200);
                     IMGUI_FSLIDE(dash_length, 0, 40);
                     IMGUI_FSLIDE(dash_max_speed, 0, 500);
                     IMGUI_FSLIDE(dash_accel, 0, 500);
@@ -154,6 +150,7 @@ void GUI::draw(LiraGame* game)
 
                     ImGui::Spacing();
 
+                    IMGUI_FSLIDE(jump_gravity_factor, 0, 1);
                     IMGUI_FSLIDE(air_accel, 0, 700);
                     IMGUI_FSLIDE(jump_speed, -400, 0);
                     IMGUI_FSLIDE(wall_jump_speed, 0, 300);
@@ -183,7 +180,7 @@ void GUI::draw(LiraGame* game)
 }
 
 
-void ::style()
+void style()
 {
     auto& style = ImGui::GetStyle();
 

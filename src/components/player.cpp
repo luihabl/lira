@@ -179,7 +179,7 @@ void Player::move()
     // Decrease gravity when holding the jump button
     if (jump.pressed()) 
     {
-        st.current_gravity *= 0.75f;
+        st.current_gravity *= par.jump_gravity_factor;
     }
     else
     {
@@ -187,16 +187,22 @@ void Player::move()
     }
 
     // Recharge dash after delay
-    if (st.on_ground && !st.is_dashing && st.dash_counter >= par.dash_length && !st.is_recharging_dash) 
+    if (st.on_ground && !st.was_on_ground)
     {
-        st.is_recharging_dash = true;
-        entity->add_component(Timer(par.dash_recharge_delay , [this](Timer* self) {
-            st.is_recharging_dash = false;
-            st.dash_counter = 0.0f;
-            self->destroy();
-        }));
+        st.dash_recharge_counter = 0;
     }
-    
+    if (st.on_ground && !st.is_dashing && st.dash_recharge_counter < par.dash_recharge_count)
+    {
+        st.dash_recharge_counter += 1;
+    }
+    if (st.dash_recharge_counter >= par.dash_recharge_count)
+    {
+        st.dash_counter = 0.0f;
+        st.dash_recharge_counter = 0;
+    }
+
+
+
     if (dash.pressed() && st.dash_counter < par.dash_length && !st.invincible)
     {
         

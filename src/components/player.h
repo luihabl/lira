@@ -42,6 +42,7 @@ namespace Lira {
             float floor_friction = 650.0f;
             float max_slide_speed = 50.0f;
 
+            int dash_recharge_count = 15;
             float dash_length = 15.0f;
             float dash_max_speed = 220.0f;
             float dash_accel = 150.0f;
@@ -49,6 +50,7 @@ namespace Lira {
             
             float gravity = 600.0f;
 
+            float jump_gravity_factor = 0.75f;
             float air_accel = 300.0f;
             float jump_speed = -150.0f;
             float wall_jump_speed = 170.0f;
@@ -65,6 +67,7 @@ namespace Lira {
         {
             float current_gravity;
             
+            int dash_recharge_counter = 0;
             float dash_counter = 0.0f;        
             int jump_counter = 0;
             int invincible_counter = 0;

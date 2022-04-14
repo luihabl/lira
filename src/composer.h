@@ -25,5 +25,6 @@ namespace Lira::Composer {
 
     // UI
     Entity* create_hp_bar(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer = Layer::Draw::base);
+    Entity* create_minimap(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer = Layer::Draw::base);
 
 }

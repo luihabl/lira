@@ -23,6 +23,7 @@ namespace Lira
             items = 0,
             UI = 2,
             overlay = 4,
+            UI2 = 6
         };
     }
 }

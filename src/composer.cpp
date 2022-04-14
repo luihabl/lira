@@ -17,6 +17,7 @@
 #include "components/persistance.h"
 
 #include "layers.h"
+#include "level.h"
 
 #include <filesystem>
 #include <algorithm>
@@ -312,6 +313,47 @@ Entity* Composer::create_hp_bar(Scene* scene, const TinySDL::IVec2& position, co
                 renderer.draw_tex(tex_empty, position.cast_to<float>() + Vec2({(float)i * 8.0f, 0.0f}));
             }
         }
+    };
+
+    entity->add_component(Persistence());
+
+    return entity;
+}
+
+
+Entity* Composer::create_minimap(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+{
+    auto* entity = scene->add_entity(position, (int)layer);
+
+    // TODO: Find better solution for Minimap.
+    // Maybe create a Minimap component for further animation
+    // or create another way to flexibly animate the Minimap.
+    // Not great to have an AnimatedDrawing calling a lambda function 
+    // for redering the HP and making its logic at the same time.
+    auto *anim = entity->add_component(AnimatedDrawing());
+    anim->draw = [](AnimatedDrawing* self, BatchRenderer& renderer, float t)
+    {
+        Level* level = (Level*) self->scene();
+        
+        if(!level)
+            return;
+
+        renderer.draw_rect_fill(Rect( 0.0f, 0.0f, (float)level->room_default_width, (float)level->room_default_height ), Color(0, 0, 50, 150));
+
+        renderer.push_transform(LinAlg2D::gen_transform({ (float)level->room_default_width * 0.25f, (float)level->room_default_height * 0.5f }, { 0.1f, 0.1f }, {0.0f, 0.0f}, 0.0f));
+
+        for (size_t i = 0; i < level->rooms.size(); i++)
+        {
+            renderer.draw_rect_line(level->rooms[i].bbox.cast<float>(), {42, 53, 99 }, 10);
+        }
+
+        renderer.draw_rect_line(level->current_room.bbox.cast<float>(), { 48, 145, 54 }, 10);
+
+        const auto* player = level->get_first<Player>();
+        const auto& pos = player->entity->position.cast_to<float>();
+        renderer.draw_rect_fill(Rect( pos[0], pos[1], 10.0f, 20.0f ), Color( 161, 80, 53 ));
+        
+        renderer.pop_transform();
     };
 
     entity->add_component(Persistence());

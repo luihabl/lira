@@ -37,6 +37,10 @@ void Level::begin() {
 
     Sound::play("PlayMusic");
     Game::pause_for(0.5f);
+
+    minimap = Composer::create_minimap(this, {0, 0}, Layer::Draw::UI2);
+    minimap->is_visible = false;
+    minimap->is_active = false;
 }
 
 void Level::end()
@@ -109,7 +113,10 @@ void Level::update() {
         render_colliders = !render_colliders;
 
     if (Input::just_pressed(Key::Q)) // Move to component later
-        render_minimap = !render_minimap;
+    {            
+        minimap->is_active = !minimap->is_active;
+        minimap->is_visible = !minimap->is_visible;
+    }
 
     if (Input::just_pressed(Key::F2))
     {
@@ -181,8 +188,8 @@ void Level::render(TinySDL::BatchRenderer& renderer)
 
     Scene::render(renderer);
 
+    // This is only for debug ===============================
     renderer.push_transform(LinAlg2D::gen_translation((float) -camera[0], (float) -camera[1]));
-    
     if (render_colliders)
     {
         auto& colliders = get_components<Collider>();
@@ -194,36 +201,6 @@ void Level::render(TinySDL::BatchRenderer& renderer)
         for (auto* c : grid_colliders)
             c->render(renderer);
     }
-
     renderer.pop_transform();
-
-
-    // vvvv camera-independent items vvvv
-    
-    /*
-        Move this to component later.
-        Maybe this type of component that can be rendered always on screen, 
-        independent of the camera. Canvas?
-    */
-    if (render_minimap)
-    {
-        renderer.draw_rect_fill(Rect( 0.0f, 0.0f, (float)room_default_width, (float)room_default_height ), Color(0, 0, 50, 150));
-
-        renderer.push_transform(LinAlg2D::gen_transform({ (float)room_default_width * 0.25f, (float)room_default_height * 0.5f }, { 0.1f, 0.1f }, {0.0f, 0.0f}, 0.0f));
-
-        for (size_t i = 0; i < rooms.size(); i++)
-        {
-            renderer.draw_rect_line(rooms[i].bbox.cast<float>(), {42, 53, 99 }, 10);
-        }
-
-        renderer.draw_rect_line(current_room.bbox.cast<float>(), { 48, 145, 54 }, 10);
-
-        const auto* player = get_first<Player>();
-        const auto& pos = player->entity->position.cast_to<float>();
-        renderer.draw_rect_fill(Rect( pos[0], pos[1], 10.0f, 20.0f ), Color( 161, 80, 53 ));
-        
-        renderer.pop_transform();
-
-    }
-
+    // =====================================================
 }

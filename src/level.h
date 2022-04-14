@@ -11,6 +11,8 @@ namespace Lira {
 
 	class Level : public Scene {
 
+		public:
+
 		void begin() override;
 		void update() override;
 		void render(TinySDL::BatchRenderer& renderer) override;
@@ -19,9 +21,10 @@ namespace Lira {
 		void layer_transform(Layer::Draw layer, const TinySDL::Mat3x2& transform);
 
 		bool render_colliders = false;
-		bool render_minimap = false; // Move to component later
 
 		IVec2 camera = IVec2::zeros;
+
+		Entity* minimap = nullptr;
 
 		Map* current_map;
 		std::string map_name;
