@@ -122,6 +122,7 @@ namespace Lira {
 
     public:
         const State& state();
+        const Parameters& parameters();
     };
 
 }

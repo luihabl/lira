@@ -263,7 +263,7 @@ void Player::move()
     
     velocity[1] += st.current_gravity * GameProperties::delta_time();
 
-    if (abs(velocity[1]) > 4 * par.floor_max_speed && !st.sliding)
+    if (abs(velocity[1]) > par.vertical_max_speed && !st.sliding)
     {
         velocity[1] = Mathf::approach(velocity[1], par.vertical_max_speed * Mathf::sign(velocity[1]), 1000 * GameProperties::delta_time());
     }
@@ -362,4 +362,9 @@ void Player::animate()
 const Player::State& Player::state()
 {
     return st;
+}
+
+const Player::Parameters& Player::parameters()
+{
+    return par;
 }
