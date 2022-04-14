@@ -107,7 +107,17 @@ namespace Lira
             return table.begin();
         }
 
+        auto begin() const
+        {
+            return table.begin();
+        }
+
         auto end()
+        {
+            return table.end();
+        }
+
+        auto end() const
         {
             return table.end();
         }

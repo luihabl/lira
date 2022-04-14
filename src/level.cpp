@@ -31,16 +31,18 @@ void Level::begin() {
     player_room_id = player_room_id < 0 ? 0 : player_room_id;
 
     move_to_room(player_room_id); 
-    Composer::create_hp_bar(this, {5, 3}, Layer::Draw::UI);
-
+    
     Scene::begin();
 
     Sound::play("PlayMusic");
     Game::pause_for(0.5f);
 
+    Composer::create_hp_bar(this, {5, 3}, Layer::Draw::UI);
     minimap = Composer::create_minimap(this, {0, 0}, Layer::Draw::UI2);
     minimap->is_visible = false;
     minimap->is_active = false;
+
+    camera_layers = {Layer::Draw::map, Layer::Draw::player, Layer::Draw::items};
 }
 
 void Level::end()
@@ -85,7 +87,7 @@ void Level::load_room(size_t id)
 
 void Level::unload_room()
 {
-    for(Entity* entity : get_entities())
+    for(Entity* entity : last_room_entities)
     {
         if(!entity->get_component<Persistence>())
         {
@@ -109,15 +111,14 @@ void Level::update() {
     
     Scene::update();
 
+    // Debug
     if (Input::just_pressed(Key::F1))
         render_colliders = !render_colliders;
-
     if (Input::just_pressed(Key::Q)) // Move to component later
     {            
         minimap->is_active = !minimap->is_active;
         minimap->is_visible = !minimap->is_visible;
     }
-
     if (Input::just_pressed(Key::F2))
     {
         const auto* player = get_first<Player>();
@@ -125,39 +126,61 @@ void Level::update() {
         if(player)
             player->entity->destroy();
     }
-
     if (Input::just_pressed(Key::F3))
     {
         Composer::create_player(this, { 125, 125 });
     }
 
-
+    // Player management
     const auto* player = get_first<Player>();
     if(player)
     {
-        if(!current_room.bbox.contains(player->entity->position))
-        {           
+
+        // Change room check
+        if(!current_room.bbox.contains(player->entity->position) && !room_transition)
+        {          
+            room_transition = true;
+            player->entity->is_active = false;
+
             const auto& pos = player->entity->position;
             for(size_t i = 0; i < rooms.size(); i++)
             {
                 if(rooms[i].bbox.contains(pos))
                 {
-                    move_to_room(i);
+                    next_room = rooms[i];
+                    // move_to_room(i);
                 }
+            }
+            
+            last_room_entities = get_entities();
+            load_room(next_room.id);
+        }
+        else if(room_transition)
+        {
+            camera = Mathf::approach(camera.cast_to<float>(), IVec2({ next_room.bbox.x, next_room.bbox.y }).cast_to<float>(), GameProperties::delta_time() * 1000.0f).cast_to<int>();
+
+            if ((camera - IVec2({ next_room.bbox.x, next_room.bbox.y })).length() < GameProperties::delta_time() * 1000.0f)
+            {
+                room_transition = false;
+                unload_room();
+                player->entity->is_active = true;
+                last_room_entities.clear();
             }
         }
 
+
+        // Big room check        
         if (current_room.bbox.w > room_default_width)
         {
             camera[0] = Mathf::clamp(player->entity->position[0] - room_default_width / 2, current_room.bbox.x, current_room.bbox.x + current_room.bbox.w - room_default_width);
         }
-
         if (current_room.bbox.h > room_default_height)
         {
             camera[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room.bbox.y, current_room.bbox.y + current_room.bbox.h - room_default_height);
         }
 
-        if (player->get_hp() <= 0)
+        // Restart check
+        if (player->get_hp() <= 0 && player->entity->is_active)
         {
             player->entity->is_active = false;
             Composer::create_end_sequence(this, {0, 0}, Layer::Draw::overlay);
@@ -167,13 +190,13 @@ void Level::update() {
     {
         int player_room_id = find_in_map("Player");
         player_room_id = player_room_id < 0 ? 0 : player_room_id;
-
+        
+        last_room_entities = get_entities();
         move_to_room(player_room_id);
     }
-    
-    layer_transform(Layer::Draw::map, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
-    layer_transform(Layer::Draw::player, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
-    layer_transform(Layer::Draw::items, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+
+    for (const auto& layer : camera_layers)
+        layer_transform(layer, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
 }
 
 

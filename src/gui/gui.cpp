@@ -45,7 +45,7 @@ void GUI::render(LiraGame* game)
     ImGui::NewFrame();
 
     GUI::draw(game);
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -93,6 +93,63 @@ void GUI::draw(LiraGame* game)
 
         #define IMGUI_FSLIDE(var, v0, v1) ImGui::SliderFloat(#var, &player_par->var, v0, v1);
         #define IMGUI_ISLIDE(var, v0, v1) ImGui::SliderInt(#var, &player_par->var, v0, v1);
+
+        if (ImGui::CollapsingHeader("Scene"))
+        {
+            ImGui::Text("Active entities: %lu", level->get_entities().size());
+
+            size_t total_rendered_components = 0;
+            if (ImGui::BeginTable("Rendering layers", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable))
+            {
+                ImGui::TableSetupColumn("Layer", ImGuiTableColumnFlags_WidthFixed);
+                ImGui::TableSetupColumn("Components", ImGuiTableColumnFlags_WidthStretch);
+                ImGui::TableHeadersRow();
+                for (const auto& [id, layer] : level->get_render_layers())
+                {
+                    ImGui::TableNextRow();
+
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("%d", id);
+
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%lu", layer.components.size());
+                    total_rendered_components += layer.components.size();
+                }
+
+                ImGui::EndTable();
+            }
+
+            ImGui::Text("Rendered components: %lu", total_rendered_components);
+
+            size_t total_updated_components = 0;
+            if (ImGui::BeginTable("Components", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable))
+            {
+                ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthStretch);
+                ImGui::TableSetupColumn("Components", ImGuiTableColumnFlags_WidthStretch);
+                ImGui::TableHeadersRow();
+                for (const auto& [id, items] : level->get_components())
+                {
+                    ImGui::TableNextRow();
+
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("%lu", id);
+
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%lu", items.size());
+                    total_updated_components += items.size();
+                }
+
+                ImGui::EndTable();
+            }
+
+            ImGui::Text("Updated components: %lu", total_updated_components);
+
+
+
+
+
+
+        }
 
         if (ImGui::CollapsingHeader("Player"))
         {

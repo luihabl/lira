@@ -401,8 +401,6 @@ Entity* Composer::create_start_sequence(Scene* scene, const TinySDL::IVec2& posi
     auto *anim = entity->add_component(AnimatedDrawing());
     anim->draw = [tf, dx](AnimatedDrawing* self, BatchRenderer& renderer, float t)
     {
-        // renderer.draw_rect_fill({320.0f * (t / tf), 0, 320.0f, 180}, Color::black);
-
         float x = (320.0f + dx) * t / tf;
 
         renderer.draw_rect_fill({x, 0, 320.0f, 180.0f}, Color::black);

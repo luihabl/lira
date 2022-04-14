@@ -20,9 +20,8 @@ namespace Lira {
 
 		void layer_transform(Layer::Draw layer, const TinySDL::Mat3x2& transform);
 
-		bool render_colliders = false;
-
 		IVec2 camera = IVec2::zeros;
+		std::vector<Layer::Draw> camera_layers;
 
 		Entity* minimap = nullptr;
 
@@ -37,6 +36,11 @@ namespace Lira {
 		Room current_room;
 
 		std::vector<Room> rooms;
+
+		std::vector<Entity*> last_room_entities;
+		bool render_colliders = false;
+		bool room_transition = false;
+		Room next_room;
 
 		int room_default_width = 320;
 		int room_default_height = 184;

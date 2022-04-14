@@ -53,21 +53,7 @@ namespace Lira
             template <typename T>
             T* get_first();
 
-            const std::vector<Entity*>& get_entities();
-
             void layer_transform(int layer, const TinySDL::Mat3x2& transform);
-            
-        private:
-            Game* game;
-
-            TypeTable<Component> components;
-            TypeTable<Component> components_cache;
-
-            std::vector<Entity*> entities;
-            std::vector<Entity*> entities_cache;
-
-            std::vector<Component*> components_to_remove;
-            std::vector<Entity*> entities_to_remove;
 
             struct RenderLayer
             {
@@ -87,6 +73,22 @@ namespace Lira
                         }
                 }
             };
+
+            const std::vector<Entity*>& get_entities();
+            const std::map<int, RenderLayer>& get_render_layers();
+            const TypeTable<Component>& get_components();
+            
+        private:
+            Game* game;
+
+            TypeTable<Component> components;
+            TypeTable<Component> components_cache;
+
+            std::vector<Entity*> entities;
+            std::vector<Entity*> entities_cache;
+
+            std::vector<Component*> components_to_remove;
+            std::vector<Entity*> entities_to_remove;
 
             std::map<int, RenderLayer> render_layers;
 

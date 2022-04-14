@@ -152,6 +152,16 @@ const std::vector<Entity*>& Scene::get_entities()
 	return entities; 
 }
 
+const std::map<int, Scene::RenderLayer>& Scene::get_render_layers()
+{
+	return render_layers;
+}
+
+const TypeTable<Component>& Scene::get_components()
+{
+	return components;
+}
+
 void Scene::layer_transform(int layer, const TinySDL::Mat3x2& transform)
 {
 	render_layers[layer].transform = transform;
