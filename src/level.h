@@ -50,6 +50,7 @@ namespace Lira {
 		void load_room(size_t id);
 		void unload_room();
 		void move_to_room(size_t id);
+		IVec2 room_camera_target(const TinySDL::IVec2& player_pos, const Room& room);
 
 	};
 }

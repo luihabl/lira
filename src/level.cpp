@@ -106,6 +106,23 @@ void Level::move_to_room(size_t id)
     camera = { current_room.bbox.x, current_room.bbox.y };
 }
 
+IVec2 Level::room_camera_target(const IVec2& player_pos, const Room& room)
+{   
+    IVec2 target = {room.bbox.x, room.bbox.y}; 
+
+    if (room.bbox.w > room_default_width)
+    {
+        target[0] = Mathf::clamp(player_pos[0] - room_default_width / 2, room.bbox.x, room.bbox.x + room.bbox.w - room_default_width);
+    }
+    if (room.bbox.h > room_default_height)
+    {
+        target[1] = Mathf::clamp(player_pos[1] - room_default_height / 2, room.bbox.y, room.bbox.y + room.bbox.h - room_default_height);
+    }
+
+    return target;
+}
+
+
 
 void Level::update() {
     
@@ -157,26 +174,22 @@ void Level::update() {
         }
         else if(room_transition)
         {
-            camera = Mathf::approach(camera.cast_to<float>(), IVec2({ next_room.bbox.x, next_room.bbox.y }).cast_to<float>(), GameProperties::delta_time() * 1000.0f).cast_to<int>();
+            IVec2 camera_target = room_camera_target(player->entity->position, next_room);
 
-            if ((camera - IVec2({ next_room.bbox.x, next_room.bbox.y })).length() < GameProperties::delta_time() * 1000.0f)
+            camera = Mathf::approach(camera.cast_to<float>(), camera_target.cast_to<float>(), GameProperties::delta_time() * 1000.0f).cast_to<int>();
+
+            if (camera == camera_target)
             {
-                room_transition = false;
                 unload_room();
-                player->entity->is_active = true;
                 last_room_entities.clear();
+                player->entity->is_active = true;
+                current_room = next_room;
+                room_transition = false;
             }
         }
-
-
-        // Big room check        
-        if (current_room.bbox.w > room_default_width)
+        else
         {
-            camera[0] = Mathf::clamp(player->entity->position[0] - room_default_width / 2, current_room.bbox.x, current_room.bbox.x + current_room.bbox.w - room_default_width);
-        }
-        if (current_room.bbox.h > room_default_height)
-        {
-            camera[1] = Mathf::clamp(player->entity->position[1] - room_default_height / 2, current_room.bbox.y, current_room.bbox.y + current_room.bbox.h - room_default_height);
+            camera = room_camera_target(player->entity->position, current_room);
         }
 
         // Restart check

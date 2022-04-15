@@ -59,7 +59,11 @@ void GUI::draw(LiraGame* game)
     //ImGui::SetNextWindowBgAlpha(0.5f);
     ImGui::Begin("Lira debug");
 
-        ImGui::Text("FPS: %.1f ", ImGui::GetIO().Framerate);
+
+        if (ImGui::CollapsingHeader("Game"))
+        {
+            ImGui::Text("FPS: %.1f ", ImGui::GetIO().Framerate);
+        }
 
         Vec2 player_velocity = Vec2::zeros;
 
