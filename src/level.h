@@ -40,6 +40,7 @@ namespace Lira {
 		std::vector<Entity*> last_room_entities;
 		bool render_colliders = false;
 		bool room_transition = false;
+		float transition_easing = 0.0f;
 		Room next_room;
 
 		int room_default_width = 320;

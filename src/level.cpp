@@ -157,6 +157,7 @@ void Level::update() {
         if(!current_room.bbox.contains(player->entity->position) && !room_transition)
         {          
             room_transition = true;
+            transition_easing = 0.0f;
             player->entity->is_active = false;
 
             const auto& pos = player->entity->position;
@@ -174,11 +175,15 @@ void Level::update() {
         }
         else if(room_transition)
         {
-            IVec2 camera_target = room_camera_target(player->entity->position, next_room);
+            Vec2 camera_current_target = room_camera_target(player->entity->position, current_room).cast_to<float>();
+            Vec2 camera_next_target = room_camera_target(player->entity->position, next_room).cast_to<float>();
 
-            camera = Mathf::approach(camera.cast_to<float>(), camera_target.cast_to<float>(), GameProperties::delta_time() * 1000.0f).cast_to<int>();
+            transition_easing = Mathf::approach(transition_easing, 1.0f, GameProperties::delta_time() / 0.6f);
+            
+            Vec2 camera_f = (camera_current_target + (camera_next_target - camera_current_target) * Mathf::Easing::quartic_ease_in_out(transition_easing));
+            camera = {(int) roundf(camera_f[0]), (int) roundf(camera_f[1])};
 
-            if (camera == camera_target)
+            if (transition_easing >= 1.0f)
             {
                 unload_room();
                 last_room_entities.clear();
