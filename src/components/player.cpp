@@ -87,6 +87,12 @@ void Player::update()
 {
     move();
     animate();
+
+    if (st.is_dashing)
+        for (auto& trail : trails)
+        {
+            trail.update();
+        }
 }
 
 void Player::render(BatchRenderer& renderer)

@@ -112,6 +112,10 @@ namespace Lira {
             void render(TinySDL::BatchRenderer& renderer)
             {
                 renderer.draw_circle_fill(pos.cast_to<float>() + TinySDL::Vec2({0.0f, -6.0f}), radius, TinySDL::Color::white);
+            }
+
+            void update()
+            {
                 radius -= 0.75f;
                 if (radius <= 0)
                     remove = true;
