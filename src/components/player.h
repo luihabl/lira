@@ -130,6 +130,7 @@ namespace Lira {
     public:
         const State& state();
         const Parameters& parameters();
+        void set_parameters(const Parameters& p);
     };
 
 }

@@ -103,7 +103,7 @@ void Level::move_to_room(size_t id)
     current_room = rooms[id];
 
     load_room(current_room.id);
-    camera = { current_room.bbox.x, current_room.bbox.y };
+    camera = { (float) current_room.bbox.x, (float) current_room.bbox.y };
 }
 
 IVec2 Level::room_camera_target(const IVec2& player_pos, const Room& room)
@@ -180,8 +180,8 @@ void Level::update() {
 
             transition_easing = Mathf::approach(transition_easing, 1.0f, GameProperties::delta_time() / 0.6f);
             
-            Vec2 camera_f = (camera_current_target + (camera_next_target - camera_current_target) * Mathf::Easing::quartic_ease_in_out(transition_easing));
-            camera = {(int) roundf(camera_f[0]), (int) roundf(camera_f[1])};
+            camera = Mathf::ease(Mathf::Easing::quartic_in_out, camera_current_target, camera_next_target, transition_easing);            
+            // camera = {(int) roundf(camera_f[0]), (int) roundf(camera_f[1])};
 
             if (transition_easing >= 1.0f)
             {
@@ -194,7 +194,11 @@ void Level::update() {
         }
         else
         {
-            camera = room_camera_target(player->entity->position, current_room);
+            // camera =  Mathf::approach(camera.cast_to<float>(), room_camera_target(player->entity->position, current_room).cast_to<float>(), GameProperties::delta_time() * 100.0f).cast_to<int>();
+            // Vec2 camera_f = Mathf::ease(Mathf::Easing::linear_interpolation, camera.cast_to<float>(), room_camera_target(player->entity->position, current_room).cast_to<float>(), GameProperties::delta_time() * 10.0f);
+            camera = Mathf::ease(Mathf::Easing::quadratic_in_out, camera, room_camera_target(player->entity->position, current_room).cast_to<float>(), GameProperties::delta_time() * 20.0f);
+            // camera = {roundf(camera[0]), roundf(camera[1])};
+            // camera = room_camera_target(player->entity->position, current_room);
         }
 
         // Restart check
@@ -213,8 +217,11 @@ void Level::update() {
         move_to_room(player_room_id);
     }
 
+    // Beware that the camera is rounding for the nearest integer to avoid stuttering
+    // This can be done because we cannot render half-pixel anyway
+    // This needs to be removed if we drop fixed resolution 
     for (const auto& layer : camera_layers)
-        layer_transform(layer, LinAlg2D::gen_translation((float)-camera[0], (float)-camera[1]));
+        layer_transform(layer, LinAlg2D::gen_translation(-roundf(camera[0]), -roundf(camera[1])));
 }
 
 

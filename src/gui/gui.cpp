@@ -15,6 +15,11 @@ using namespace TinySDL;
 
 void style();
 
+namespace
+{
+    Player::Parameters saved_parameters = Player::Parameters();
+}
+
 void GUI::init()
 {
     IMGUI_CHECKVERSION();
@@ -100,6 +105,10 @@ void GUI::draw(LiraGame* game)
 
         if (ImGui::CollapsingHeader("Scene"))
         {
+
+            ImGui::Text("Camera position: [%.1f, %.1f]", level->camera[0], level->camera[1]);
+            ImGui::Text("Camera rendered position: [%d, %d]", (int) roundf(level->camera[0]), (int) roundf(level->camera[1]));
+
             ImGui::Text("Active entities: %lu", level->get_entities().size());
 
             size_t total_rendered_components = 0;

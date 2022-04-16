@@ -380,3 +380,8 @@ const Player::Parameters& Player::parameters()
 {
     return par;
 }
+
+void Player::set_parameters(const Player::Parameters& p)
+{
+    par = p;
+}

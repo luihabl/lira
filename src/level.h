@@ -20,7 +20,7 @@ namespace Lira {
 
 		void layer_transform(Layer::Draw layer, const TinySDL::Mat3x2& transform);
 
-		IVec2 camera = IVec2::zeros;
+		Vec2 camera = Vec2::zeros;
 		std::vector<Layer::Draw> camera_layers;
 
 		Entity* minimap = nullptr;
