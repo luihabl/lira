@@ -18,6 +18,7 @@ void style();
 namespace
 {
     Player::Parameters saved_parameters = Player::Parameters();
+    bool par_initialized = false;
 }
 
 void GUI::init()
@@ -73,7 +74,8 @@ void GUI::draw(LiraGame* game)
         Vec2 player_velocity = Vec2::zeros;
 
         Player::State player_state;
-        Player::Parameters* player_par = nullptr;
+        // Player::Parameters* player_par = nullptr;
+
 
         player_state.hp = -1;
         player_state.current_gravity = -1;
@@ -86,7 +88,12 @@ void GUI::draw(LiraGame* game)
             if(player)
             {
                 player_state = player->state();
-                player_par = (Player::Parameters*) &player->parameters();
+                // player_par = (Player::Parameters*) &player->parameters();
+                if (!par_initialized)
+                {
+                    saved_parameters = player->parameters();
+                    par_initialized = true;
+                }
 
                 auto* actor = player->get_sibling<Actor>();
                 if(actor)
@@ -100,8 +107,8 @@ void GUI::draw(LiraGame* game)
         #define IMGUI_STATUS_INT(var) ImGui::Text(#var ": %d ", player_state.var);
         #define IMGUI_STATUS_BOOL(var) ImGui::Text(#var ": %s ", player_state.var ? "true" : "false");
 
-        #define IMGUI_FSLIDE(var, v0, v1) ImGui::SliderFloat(#var, &player_par->var, v0, v1);
-        #define IMGUI_ISLIDE(var, v0, v1) ImGui::SliderInt(#var, &player_par->var, v0, v1);
+        #define IMGUI_FSLIDE(var, v0, v1) ImGui::SliderFloat(#var, &saved_parameters.var, v0, v1);
+        #define IMGUI_ISLIDE(var, v0, v1) ImGui::SliderInt(#var, &saved_parameters.var, v0, v1);
 
         if (ImGui::CollapsingHeader("Scene"))
         {
@@ -190,6 +197,13 @@ void GUI::draw(LiraGame* game)
 
                 ImGui::Text("velocity: [%.0f, %.0f] ", player_velocity[0], player_velocity[1]);
 
+                ImGui::Spacing();
+
+                if(ImGui::Button("Reset"))
+                {
+                    player->reset();
+                }
+
                 ImGui::TreePop();
                 ImGui::Separator();
             }
@@ -198,7 +212,7 @@ void GUI::draw(LiraGame* game)
             {
                 ImGui::Text("Changes will not be saved");
 
-                if (player_par)
+                if (true)
                 {
                     IMGUI_FSLIDE(floor_max_speed, 0, 250);
                     IMGUI_FSLIDE(vertical_max_speed, 0, 1000);
@@ -235,6 +249,13 @@ void GUI::draw(LiraGame* game)
 
                     IMGUI_ISLIDE(hp_max, 1, 10);
 
+                    ImGui::Spacing();
+
+                    if(ImGui::Button("Reset"))
+                    {
+                        saved_parameters = Player::Parameters();
+                    }
+
                     ImGui::TreePop();
                     ImGui::Separator();
                 }
@@ -243,7 +264,7 @@ void GUI::draw(LiraGame* game)
             ImGui::PopItemWidth();
         }
 
-        
+        player->set_parameters(saved_parameters, true);
                 
 
     ImGui::End();

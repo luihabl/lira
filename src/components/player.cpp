@@ -4,12 +4,25 @@
 using namespace TinySDL;
 using namespace Lira;
 
-void Player::begin()
+namespace
 {
-    par = Parameters();
+    Player::Parameters persistent_par;
+    bool init_persistent_par = false;
+}
+
+void Player::reset()
+{
+    if(init_persistent_par)
+        par = persistent_par;
+
     st = State();
     st.current_gravity = par.gravity;
     st.hp = par.hp_max;
+}
+
+void Player::begin()
+{
+    reset();
     
     jump.add(Key::Z)
         .register_input();
@@ -381,7 +394,18 @@ const Player::Parameters& Player::parameters()
     return par;
 }
 
-void Player::set_parameters(const Player::Parameters& p)
+void Player::set_parameters(const Player::Parameters& p, bool persistent)
 {
     par = p;
+    if(persistent)
+    {
+        init_persistent_par = true;
+        persistent_par = p;
+    }
+}
+
+void Player::reset_parameters()
+{
+    init_persistent_par = false; 
+    par = Parameters();
 }
