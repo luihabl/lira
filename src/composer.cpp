@@ -5,7 +5,6 @@
 #include "assets/tileset.h"
 
 #include "components/tilemap.h"
-#include "components/multi_tilemap.h"
 #include "components/player.h"
 #include "components/actor.h"
 #include "components/animated_sprite.h"
@@ -40,15 +39,18 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 
     auto* entity = scene->add_entity(position + room.bbox.pos(), (int) render_layer);
 
-    std::vector<TileMap> layers;
+    // std::vector<TileMap> layers;
 
     for (const auto& layer : room.layers)
     {
         if(!layer.tileset)
             continue;
 
-        layers.push_back(TileMap(layer.columns, layer.rows, layer.dx, layer.dy));
-        bool has_flags = layers.back().set_cells(layer);
+        // layers.push_back(TileMap(layer.columns, layer.rows, layer.dx, layer.dy));
+        // bool has_flags = layers.back().set_cells(layer);
+
+        auto* tilemap = entity->add_component(TileMap(layer.columns, layer.rows, layer.dx, layer.dy));
+        bool has_flags = tilemap->set_cells(layer);
 
 
         // Optimize flag assignment
@@ -89,8 +91,8 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
     // a component is added. Then the renderering could be ordered also using this counter
     // which would guarantee that components are rendered following their order that 
     // they were included.
-    auto* tilemaps = entity->add_component(MultiTileMap());
-    tilemaps->set_tilemaps(layers);
+    // auto* tilemaps = entity->add_component(MultiTileMap());
+    // tilemaps->set_tilemaps(layers);
 
     for(const auto& object : room.objects)
     {

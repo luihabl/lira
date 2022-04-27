@@ -64,13 +64,10 @@ namespace Lira
 
                 void remove(Component* c)
                 {
-                    for (size_t i = 0; i < components.size(); i++)
-                        if (components[i] == c)
-                        {
-                            components[i] = components.back();
-                            components.pop_back();
-                            break;
-                        }
+                    // This is slower but preserves order
+                    // TODO: How to make this faster? Maybe just set component to nullptr and skip it 
+                    // during rendering phase? Or just find better algoritm to remove a 
+                    components.erase(std::remove(components.begin(), components.end(), c), components.end());
                 }
             };
 
