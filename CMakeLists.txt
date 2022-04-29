@@ -40,6 +40,7 @@ src/components/actor.cpp
 src/components/timer.cpp
 src/components/multitimer.h
 src/components/multitimer.cpp
+src/components/interactable.h
 
 src/composer.cpp
 src/lira.cpp
@@ -49,7 +50,6 @@ src/level.cpp
 src/main.cpp
 src/layers.h
 src/util/svector.h
-src/components/hittable.h
 )
 
 

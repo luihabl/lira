@@ -51,6 +51,7 @@ namespace Lira
         {
             TinySDL::IVec2 pos;
             std::string name;
+            std::string unique_id;
             //extend for other properties
         };
 

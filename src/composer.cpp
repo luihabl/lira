@@ -12,9 +12,9 @@
 #include "components/collider_grid.h"
 #include "components/timer.h"
 #include "components/multitimer.h"
-#include "components/hittable.h"
+#include "components/interactable.h"
 #include "components/animated_drawing.h"
-#include "components/persistance.h"
+#include "components/persistence.h"
 
 #include "layers.h"
 #include "level.h"
@@ -115,6 +115,16 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
         if (object.name == "Crystal")
         {
             create_crystal(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
+        }
+
+        if (object.name == "Door")
+        {
+            create_door(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
+        }
+
+        if (object.name == "Key")
+        {
+            create_key(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
         }
     }
 
@@ -219,10 +229,10 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
     auto* collider = entity->add_component(Collider({ 0, 2, 7, 6 }));
     collider->layer = Layer::Collision::item;
 
-    auto* hittable = entity->add_component(Hittable());
-    hittable->hit_by = Layer::Collision::player;
-    hittable->collider = collider;
-    hittable->on_hit = [=](Hittable* self)
+    auto* interact = entity->add_component(Interactable());
+    interact->interacted_by = Layer::Collision::player;
+    interact->collider = collider;
+    interact->on_interact = [=](Interactable* self)
     {
         auto* player = self->scene()->get_first<Player>();
         if(player)
@@ -249,10 +259,10 @@ Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, c
     auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
     collider->layer = Layer::Collision::item;
 
-    auto* hittable = entity->add_component(Hittable());
-    hittable->hit_by = Layer::Collision::player;
-    hittable->collider = collider;
-    hittable->on_hit = [=](Hittable* self)
+    auto* interact = entity->add_component(Interactable());
+    interact->interacted_by = Layer::Collision::player;
+    interact->collider = collider;
+    interact->on_interact = [=](Interactable* self)
     {
         auto* player = self->scene()->get_first<Player>();
         if(player)
@@ -431,4 +441,68 @@ Entity* Composer::create_start_sequence(Scene* scene, const TinySDL::IVec2& posi
     }));
 
     return entity;
+}
+
+
+Entity* Composer::create_door(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+{
+    auto* entity = scene->add_entity(position, (int) layer);
+
+    auto* collider = entity->add_component(Collider({0, 0, 16, 48}));
+    collider->layer = Layer::Collision::solid;
+
+    auto* interactive_region = entity->add_component(Collider({-8, 0, 32, 48}));
+    interactive_region->layer = Layer::Collision::item;
+
+    auto* interact = entity->add_component(Interactable());
+    interact->collider = interactive_region;
+    interact->interacted_by = Layer::Collision::player;
+
+    interact->on_interact = [](Interactable* self) 
+    {
+        if(Input::just_pressed(Key::E))
+        {
+            self->entity->destroy();
+        }
+    };
+
+    //TODO: Remove animated drawing
+    auto* drawing = entity->add_component(AnimatedDrawing());
+    drawing->draw = [=](AnimatedDrawing* self, BatchRenderer& renderer, float t)
+    {
+        Vec2 pos = self->entity->position.cast_to<float>();
+        renderer.draw_rect_fill({pos[0], pos[1], 16, 48}, Color::white);
+    };
+
+    return entity;
+}
+
+Entity* Composer::create_key(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+{
+    auto* entity = scene->add_entity(position, (int)layer);
+    auto* spr = entity->add_component(AnimatedSprite());
+    spr->static_sprite(
+        {
+            TexRegion(Content::find<Texture>("sprites/key"), Rect(0, 0, 14, 8)),
+            {0, 0}
+        });
+
+    auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
+    collider->layer = Layer::Collision::item;
+
+    auto* interact = entity->add_component(Interactable());
+    interact->interacted_by = Layer::Collision::player;
+    interact->collider = collider;
+    interact->on_interact = [=](Interactable* self)
+    {
+        // auto* player = self->scene()->get_first<Player>();
+        // if(player)
+        //     player->recharge_dash();
+
+        create_collect_effect(scene, position + IVec2({4, 4}), {232, 221, 0}, layer);
+        self->entity->destroy();
+    };
+
+    return entity;
+
 }

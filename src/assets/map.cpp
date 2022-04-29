@@ -126,6 +126,7 @@ Map::Map(const nlohmann::json& json, const std::string& key)
                     Object o;
                     o.name = object["__identifier"];
                     o.pos = IVec2({object["px"][0], object["px"][1]});
+                    o.unique_id = object["iid"];
 
                     room.objects.push_back(o);
                 }
