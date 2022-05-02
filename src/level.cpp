@@ -37,8 +37,8 @@ void Level::begin() {
     Sound::play("PlayMusic");
     Game::pause_for(0.5f);
 
-    Composer::create_hp_bar(this, {5, 3}, Layer::Draw::UI);
-    minimap = Composer::create_minimap(this, {0, 0}, Layer::Draw::UI2);
+    Composer::create_hp_bar(this, {{5, 3}, ""}, Layer::Draw::UI);
+    minimap = Composer::create_minimap(this, {{0, 0}, ""}, Layer::Draw::UI2);
     minimap->is_visible = false;
     minimap->is_active = false;
 
@@ -145,7 +145,7 @@ void Level::update() {
     }
     if (Input::just_pressed(Key::F3))
     {
-        Composer::create_player(this, { 125, 125 });
+        Composer::create_player(this, {{ 125, 125 }, ""});
     }
 
     // Player management
@@ -205,7 +205,7 @@ void Level::update() {
         if (player->get_hp() <= 0 && player->entity->is_active)
         {
             player->entity->is_active = false;
-            Composer::create_end_sequence(this, {0, 0}, Layer::Draw::overlay);
+            Composer::create_end_sequence(this, {{0, 0}, ""}, Layer::Draw::overlay);
         }
     }
     else

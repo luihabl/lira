@@ -4,6 +4,7 @@
 #include "core/ecs.h"
 #include "assets/map.h"
 #include "layers.h"
+#include "inventory.h"
 
 using namespace TinySDL;
 
@@ -47,6 +48,8 @@ namespace Lira {
 		void add_persistent_interaction(const std::string& id);
 		void clear_persistent_interactions();
 		bool has_persistent_interaction(size_t room_id, const std::string& id);
+
+		Inventory inventory;
 
 		int room_default_width = 320;
 		int room_default_height = 184;
