@@ -252,3 +252,24 @@ void Level::render(TinySDL::BatchRenderer& renderer)
     renderer.pop_transform();
     // =====================================================
 }
+
+void Level::add_persistent_interaction(const std::string& id)
+{
+    persistent_interactions[current_room.id].push_back(id);
+}
+
+void Level::clear_persistent_interactions()
+{
+    persistent_interactions.clear();
+}
+
+bool Level::has_persistent_interaction(size_t room_id, const std::string& id)
+{
+    const auto& vec = persistent_interactions[room_id];
+    bool result = false;
+    if( std::find(vec.begin(), vec.end(), id) != vec.end() )
+    {
+        result = true;
+    }
+    return result;
+}

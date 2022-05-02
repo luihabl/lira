@@ -43,6 +43,11 @@ namespace Lira {
 		float transition_easing = 0.0f;
 		Room next_room;
 
+		std::unordered_map<size_t, std::vector<std::string>> persistent_interactions;
+		void add_persistent_interaction(const std::string& id);
+		void clear_persistent_interactions();
+		bool has_persistent_interaction(size_t room_id, const std::string& id);
+
 		int room_default_width = 320;
 		int room_default_height = 184;
 

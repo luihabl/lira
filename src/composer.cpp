@@ -12,7 +12,7 @@
 #include "components/collider_grid.h"
 #include "components/timer.h"
 #include "components/multitimer.h"
-#include "components/interactable.h"
+#include "components/area.h"
 #include "components/animated_drawing.h"
 #include "components/persistence.h"
 
@@ -94,37 +94,47 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
     // auto* tilemaps = entity->add_component(MultiTileMap());
     // tilemaps->set_tilemaps(layers);
 
+    Level* level = (Level*) scene;
+
     for(const auto& object : room.objects)
     {
+        ObjectInfo obj = {
+             {object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y},
+             object.unique_id
+        };
+
         if(object.name == "Player")
         {
 
             if(!scene->get_first<Player>())
             {
-                auto* en = create_player(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y}, Layer::Draw::player);
+                auto* en = create_player(scene, obj, Layer::Draw::player);
                 en->is_active = false;
-                create_start_sequence(scene, {0, 0}, Layer::Draw::overlay);
+                create_start_sequence(scene, {{0, 0}, ""}, Layer::Draw::overlay);
             }
         }
 
+        if(level->has_persistent_interaction(level_n, object.unique_id))
+            continue;
+
         if (object.name == "Heart")
         {
-            create_heart(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
+            create_heart(scene, obj, Layer::Draw::items);
         }
 
         if (object.name == "Crystal")
         {
-            create_crystal(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
+            create_crystal(scene, obj, Layer::Draw::items);
         }
 
         if (object.name == "Door")
         {
-            create_door(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
+            create_door(scene, obj, Layer::Draw::items);
         }
 
         if (object.name == "Key")
         {
-            create_key(scene, { object.pos[0] + room.bbox.x, object.pos[1] + room.bbox.y }, Layer::Draw::items);
+            create_key(scene, obj, Layer::Draw::items);
         }
     }
 
@@ -132,8 +142,8 @@ Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n,
 }
 
 
-Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position, const Layer::Draw& layer) {
-    auto* entity = scene->add_entity(position, (int) layer);
+Entity * Composer::create_player(Scene * scene, const ObjectInfo& obj, const Layer::Draw& layer) {
+    auto* entity = scene->add_entity(obj.pos, (int) layer);
 
     auto * animator = entity->add_component(AnimatedSprite("sprites/player_lira"));
     animator->play("idle");
@@ -152,9 +162,9 @@ Entity * Composer::create_player(Scene * scene, const TinySDL::IVec2 & position,
     return entity;
 }
 
-Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_turret(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
 
     auto* animator = entity->add_component(AnimatedSprite("sprites/turret"));
     animator->play("idle");
@@ -168,7 +178,7 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
             }},
             {4.0f * animator->get("preparing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("shooting");
-                create_bullet(self->scene(), { -1.0f, 0.0f }, self->entity->position + IVec2({-12, -1}));
+                create_bullet(self->scene(), { -1.0f, 0.0f }, {self->entity->position + IVec2({-12, -1}), ""});
             }},
             {1.0f * animator->get("preparing")->lenght(), [](MultiTimer* self) {
                 self->get_sibling<AnimatedSprite>()->play("closing");
@@ -186,9 +196,9 @@ Entity* Composer::create_turret(Scene* scene, const TinySDL::IVec2& position, co
     return entity;
 }
 
-Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
     
     auto* animator = entity->add_component(AnimatedSprite("sprites/turret-bullet"));
     animator->play("drift");
@@ -216,9 +226,9 @@ Entity* Composer::create_bullet(Scene* scene, const Vec2& direction, const TinyS
     return entity;
 }
 
-Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_heart(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
     auto* spr = entity->add_component(AnimatedSprite());
     spr->static_sprite(
         {
@@ -229,16 +239,16 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
     auto* collider = entity->add_component(Collider({ 0, 2, 7, 6 }));
     collider->layer = Layer::Collision::item;
 
-    auto* interact = entity->add_component(Interactable());
-    interact->interacted_by = Layer::Collision::player;
-    interact->collider = collider;
-    interact->on_interact = [=](Interactable* self)
+    auto* area= entity->add_component(Area());
+    area->overlapped_by = Layer::Collision::player;
+    area->collider = collider;
+    area->on_overlap = [=](Area* self)
     {
         auto* player = self->scene()->get_first<Player>();
         if(player)
             player->recover(1);
 
-        create_collect_effect(scene, position + IVec2({4, 4}), Color::red, layer);
+        create_collect_effect(scene, {obj.pos + IVec2({4, 4}), ""}, Color::red, layer);
         self->entity->destroy();
     };
 
@@ -246,9 +256,9 @@ Entity* Composer::create_heart(Scene* scene, const TinySDL::IVec2& position, con
 }
 
 
-Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_crystal(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
     auto* spr = entity->add_component(AnimatedSprite());
     spr->static_sprite(
         {
@@ -259,16 +269,16 @@ Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, c
     auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
     collider->layer = Layer::Collision::item;
 
-    auto* interact = entity->add_component(Interactable());
-    interact->interacted_by = Layer::Collision::player;
-    interact->collider = collider;
-    interact->on_interact = [=](Interactable* self)
+    auto* area= entity->add_component(Area());
+    area->overlapped_by = Layer::Collision::player;
+    area->collider = collider;
+    area->on_overlap = [=](Area* self)
     {
         auto* player = self->scene()->get_first<Player>();
         if(player)
             player->recharge_dash();
 
-        create_collect_effect(scene, position + IVec2({4, 4}), Color::green, layer);
+        create_collect_effect(scene, {obj.pos + IVec2({4, 4}), ""}, Color::green, layer);
         self->entity->destroy();
     };
 
@@ -276,9 +286,9 @@ Entity* Composer::create_crystal(Scene* scene, const TinySDL::IVec2& position, c
 }
 
 
-Entity* Composer::create_collect_effect(Scene* scene, const TinySDL::IVec2& position, const Color& color, const Layer::Draw& layer)
+Entity* Composer::create_collect_effect(Scene* scene, const ObjectInfo& obj, const Color& color, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
 
     float r0 = 4.0f;
     float r_rate = 25.f;
@@ -304,9 +314,9 @@ Entity* Composer::create_collect_effect(Scene* scene, const TinySDL::IVec2& posi
     return entity;
 }
 
-Entity* Composer::create_hp_bar(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_hp_bar(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
 
     auto tex = TexRegion(Content::find<Texture>("sprites/heart"), Rect(0, 0, 8, 8));
     auto tex_empty = TexRegion(Content::find<Texture>("sprites/heart_empty"), Rect(0, 0, 8, 8));
@@ -328,12 +338,12 @@ Entity* Composer::create_hp_bar(Scene* scene, const TinySDL::IVec2& position, co
 
             for(int i = 0; i < hp; i++)
             {
-                renderer.draw_tex(tex, position.cast_to<float>() + Vec2({(float)i * 8.0f, 0.0f}));
+                renderer.draw_tex(tex, obj.pos.cast_to<float>() + Vec2({(float)i * 8.0f, 0.0f}));
             }
 
             for(int i = hp; i < hp_max; i++)
             {
-                renderer.draw_tex(tex_empty, position.cast_to<float>() + Vec2({(float)i * 8.0f, 0.0f}));
+                renderer.draw_tex(tex_empty, obj.pos.cast_to<float>() + Vec2({(float)i * 8.0f, 0.0f}));
             }
         }
     };
@@ -344,9 +354,9 @@ Entity* Composer::create_hp_bar(Scene* scene, const TinySDL::IVec2& position, co
 }
 
 
-Entity* Composer::create_minimap(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_minimap(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
 
     // TODO: Find better solution for Minimap.
     // Maybe create a Minimap component for further animation
@@ -385,9 +395,9 @@ Entity* Composer::create_minimap(Scene* scene, const TinySDL::IVec2& position, c
 }
 
 
-Entity* Composer::create_end_sequence(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_end_sequence(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
 
     float tf = 0.5f;
     float dx = 50.0f;
@@ -414,9 +424,9 @@ Entity* Composer::create_end_sequence(Scene* scene, const TinySDL::IVec2& positi
     return entity;
 }
 
-Entity* Composer::create_start_sequence(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_start_sequence(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
 
     float tf = 0.5f;
     float dx = 50.0f;
@@ -444,9 +454,9 @@ Entity* Composer::create_start_sequence(Scene* scene, const TinySDL::IVec2& posi
 }
 
 
-Entity* Composer::create_door(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_door(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int) layer);
+    auto* entity = scene->add_entity(obj.pos, (int) layer);
 
     auto* collider = entity->add_component(Collider({0, 0, 16, 48}));
     collider->layer = Layer::Collision::solid;
@@ -454,14 +464,15 @@ Entity* Composer::create_door(Scene* scene, const TinySDL::IVec2& position, cons
     auto* interactive_region = entity->add_component(Collider({-8, 0, 32, 48}));
     interactive_region->layer = Layer::Collision::item;
 
-    auto* interact = entity->add_component(Interactable());
-    interact->collider = interactive_region;
-    interact->interacted_by = Layer::Collision::player;
+    auto* area= entity->add_component(Area());
+    area->collider = interactive_region;
+    area->overlapped_by = Layer::Collision::player;
 
-    interact->on_interact = [](Interactable* self) 
+    area->on_overlap = [obj](Area* self) 
     {
         if(Input::just_pressed(Key::E))
         {
+            ((Level*) self->scene())->add_persistent_interaction(obj.id);
             self->entity->destroy();
         }
     };
@@ -477,9 +488,9 @@ Entity* Composer::create_door(Scene* scene, const TinySDL::IVec2& position, cons
     return entity;
 }
 
-Entity* Composer::create_key(Scene* scene, const TinySDL::IVec2& position, const Layer::Draw& layer)
+Entity* Composer::create_key(Scene* scene, const ObjectInfo& obj, const Layer::Draw& layer)
 {
-    auto* entity = scene->add_entity(position, (int)layer);
+    auto* entity = scene->add_entity(obj.pos, (int)layer);
     auto* spr = entity->add_component(AnimatedSprite());
     spr->static_sprite(
         {
@@ -490,16 +501,16 @@ Entity* Composer::create_key(Scene* scene, const TinySDL::IVec2& position, const
     auto* collider = entity->add_component(Collider({ 0, 0, 8, 8 }));
     collider->layer = Layer::Collision::item;
 
-    auto* interact = entity->add_component(Interactable());
-    interact->interacted_by = Layer::Collision::player;
-    interact->collider = collider;
-    interact->on_interact = [=](Interactable* self)
+    auto* area= entity->add_component(Area());
+    area->overlapped_by = Layer::Collision::player;
+    area->collider = collider;
+    area->on_overlap = [=](Area* self)
     {
         // auto* player = self->scene()->get_first<Player>();
         // if(player)
         //     player->recharge_dash();
-
-        create_collect_effect(scene, position + IVec2({4, 4}), {232, 221, 0}, layer);
+        ((Level*) self->scene())->add_persistent_interaction(obj.id);
+        create_collect_effect(scene, {obj.pos + IVec2({4, 4}), ""}, {232, 221, 0}, layer);
         self->entity->destroy();
     };
 
