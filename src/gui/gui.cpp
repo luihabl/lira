@@ -74,8 +74,6 @@ void GUI::draw(LiraGame* game)
         Vec2 player_velocity = Vec2::zeros;
 
         Player::State player_state;
-        // Player::Parameters* player_par = nullptr;
-
 
         player_state.hp = -1;
         player_state.current_gravity = -1;
@@ -113,60 +111,109 @@ void GUI::draw(LiraGame* game)
         if (ImGui::CollapsingHeader("Scene"))
         {
 
-            ImGui::Text("Camera position: [%.1f, %.1f]", level->camera[0], level->camera[1]);
-            ImGui::Text("Camera rendered position: [%d, %d]", (int) roundf(level->camera[0]), (int) roundf(level->camera[1]));
-
-            ImGui::Text("Active entities: %lu", level->get_entities().size());
-
-            size_t total_rendered_components = 0;
-            if (ImGui::BeginTable("Rendering layers", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable))
+            if (ImGui::TreeNode("Room"))
             {
-                ImGui::TableSetupColumn("Layer", ImGuiTableColumnFlags_WidthFixed);
-                ImGui::TableSetupColumn("Components", ImGuiTableColumnFlags_WidthStretch);
-                ImGui::TableHeadersRow();
-                for (const auto& [id, layer] : level->get_render_layers())
-                {
-                    ImGui::TableNextRow();
+                ImGui::Text("Camera position: [%.1f, %.1f]", level->camera[0], level->camera[1]);
+                ImGui::Text("Camera rendered position: [%d, %d]", (int) roundf(level->camera[0]), (int) roundf(level->camera[1]));
+                
+                ImGui::Spacing();
 
-                    ImGui::TableSetColumnIndex(0);
-                    ImGui::Text("%d", id);
+                ImGui::BulletText("Current room\n"
+                "Number: %lu\n"
+                "BBBox: [x:%d, y:%d, w:%d, h:%d]", 
+                level->current_room.id, level->current_room.bbox.x, level->current_room.bbox.y, level->current_room.bbox.w, level->current_room.bbox.h);
+                ImGui::Spacing();
 
-                    ImGui::TableSetColumnIndex(1);
-                    ImGui::Text("%lu", layer.components.size());
-                    total_rendered_components += layer.components.size();
-                }
+                ImGui::BulletText("Next room\n"
+                "Number: %lu\n"
+                "BBox: [x:%d, y:%d, w:%d, h:%d]", 
+                level->next_room.id, level->next_room.bbox.x, level->next_room.bbox.y, level->next_room.bbox.w, level->next_room.bbox.h);
+                ImGui::Spacing();
 
-                ImGui::EndTable();
+                ImGui::Spacing();
+
+                ImGui::TreePop();
             }
 
-            ImGui::Text("Rendered components: %lu", total_rendered_components);
-
-            size_t total_updated_components = 0;
-            if (ImGui::BeginTable("Components", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable))
+            if (ImGui::TreeNode("Update and rendering"))
             {
-                ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthStretch);
-                ImGui::TableSetupColumn("Components", ImGuiTableColumnFlags_WidthStretch);
-                ImGui::TableHeadersRow();
-                for (const auto& [id, items] : level->get_components())
+                ImGui::Text("Active entities: %lu", level->get_entities().size());
+
+                size_t total_rendered_components = 0;
+                if (ImGui::BeginTable("Rendering layers", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable))
                 {
-                    ImGui::TableNextRow();
+                    ImGui::TableSetupColumn("Layer", ImGuiTableColumnFlags_WidthFixed);
+                    ImGui::TableSetupColumn("Components", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableHeadersRow();
+                    for (const auto& [id, layer] : level->get_render_layers())
+                    {
+                        ImGui::TableNextRow();
 
-                    ImGui::TableSetColumnIndex(0);
-                    ImGui::Text("%lu", id);
+                        ImGui::TableSetColumnIndex(0);
+                        ImGui::Text("%d", id);
 
-                    ImGui::TableSetColumnIndex(1);
-                    ImGui::Text("%lu", items.size());
-                    total_updated_components += items.size();
+                        ImGui::TableSetColumnIndex(1);
+                        ImGui::Text("%lu", layer.components.size());
+                        total_rendered_components += layer.components.size();
+                    }
+
+                    ImGui::EndTable();
                 }
 
-                ImGui::EndTable();
+                ImGui::Text("Rendered components: %lu", total_rendered_components);
+
+                size_t total_updated_components = 0;
+                if (ImGui::BeginTable("Components", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable))
+                {
+                    ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableSetupColumn("Components", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableHeadersRow();
+                    for (const auto& [id, items] : level->get_components())
+                    {
+                        ImGui::TableNextRow();
+
+                        ImGui::TableSetColumnIndex(0);
+                        ImGui::Text("%lu", id);
+
+                        ImGui::TableSetColumnIndex(1);
+                        ImGui::Text("%lu", items.size());
+                        total_updated_components += items.size();
+                    }
+
+                    ImGui::EndTable();
+                }
+
+                ImGui::Text("Updated components: %lu", total_updated_components);
+
+                ImGui::TreePop();
             }
 
-            ImGui::Text("Updated components: %lu", total_updated_components);
+            if (ImGui::TreeNode("Inventory"))
+            {
 
+                auto* inventory = level->inventory.get_all();
+                
+                if (ImGui::BeginTable("Components", 2, ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable))
+                {
+                    ImGui::TableSetupColumn("Item", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableSetupColumn("Amount", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableHeadersRow();
+                    for (const auto& [name, items] : *inventory)
+                    {
+                        ImGui::TableNextRow();
 
+                        ImGui::TableSetColumnIndex(0);
+                        ImGui::Text("%s", name.c_str());
 
+                        ImGui::TableSetColumnIndex(1);
+                        ImGui::Text("%lu", items.size());
+                    }
 
+                    ImGui::EndTable();
+                }
+
+                ImGui::TreePop();
+            }
 
 
         }

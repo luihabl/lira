@@ -205,6 +205,8 @@ void Level::update() {
         if (player->get_hp() <= 0 && player->entity->is_active)
         {
             player->entity->is_active = false;
+            persistent_interactions.clear();
+            inventory.clear();
             Composer::create_end_sequence(this, {{0, 0}, ""}, Layer::Draw::overlay);
         }
     }

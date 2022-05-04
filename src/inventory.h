@@ -13,17 +13,15 @@ namespace Lira
         
         Inventory() = default;
 
-        // struct Item
-        // {
-        //     std::string id = "";
-        // };
-        using Item = std::string;
-
+        struct Item
+        {
+            std::string id = "";
+        };
 
         void add(const std::string& name, const std::string& id)
         {
             if(!contains(name, id))
-                items[name].push_back(id);
+                items[name].push_back({id});
         }
 
         size_t count(const std::string& name)
@@ -53,17 +51,23 @@ namespace Lira
         bool contains(const std::string& name, const std::string& id)
         {           
             const auto& vec = items[name];
-            bool result = false;
-            if( std::find(vec.begin(), vec.end(), id) != vec.end() )
+            for (const auto& item : vec)
             {
-                result = true;
+                if(item.id == id)
+                    return true;
             }
-            return result;
+
+            return false;
         }
 
         void clear()
         {
             items.clear();
+        }
+
+        std::unordered_map<std::string, std::vector<Item>>* get_all()
+        {
+            return &items;
         }
 
     private:

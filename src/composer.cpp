@@ -476,7 +476,6 @@ Entity* Composer::create_door(Scene* scene, const ObjectInfo& obj, const Layer::
             size_t removed_keys = level->inventory.remove("Key", 1);
             if(removed_keys > 0)
             {
-                Log::debug("%d", level->inventory.count("Key"));
                 level->add_persistent_interaction(obj.id);
                 self->entity->destroy();
             }
@@ -512,13 +511,9 @@ Entity* Composer::create_key(Scene* scene, const ObjectInfo& obj, const Layer::D
     area->collider = collider;
     area->on_overlap = [=](Area* self)
     {
-        // auto* player = self->scene()->get_first<Player>();
-        // if(player)
-        //     player->recharge_dash();
         Level* level = (Level*) self->scene();
         level->add_persistent_interaction(obj.id);
         level->inventory.add("Key", obj.id);
-        Log::debug("%d", level->inventory.count("Key"));
 
         create_collect_effect(scene, {obj.pos + IVec2({4, 4}), ""}, {232, 221, 0}, layer);
         self->entity->destroy();
