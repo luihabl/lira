@@ -3,7 +3,7 @@
 
 #include "tileset.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 #include <nlohmann/json.hpp>
 
 #include <vector>
@@ -49,7 +49,7 @@ namespace Lira
 
         struct Object
         {
-            TinySDL::IVec2 pos;
+            auk::IVec2 pos;
             std::string name;
             std::string unique_id;
             //extend for other properties
@@ -57,7 +57,7 @@ namespace Lira
 
         struct Room
         {
-            TinySDL::IntRect bbox;
+            auk::IntRect bbox;
             std::vector<Layer> layers;
             std::vector<Object> objects;
         };

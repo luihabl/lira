@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "input.h"
-#include "tinysdl.h"
+#include "auk.h"
 #include "input.h"
 #include "keys.h"
 

@@ -1,5 +1,5 @@
 #include "animated_sprite.h"
-#include <tinysdl.h>
+#include <auk.h>
 
 #include "../modules/game.h"
 #include "../assets/content.h"
@@ -7,7 +7,7 @@
 #include <string>
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 AnimatedSprite::AnimatedSprite(std::string key)
 {

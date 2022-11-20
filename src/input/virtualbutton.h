@@ -2,7 +2,7 @@
 
 #include "virtualinput.h"
 #include "keys.h"
-#include <tinysdl.h>
+#include <auk.h>
 #include <vector>
 
 namespace Lira {
@@ -35,7 +35,7 @@ namespace Lira {
 
             bool repeating = false;
 
-            TinySDL::SimpleTimer repeat_timer;
+            auk::SimpleTimer repeat_timer;
             bool first_repeat = true;
             float repeat_first_delay_ms = 0.0f;
             float repeat_multi_delay_ms = 0.0f; 

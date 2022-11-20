@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <tinysdl.h>
+#include <auk.h>
 #include "../lira.h"
 
 namespace Lira

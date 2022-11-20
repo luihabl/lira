@@ -1,9 +1,9 @@
 #include "collider_grid.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 ColliderGrid::ColliderGrid(int columns, int rows, int cell_w, int cell_h) {
     grid = VirtualMap<bool>(columns, rows, cell_w, cell_h);

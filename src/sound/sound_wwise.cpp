@@ -1,7 +1,7 @@
 #ifdef LIRA_SOUND_WWISE
 
 #include "sound.h"
-#include "tinysdl.h"
+#include "auk.h"
 #include "../assets/content.h"
 #include "../assets/sound_bank.h"
 
@@ -34,7 +34,7 @@
 using fspath = std::filesystem::path;
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 #define N_MAX_QUERY 50
 

@@ -26,7 +26,7 @@
 #include <iostream>
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 Entity * Composer::create_level(Scene * scene, std::string name, size_t level_n, const IVec2 & position, const Layer::Draw& render_layer) {
 

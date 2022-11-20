@@ -2,7 +2,7 @@
 
 #include "keys.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include <functional>
 
@@ -24,8 +24,8 @@ namespace Lira
         bool pressed(Key k);
         bool released(Key k);
 
-        TinySDL::IVec2 get_mouse_window_pos();
-        TinySDL::IVec2 get_mouse_global_pos();
+        auk::IVec2 get_mouse_window_pos();
+        auk::IVec2 get_mouse_global_pos();
         
         void register_button(VirtualInput * button);
         void unregister_button(VirtualInput * button);

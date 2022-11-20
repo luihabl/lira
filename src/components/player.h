@@ -1,6 +1,6 @@
 #pragma once
 
-#include <tinysdl.h>
+#include <auk.h>
 #include "../core/ecs.h"
 #include "../input/virtualbutton.h"
 #include "../input/virtualaxis.h"
@@ -25,7 +25,7 @@ namespace Lira {
 
         void begin() override;
         void update() override;
-        void render(TinySDL::BatchRenderer& renderer) override;
+        void render(auk::BatchRenderer& renderer) override;
 
         int get_hp() const;
         int get_max_hp() const;
@@ -105,13 +105,13 @@ namespace Lira {
         
         struct Trail
         {
-            TinySDL::IVec2 pos;
+            auk::IVec2 pos;
             float radius;
             bool remove = false;
 
-            void render(TinySDL::BatchRenderer& renderer)
+            void render(auk::BatchRenderer& renderer)
             {
-                renderer.draw_circle_fill(pos.cast_to<float>() + TinySDL::Vec2({0.0f, -6.0f}), radius, TinySDL::Color::white);
+                renderer.draw_circle_fill(pos.cast_to<float>() + auk::Vec2({0.0f, -6.0f}), radius, auk::Color::white);
             }
 
             void update()

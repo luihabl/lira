@@ -11,7 +11,7 @@
 #include <algorithm>
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 Map::Map(const nlohmann::json& json, const std::string& key)
 {

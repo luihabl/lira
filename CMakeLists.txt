@@ -58,7 +58,7 @@ src/util/svector.h
 # include_directories(${SDL2_INCLUDE_DIRS})
 
 target_link_libraries(lira 
-tinysdl
+auk
 nlohmann_json::nlohmann_json
 )
 

@@ -3,7 +3,7 @@
 #include "../core/ecs.h"
 #include "../util/virtual_map.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 #include <array>
 
 namespace Lira {
@@ -25,7 +25,7 @@ namespace Lira {
         
         std::array<int, 2> get_cell_size() {return {grid.w, grid.h}; }
 
-        void render(TinySDL::BatchRenderer & renderer) override;
+        void render(auk::BatchRenderer & renderer) override;
 
         uint32_t layer = -1;
 
@@ -33,7 +33,7 @@ namespace Lira {
         
         VirtualMap<bool> grid;
 
-        // TinySDL::IntRect rect;
-        // TinySDL::IntRect scene_rect();
+        // auk::IntRect rect;
+        // auk::IntRect scene_rect();
     };
 }

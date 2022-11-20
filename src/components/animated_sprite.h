@@ -3,7 +3,7 @@
 #include "../core/ecs.h"
 #include "../assets/spritesheet.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include <vector>
 #include <unordered_map>
@@ -27,7 +27,7 @@ namespace Lira {
 
         size_t animation_lenght(){ return current_animation->size(); }
         void set_frame(SpriteSheet::Frame* frame) { current_frame = frame; 
-            //TinySDL::Log::debug("%s [%d]", current_id.c_str(), current_frame_index);
+            //auk::Log::debug("%s [%d]", current_id.c_str(), current_frame_index);
         }
 
     public:
@@ -35,7 +35,7 @@ namespace Lira {
         AnimatedSprite(std::string key);
 
         void update () override;
-        void render(TinySDL::BatchRenderer & renderer) override;
+        void render(auk::BatchRenderer & renderer) override;
 
         void connect(const std::string& id, const std::string& next_id);
 
@@ -47,7 +47,7 @@ namespace Lira {
         SpriteSheet::Animation* add(const std::string & id);
         SpriteSheet::Animation* get(const std::string& id);
 
-        TinySDL::Vec2 scale = TinySDL::Vec2::ones;
+        auk::Vec2 scale = auk::Vec2::ones;
         bool flip_x = false;
         bool flip_y = false;
     };

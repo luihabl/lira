@@ -3,7 +3,7 @@
 #include "../core/ecs.h"
 #include "collider.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include <functional>
 
@@ -15,8 +15,8 @@ namespace Lira {
         Collider* collider = nullptr;
         uint32_t solid_mask = -1;
 
-        TinySDL::Vec2 velocity = {0, 0};
-        TinySDL::Vec2 move_remainder = {0, 0};
+        auk::Vec2 velocity = {0, 0};
+        auk::Vec2 move_remainder = {0, 0};
 
         bool auto_update = true;
 

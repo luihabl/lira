@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <tinysdl.h>
+#include <auk.h>
 #include <string>
 #include <filesystem> 
 
@@ -71,7 +71,7 @@ namespace Lira {
 		}
 		catch (const std::out_of_range&)
 		{
-			TinySDL::Log::error("Content key \"%s\" not found", name.c_str());
+			auk::Log::error("Content key \"%s\" not found", name.c_str());
 		}
 		return data;
 	}

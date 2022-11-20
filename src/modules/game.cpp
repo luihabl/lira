@@ -1,4 +1,4 @@
-#include <tinysdl.h>
+#include <auk.h>
 
 #include <chrono>
 #include <thread>
@@ -9,7 +9,7 @@
 
 namespace chr = std::chrono;
 using namespace Lira;
-using namespace TinySDL; 
+using namespace auk; 
 
 constexpr float default_fps = 60.0f;
 

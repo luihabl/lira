@@ -1,4 +1,4 @@
-#include <tinysdl.h>
+#include <auk.h>
 #include <unordered_map>
 
 namespace Lira
@@ -40,7 +40,7 @@ namespace Lira
         template <typename G>
         G* pop()
         {
-            auto& vec = table[TinySDL::Type::type_of<G>()];
+            auto& vec = table[auk::Type::type_of<G>()];
             if (vec.size() > 0)
             {
                 G* c = (G*) vec.back();
@@ -55,7 +55,7 @@ namespace Lira
         
         void erase(T* c)
         {
-            auto& vec = table[c->type]; // <---- maybe change to TinySDL::Type::type_of<G>()?
+            auto& vec = table[c->type]; // <---- maybe change to auk::Type::type_of<G>()?
 
             for (size_t i = 0; i < vec.size(); i++)
             {
@@ -88,13 +88,13 @@ namespace Lira
         template <typename G>
         const std::vector<T*>& get_group()
         {
-            return table[TinySDL::Type::type_of<G>()];
+            return table[auk::Type::type_of<G>()];
         }
 
         template <typename G>
         size_t count()
         {
-            return table[TinySDL::Type::type_of<G>()].size();
+            return table[auk::Type::type_of<G>()].size();
         }
 
         size_t count(T* example)

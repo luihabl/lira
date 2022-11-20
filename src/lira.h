@@ -3,7 +3,7 @@
 #include "modules/game.h"
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 namespace Lira  {
 

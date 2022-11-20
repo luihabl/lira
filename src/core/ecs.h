@@ -9,7 +9,7 @@
 
 #include "../util/type_table.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 namespace Lira
 {
@@ -28,12 +28,12 @@ namespace Lira
         public:
             virtual void begin();
             virtual void update();
-            virtual void render(TinySDL::BatchRenderer & renderer);
+            virtual void render(auk::BatchRenderer & renderer);
             virtual void end();
 
             virtual ~Scene();
             
-            Entity* add_entity(const TinySDL::IVec2& pos = { 0, 0 }, int layer = 0);
+            Entity* add_entity(const auk::IVec2& pos = { 0, 0 }, int layer = 0);
             
             template<typename T>
             T* add_component(T&& component, Entity * entity);
@@ -53,12 +53,12 @@ namespace Lira
             template <typename T>
             T* get_first();
 
-            void layer_transform(int layer, const TinySDL::Mat3x2& transform);
+            void layer_transform(int layer, const auk::Mat3x2& transform);
 
             struct RenderLayer
             {
                 std::vector<Component*> components;
-                TinySDL::Mat3x2 transform = TinySDL::Mat3x2::identity;
+                auk::Mat3x2 transform = auk::Mat3x2::identity;
                 
                 void add(Component* c) { components.push_back(c); }
 
@@ -101,9 +101,9 @@ namespace Lira
         friend class Scene;
 
     public:
-        Entity(const TinySDL::IVec2& pos, Scene * s, int layer = 0) : position(pos), layer(layer), scene(s) {};
+        Entity(const auk::IVec2& pos, Scene * s, int layer = 0) : position(pos), layer(layer), scene(s) {};
 
-        TinySDL::IVec2 position;
+        auk::IVec2 position;
 
         bool is_active = true;
         bool is_visible = true;
@@ -140,11 +140,11 @@ namespace Lira
         Entity* entity;
         Scene* scene() { return entity->get_scene(); }
 
-        TinySDL::Type type;
+        auk::Type type;
 
         virtual void begin() {};
         virtual void update() {};
-        virtual void render([[maybe_unused]] TinySDL::BatchRenderer & renderer) {};
+        virtual void render([[maybe_unused]] auk::BatchRenderer & renderer) {};
         virtual void end() {};
 
         int get_layer();
@@ -198,7 +198,7 @@ namespace Lira
             
         *c = component;
         c->entity = entity;
-        c->type = TinySDL::Type::type_of<T>();
+        c->type = auk::Type::type_of<T>();
         
         components.add(c);
         c->entity->components.push_back(c);
@@ -217,7 +217,7 @@ namespace Lira
     template <typename T>
     T* Entity::get_component() const {
         for (auto* c : components) {
-            if (c->type == TinySDL::Type::type_of<T>()) {
+            if (c->type == auk::Type::type_of<T>()) {
                 return (T*) c;
             }
         }

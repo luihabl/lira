@@ -1,6 +1,6 @@
 #include "content.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include "map.h"
 #include "spritesheet.h"
@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <filesystem> 
 
-using namespace TinySDL;
+using namespace auk;
 using namespace Lira;
 
 namespace fs = std::filesystem;

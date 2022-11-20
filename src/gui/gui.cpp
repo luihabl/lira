@@ -1,6 +1,6 @@
 #include "gui.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include "imgui.h" 
 #include "imgui_impl_sdl.h"
@@ -11,7 +11,7 @@
 #include "../components/actor.h"
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 void style();
 

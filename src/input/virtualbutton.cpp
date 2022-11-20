@@ -1,9 +1,9 @@
 #include "virtualbutton.h"
 #include "keys.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
-using namespace TinySDL;
+using namespace auk;
 
 using namespace Lira;
 

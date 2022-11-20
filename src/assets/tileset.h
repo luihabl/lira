@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <tinysdl.h>
+#include <auk.h>
 #include <vector>
 
 namespace Lira {
@@ -9,9 +9,9 @@ namespace Lira {
     
     public:
         TileSet() = default;
-        TileSet(int tile_w, int tile_h, TinySDL::Texture * tex);
+        TileSet(int tile_w, int tile_h, auk::Texture * tex);
 
-        TinySDL::TexRegion operator [](size_t i) const {return tiles[i];}
+        auk::TexRegion operator [](size_t i) const {return tiles[i];}
         
         int dx() const { return tile_w; }
         int dy() const { return tile_h; }
@@ -19,8 +19,8 @@ namespace Lira {
         int r() const { return rows; }
 
     private:
-        TinySDL::Texture * tex;
-        std::vector<TinySDL::TexRegion> tiles;
+        auk::Texture * tex;
+        std::vector<auk::TexRegion> tiles;
 
         int tile_w = 0;
         int tile_h = 0;

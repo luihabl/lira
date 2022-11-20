@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <tinysdl.h>
+#include <auk.h>
 #include "../assets/tileset.h"
 #include "../assets/map.h"
 #include "../core/ecs.h"
@@ -16,13 +16,13 @@ namespace Lira {
         TileMap(int columns, int rows, int tile_w, int tile_h);
 
         bool set_cells(const Map::Layer& layer);
-        void set_cell(int cell_x, int cell_y, const TinySDL::TexRegion & reg);
+        void set_cell(int cell_x, int cell_y, const auk::TexRegion & reg);
 
-        void render(TinySDL::BatchRenderer & renderer) override;
+        void render(auk::BatchRenderer & renderer) override;
 
     private: 
         
-        std::vector<TinySDL::TexRegion> cells;
+        std::vector<auk::TexRegion> cells;
         int tw = 0;
         int th = 0;
         int nx = 0;

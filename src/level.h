@@ -1,12 +1,12 @@
 #pragma once
 
-#include <tinysdl.h>
+#include <auk.h>
 #include "core/ecs.h"
 #include "assets/map.h"
 #include "layers.h"
 #include "inventory.h"
 
-using namespace TinySDL;
+using namespace auk;
 
 namespace Lira {
 
@@ -16,10 +16,10 @@ namespace Lira {
 
 		void begin() override;
 		void update() override;
-		void render(TinySDL::BatchRenderer& renderer) override;
+		void render(auk::BatchRenderer& renderer) override;
 		void end() override;
 
-		void layer_transform(Layer::Draw layer, const TinySDL::Mat3x2& transform);
+		void layer_transform(Layer::Draw layer, const auk::Mat3x2& transform);
 
 		Vec2 camera = Vec2::zeros;
 		std::vector<Layer::Draw> camera_layers;
@@ -59,7 +59,7 @@ namespace Lira {
 		void load_room(size_t id);
 		void unload_room();
 		void move_to_room(size_t id);
-		IVec2 room_camera_target(const TinySDL::IVec2& player_pos, const Room& room);
+		IVec2 room_camera_target(const auk::IVec2& player_pos, const Room& room);
 
 	};
 }

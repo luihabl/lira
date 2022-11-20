@@ -1,12 +1,12 @@
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include "ecs.h"
 
 #include <algorithm>
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 Scene::~Scene()
 {
@@ -162,7 +162,7 @@ const TypeTable<Component>& Scene::get_components()
 	return components;
 }
 
-void Scene::layer_transform(int layer, const TinySDL::Mat3x2& transform)
+void Scene::layer_transform(int layer, const auk::Mat3x2& transform)
 {
 	render_layers[layer].transform = transform;
 }

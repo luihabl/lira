@@ -3,7 +3,7 @@
 #include "../modules/game.h"
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 void Actor::move_x(float amount) {
     move_remainder[0] += (float) amount;

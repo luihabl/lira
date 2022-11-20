@@ -1,8 +1,8 @@
-#include <tinysdl.h>
+#include <auk.h>
 #include "tileset.h"
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 TileSet::TileSet(int _tile_w, int _tile_h, Texture * _tex) {
     

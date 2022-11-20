@@ -1,7 +1,7 @@
 
 #include "player.h"
 
-using namespace TinySDL;
+using namespace auk;
 using namespace Lira;
 
 namespace

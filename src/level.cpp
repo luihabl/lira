@@ -1,5 +1,5 @@
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include "level.h" 
 #include "composer.h"
@@ -17,7 +17,7 @@
 #include "sound/sound.h"
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 
 void Level::begin() {
@@ -227,12 +227,12 @@ void Level::update() {
 }
 
 
-void Level::layer_transform(Layer::Draw layer, const TinySDL::Mat3x2& transform)
+void Level::layer_transform(Layer::Draw layer, const auk::Mat3x2& transform)
 {
 	Scene::layer_transform((int)layer, transform);
 }
 
-void Level::render(TinySDL::BatchRenderer& renderer)
+void Level::render(auk::BatchRenderer& renderer)
 {
     Graphics::clear(Color::black);
 

@@ -5,7 +5,7 @@
 #include <cmath>
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 bool Collider::check(Collider & other, const IVec2 & offset) {
     const auto& a = rect + entity->position + offset;

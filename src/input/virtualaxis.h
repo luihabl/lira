@@ -2,7 +2,7 @@
 
 #include "virtualinput.h"
 #include "keys.h"
-#include <tinysdl.h>
+#include <auk.h>
 #include <vector>
 
 namespace Lira {

@@ -3,7 +3,7 @@
 #include "sprite.h"
 #include "content.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 #include <nlohmann/json.hpp>
 
 #include <vector>
@@ -38,7 +38,7 @@ namespace Lira
 		SpriteSheet() = default;
         SpriteSheet(const nlohmann::json& json, const std::string& key)
         {
-            using namespace TinySDL;
+            using namespace auk;
 
             std::vector<Frame> frames;
             for (auto& frame : json["frames"])

@@ -1,13 +1,13 @@
 #include "tilemap.h"
 
 #include "../core/ecs.h"
-#include <tinysdl.h>
+#include <auk.h>
 
 #include <algorithm>
 
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 TileMap::TileMap(int columns, int rows, int tile_w, int tile_h) {
     nx = columns;
@@ -18,11 +18,11 @@ TileMap::TileMap(int columns, int rows, int tile_w, int tile_h) {
     cells.resize(columns * rows);
 }
 
-void TileMap::set_cell(int cell_x, int cell_y, const TinySDL::TexRegion & reg) {
+void TileMap::set_cell(int cell_x, int cell_y, const auk::TexRegion & reg) {
     cells[cell_x + cell_y * nx] = reg;
 }
 
-void TileMap::render(TinySDL::BatchRenderer & renderer) {
+void TileMap::render(auk::BatchRenderer & renderer) {
 
     renderer.push_transform(LinAlg2D::gen_translation((float)entity->position[0], (float)entity->position[1]));
 

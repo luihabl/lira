@@ -2,7 +2,7 @@
 
 #include <string>
 #include <chrono>
-#include <tinysdl.h>
+#include <auk.h>
 
 #include "../input/input.h"
 #include "../core/ecs.h"
@@ -33,10 +33,10 @@ namespace Lira {
 
             Content content;
 
-            TinySDL::BatchRenderer renderer;
-            TinySDL::Shader default_shader;
-            TinySDL::Mat4x4 virtual_projection;
-            TinySDL::Mat4x4 window_projection;
+            auk::BatchRenderer renderer;
+            auk::Shader default_shader;
+            auk::Mat4x4 virtual_projection;
+            auk::Mat4x4 window_projection;
 
             // Receives a unique pointer to a scene
             void move_to_scene(SceneRef&& scene);

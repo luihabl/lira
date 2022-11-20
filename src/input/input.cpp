@@ -4,7 +4,7 @@
 #include "../modules/game.h"
 #include "virtualbutton.h"
 
-#include <tinysdl.h>
+#include <auk.h>
 
 #include <SDL.h>
 #include <cstring>
@@ -15,7 +15,7 @@
 #include "../gui/gui.h"
 
 using namespace Lira;
-using namespace TinySDL;
+using namespace auk;
 
 namespace {
     int n_keys = 512;
