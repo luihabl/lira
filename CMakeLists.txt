@@ -40,7 +40,7 @@ src/components/actor.cpp
 src/components/timer.cpp
 src/components/multitimer.h
 src/components/multitimer.cpp
-src/components/interactable.h
+# src/components/interactable.h
 
 src/composer.cpp
 src/lira.cpp
@@ -53,9 +53,9 @@ src/util/svector.h
 )
 
 
-find_package(SDL2 REQUIRED)
+# find_package(SDL2 REQUIRED)
 #include_directories(${SDL2_INCLUDE_DIRS} lib/imgui)
-include_directories(${SDL2_INCLUDE_DIRS})
+# include_directories(${SDL2_INCLUDE_DIRS})
 
 target_link_libraries(lira 
 tinysdl
@@ -112,13 +112,13 @@ if(USE_IMGUI)
 endif()
 
 # copy SDL2.dll to the build directory
-if (EXISTS ${SDL2_DLL})
-    add_custom_command(
-        TARGET lira POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${SDL2_DLL} $<TARGET_FILE_DIR:lira>)
+# if (EXISTS ${SDL2_DLL})
+#     add_custom_command(
+#         TARGET lira POST_BUILD
+#         COMMAND ${CMAKE_COMMAND} -E copy ${SDL2_DLL} $<TARGET_FILE_DIR:lira>)
     
-    install(FILES ${SDL2_DLL} DESTINATION .)
-endif()
+#     install(FILES ${SDL2_DLL} DESTINATION .)
+# endif()
 
 install( TARGETS lira DESTINATION . )
 install( DIRECTORY content DESTINATION . )
